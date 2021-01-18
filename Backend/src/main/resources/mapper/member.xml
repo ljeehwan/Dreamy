@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.Dreamy.model.mapper.MemberMapper">
+
+	<select id="login" parameterType="Map" resultType="memberDto">
+		select email, nickname
+		from dreamy_member
+		where email = #{email} and password = #{password}
+	</select>
+	
+	<select id="userInfo" parameterType="String" resultType="memberDto">
+		select email, nickname, phone, joindate
+		from dreamy_member
+		where email = #{email}
+	</select>
+	
+	<insert id="userJoin" parameterType="Map">
+	insert into dreamy_member values (#{email}, #{nickname}, #{password}, #{phone}, now())</insert>
+	
+</mapper>
