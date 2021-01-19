@@ -2,6 +2,7 @@
   <div class="joinForm">
     <h2>환영합니다</h2>
     <h4>드루와 드루와</h4>
+    <h4>드루와 드루와</h4>
     <br>
     <div class="input-label">
       <label for="email"><b>Email</b></label>
