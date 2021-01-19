@@ -28,6 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor{
 		final String token = request.getHeader(HEADER_AUTH);
 
 		if(token != null && jwtService.isUsable(token)){
+            // 유효한 토큰이면 진행, 그렇지 않으면 예외발생.
 			logger.info("토큰 사용 가능 : {}", token);
 			return true;
 		}else{

@@ -33,14 +33,14 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void join(String email, String nickname, String password, String phone) throws Exception {
+	public void signup(String email, String name, String password, String phone) throws Exception {
 		Map<String, String>map = new HashMap<>();
 		map.put("email", email);
-		map.put("nickname", nickname);
+		map.put("name", name);
 		map.put("password", password);
 		map.put("phone", phone);
 //		MemberDto memberDto = new MemberDto(email,nickname,password,phone);
-		sqlSession.getMapper(MemberMapper.class).userJoin(map);
+		sqlSession.getMapper(MemberMapper.class).signup(map);
 	}
 
 }
