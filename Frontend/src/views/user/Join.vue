@@ -8,10 +8,10 @@
       <p v-if="!availableEmail"  class="join-error-msg">{{errorEmail}}</p>
 
       <div class="input-label">
-        <label for="nickname"><b>닉네임</b></label>
-        <input v-model="nickname" id="nickname" class="inputs" type="text" placeholder="닉네임을 입력하세요" >
+        <label for="name"><b>이름</b></label>
+        <input v-model="name" id="name" class="inputs" type="text" placeholder="닉네임을 입력하세요" >
       </div>
-      <p v-if="!availableNickname" class="join-error-msg"> {{errorNickname}} </p>
+      <p v-if="!availablename" class="join-error-msg"> {{errorname}} </p>
 
       <div class="input-label">
         <label for="password"><b>비밀번호</b></label>
@@ -53,18 +53,18 @@ export default {
       return {
         credentials: {
           email: null,
-          nickname: null,
+          name: null,
           password: null,
           phone: null
         },
         email:"",
-        nickname:"",
+        name:"",
         password:"",
         phone: "",
 
         errorEmail: null,
         errorPwd: null,
-        errorNickname:null,
+        errorname:null,
         errorPhone: null,
         errorUnmatch: null,
 
@@ -72,7 +72,7 @@ export default {
 
         passwordConfirm: "",
 
-        availableNickname: false,
+        availablename: false,
         availableEmail: false,
         availablePwd: false,
         availablePhone: false,
@@ -99,7 +99,7 @@ export default {
       password: function() {
         this.checkForm()
       },
-      nickname: function () {
+      name: function () {
         this.checkForm()
       },
       phone: function () {
@@ -114,7 +114,7 @@ export default {
       checkForm: function () {
         this.availableEmail = true
         this.availablePwd = true
-        this.availableNickname = true
+        this.availablename = true
         this.availablePhone = true
         this.unmatchPassword = true
 
@@ -126,9 +126,9 @@ export default {
           this.errorPwd = "최소 8자 이상, 영어와 숫자 조합이여야 합니다."
           this.availablePwd = false
         } 
-        if (this.nickname.length < 2) {
-          this.errorNickname = "최소 한 글자 이상이여야 합니다."
-          this.availableNickname = false
+        if (this.name.length < 2) {
+          this.errorname = "최소 한 글자 이상이여야 합니다."
+          this.availablename = false
         }
         if (this.phone.length !== 11) {
           this.errorPhone = "핸드폰 번호 숫자 11자만 적어야합니다."
@@ -142,7 +142,7 @@ export default {
       },
       onJoin: function () {
         // 비밀번호와 비밀번호 확인이 같지 않으면
-        if (this.availableNickname === false || this.availableEmail === false || this.availablePwd === false || this.availablePhone === false
+        if (this.availablename === false || this.availableEmail === false || this.availablePwd === false || this.availablePhone === false
         || this.unmatchPassword === false) {
           alert("입력란을 확인해 수정해주세요.")
         } else {
@@ -150,7 +150,7 @@ export default {
           this.errorUnmatch = null
           // 전송할 크레덴셜 입력
           this.credentials.email = this.email
-          this.credentials.nickname = this.nickname
+          this.credentials.name = this.name
           this.credentials.password = this.password
           this.credentials.phone = this.phone
           // JSON 화 하기

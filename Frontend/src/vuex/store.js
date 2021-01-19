@@ -8,16 +8,24 @@ const SERVER_URL="http://localhost:8080";
 
 export default new Vuex.Store({
     state:{
-        isUser:false,
+        accessToken:null,
+        isLogined:false,
         isSign:false,
         user:{
+            uid:"",
             email:"",
-            password:""
+            name:"",
+            phone:""
         }
     },
     mutations:{
         setUser(state,payload){
-            state.setUser=payload;
+            state.isLogined=true;
+            state.accessToken=payload["access-token"];
+            state.user.uid=payload["user"].uid;
+            state.user.email=payload["user"].email;
+            state.user.name=payload["user"].name;
+            state.user.phone=payload["user"].phone;
         },
         setIsSign(state,payload){
             state.isSign=payload;
@@ -32,17 +40,22 @@ export default new Vuex.Store({
     actions:{
         login(context,user){
             axios({
-                method: "get",
+                method: "post",
                 url: `${SERVER_URL}/account/login`,
-                params: {
+                data: {
                    email: user.email,
                    password: user.password,
                 },
            })
           .then((response) => {
-            console.log(response.data.status);
-            context.commit("setUser",response.data.status);
+            localStorage.setItem("access_token", response.data["access-token"])
+            localStorage.setItem("access_id", response.data["user"].uid)
+            localStorage.setItem("access_name", response.data["user"].name)
+            context.commit("setUser",response.data);
+            axios.defaults.headers.common["auth-token"]=`${response.data["access-token"]}`;
+            console.log(response.data["user"]);
           }).catch((error) => {
+            alert("로그인 실패");
             console.log(error);
           })
         },
