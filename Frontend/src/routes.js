@@ -9,6 +9,7 @@ import feedMain from './views/Main/feedMain.vue'
 import Bucket from './views/Community/Bucket'
 import Challenge from './views/Community/Challenge'
 import Ranking from './views/Community/Ranking'
+// import { userSetter } from 'core-js/fn/symbol'
 
 
 
@@ -34,18 +35,19 @@ export default [
         name: 'myPage',
         component: myPage
     },
+
     {
-        path: 'community/bucket',
+        path: '/community/bucket',
         name: 'Bucket',
         component: Bucket
     },
     {
-        path: 'community/challenge',
+        path: '/community/challenge',
         name: 'Challenge',
         component: Challenge
     },
     {
-        path: 'community/ranking',
+        path: '/community/ranking',
         name: 'Ranking',
         component: Ranking
     }
