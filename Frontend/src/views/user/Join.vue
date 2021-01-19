@@ -1,45 +1,46 @@
 <template>
+  <div class="joinForm">
+    <h2>환영합니다</h2>
+    <h4>드루와 드루와</h4>
+    <br>
+    <div class="input-label">
+      <label for="email"><b>Email</b></label>
+      <input v-model="email" id="email" class="inputs" type="text" placeholder="ssafy@example.com" >
+    </div>
+    <p v-if="!availableEmail"  class="join-error-msg">{{errorEmail}}</p>
 
-    <div class="joinForm">
-      <div class="input-label">
-        <label for="email"><b>Email</b></label>
-        <input v-model="email" id="email" class="inputs" type="text" placeholder="이메일을 입력하세요" >
-      </div>
-      <p v-if="!availableEmail"  class="join-error-msg">{{errorEmail}}</p>
+    <div class="input-label">
+      <label for="nickname"><b>닉네임</b></label>
+      <input v-model="nickname" id="nickname" class="inputs" type="text" placeholder="드리미" >
+    </div>
+    <p v-if="!availableNickname" class="join-error-msg"> {{errorNickname}} </p>
 
-      <div class="input-label">
-        <label for="name"><b>이름</b></label>
-        <input v-model="name" id="name" class="inputs" type="text" placeholder="닉네임을 입력하세요" >
-      </div>
-      <p v-if="!availablename" class="join-error-msg"> {{errorname}} </p>
-
-      <div class="input-label">
-        <label for="password"><b>비밀번호</b></label>
-        <input v-model="password" id="password" class="inputs" type="password" placeholder="비밀번호를 입력하세요" >
-      </div>
-
-      <p v-if="!availablePwd" class="join-error-msg">{{errorPwd}}</p>
-
-      <div class="input-label">
-        <label for="password-confirm"><b>비밀번호 확인</b></label>
-        <input v-model="passwordConfirm" id="password-confirm" class="inputs" type="password" placeholder="비밀번호를 입력하세요">        
-      </div>
-
-      <p v-if="!unmatchPassword" class="join-error-msg"><b>{{errorUnmatch}}</b></p>
-
-      <div class="input-label">
-        <label for="phone"><b>핸드폰 번호</b></label>
-        <input v-model="phone" @keypress.enter="onJoin" id="phone" class="inputs" type="text" placeholder="숫자만적어주세요">
-      </div>
-      <p v-if="!availablePhone" class="join-error-msg">{{errorPhone}}</p>
-
-      <div class="btn-container">
-        <button class="join-button cancel">취소</button>
-        <button @click="onJoin" class="join-button confirm">확인</button>
-      </div>
-      
+    <div class="input-label">
+      <label for="password"><b>비밀번호</b></label>
+      <input v-model="password" id="password" class="inputs" type="password" placeholder="영어, 숫자 8자이상" >
     </div>
 
+    <p v-if="!availablePwd" class="join-error-msg">{{errorPwd}}</p>
+
+    <div class="input-label">
+      <label for="password-confirm"><b>비밀번호 확인</b></label>
+      <input v-model="passwordConfirm" id="password-confirm" class="inputs" type="password" placeholder="비밀번호 확인">        
+    </div>
+
+    <p v-if="!unmatchPassword" class="join-error-msg"><b>{{errorUnmatch}}</b></p>
+
+    <div class="input-label">
+      <label for="phone"><b>핸드폰 번호</b></label>
+      <input v-model="phone" @keypress.enter="onJoin" id="phone" class="inputs" type="text" placeholder="01043218765">
+    </div>
+    <p v-if="!availablePhone" class="join-error-msg">{{errorPhone}}</p>
+
+    <div class="btn-container">
+      <button class="join-button cancel">취소</button>
+      <button @click="onJoin" class="join-button confirm">확인</button>
+    </div>
+    
+  </div>
 </template>
 
 <script>
@@ -150,7 +151,7 @@ export default {
           this.errorUnmatch = null
           // 전송할 크레덴셜 입력
           this.credentials.email = this.email
-          this.credentials.name = this.name
+          this.credentials.name = this.nickname
           this.credentials.password = this.password
           this.credentials.phone = this.phone
           // JSON 화 하기
