@@ -4,27 +4,22 @@
 
 <mapper namespace="com.ssafy.Dreamy.model.mapper.MemberMapper">
 
-	<select id="login" parameterType="Map" resultType="memberDto">
-		select uid,
-		email, name, phone
-		from User
-		where email = #{email} and password =
-		#{password}
-	</select>
-
-	<insert id="signup" parameterType="Map">
-		insert into User (email, name,
-		password, phone) values (#{email}, #{name},
-		#{password}, #{phone})
-	</insert>
-
-	<delete id="delete" parameterType="String">
-		delete from User where
-		email=#{email};
-	</delete>
-
-	<update id="update" parameterType="Map">
-		update User set
-		password=#{password},phone=#{phone} where email=#{email}
-	</update>
+    <select id="login" parameterType="Map" resultType="memberDto">
+        select uid, email, name, phone
+        from User
+        where email = #{email} and password = #{password}
+    </select>
+    
+    <insert id="signup" parameterType="Map">
+        insert into User (email, name, password, phone) values (#{email}, #{name}, #{password}, #{phone})
+    </insert>
+    
+    <!-- 
+    <select id="userInfo" parameterType="String" resultType="memberDto">
+        select email, nickname, phone, joindate
+        from dreamy_member
+        where email = #{email}
+    </select>
+     -->
+     
 </mapper>

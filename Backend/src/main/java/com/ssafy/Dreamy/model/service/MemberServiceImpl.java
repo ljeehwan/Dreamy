@@ -15,10 +15,10 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private SqlSession sqlSession;
-
+	
 	@Override
 	public MemberDto login(String email, String password) throws Exception {
-		if (email == null || password == null)
+		if(email == null || password == null)
 			return null;
 		System.out.println("--로그인 정보 / 이메일 : " + email + " 비번 : " + password);
 		Map<String, String> map = new HashMap<>();
@@ -34,27 +34,13 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public void signup(String email, String name, String password, String phone) throws Exception {
-		Map<String, String> map = new HashMap<>();
+		Map<String, String>map = new HashMap<>();
 		map.put("email", email);
 		map.put("name", name);
 		map.put("password", password);
 		map.put("phone", phone);
+//		MemberDto memberDto = new MemberDto(email,nickname,password,phone);
 		sqlSession.getMapper(MemberMapper.class).signup(map);
-	}
-
-	@Override
-	public void delete(String email) {
-		sqlSession.getMapper(MemberMapper.class).delete(email);
-
-	}
-
-	@Override
-	public void update(String email, String password, String phone) {
-		Map<String, String> map = new HashMap<>();
-		map.put("email", email);
-		map.put("password", password);
-		map.put("phone", phone);
-		sqlSession.getMapper(MemberMapper.class).update(map);
 	}
 
 }
