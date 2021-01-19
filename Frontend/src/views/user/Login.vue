@@ -35,9 +35,8 @@ data:() => {
 methods:{
       onLogin(){
             this.$store.dispatch('login',this.user)
-            .then(()=>this.$router.push("/"))
-            .catch((error)=>console.log(error));
-     },
+            .then(this.$router.push("/"));
+      },
       signup(){
             this.$router.push("/user/join");
       },

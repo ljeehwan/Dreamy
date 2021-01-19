@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.json.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import com.ssafy.Dreamy.model.service.JwtServiceImpl;
 import com.ssafy.Dreamy.model.service.MemberService;
 
 //@CrossOrigin(origins = { "*" }, maxAge = 6000)
-//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 @RequestMapping("/account")
 public class MemberController {
@@ -40,11 +40,13 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	@GetMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestParam String email, String password) {
+	@PostMapping("/login")
+	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		System.out.println("--로그인 함수 진입");	//
+		String email=memberDto.getEmail();
+		String password=memberDto.getPassword();
 		try {
 			MemberDto loginUser = memberService.login(email, password);
 			System.out.println("--로그인 시도");		//
@@ -52,16 +54,16 @@ public class MemberController {
 				String token = jwtService.create("userid", loginUser.getEmail(), "access-token");// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
+				resultMap.put("user",loginUser);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--토큰 생성");		//
+				System.out.println("--토큰 생성");	
 			} else {
 				resultMap.put("message", FAIL);
-				status = HttpStatus.ACCEPTED;
-				System.out.println("--로그인 정보 없음");	//
+				status = HttpStatus.NOT_FOUND;
+				System.out.println("--로그인 실패");	
 			}
 		} catch (Exception e) {
-			logger.error("로그인 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			System.out.println("--로그인 실패");	//
@@ -73,17 +75,16 @@ public class MemberController {
 	public ResponseEntity<Map<String, Object>> userJoin(@RequestBody MemberDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		String email = memberDto.getEmail();
-		String nickname = memberDto.getNickname();
+		String name = memberDto.getName();
 		String password = memberDto.getPassword();
 		String phone = memberDto.getPhone();
 		
-		System.out.println(email);
+		System.out.println(name);
 		HttpStatus status = null;
 		System.out.println("--회원가입 함수 진입");	//		
 		try {
 			System.out.println("--회원가입 시도");		//
-			
-			memberService.join(email,nickname,password,phone);
+			memberService.signup(email, name,password,phone);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			System.out.println("--회원가입 성공");	//

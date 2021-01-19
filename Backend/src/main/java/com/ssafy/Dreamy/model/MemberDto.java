@@ -1,12 +1,25 @@
 package com.ssafy.Dreamy.model;
 
+import java.util.Date;
+
 public class MemberDto {
 
+	private int uid;
 	private String email;
-	private String nickname;
+	private String name;
 	private String password;
 	private String phone;
+	private Date joindate;
+    private String profileUrl;
 
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -15,12 +28,12 @@ public class MemberDto {
 		this.email = email;
 	}
 
-	public String getNickname() {
-		return nickname;
+	public String getName() {
+		return name;
 	}
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPassword() {
@@ -38,6 +51,5 @@ public class MemberDto {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
 
 }
