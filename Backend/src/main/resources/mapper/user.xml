@@ -34,4 +34,18 @@
 		where email=#{email}
 	</update>
 	
+	<!-- 비밀번호 변경 관련 -->
+	<select id="certification" parameterType="Map" resultType="int">
+		select count(*)
+		from User
+		where email = #{email} and phone = #{phone}
+	</select>
+	
+	<update id="updatePassword" parameterType="Map">
+		update User 
+		set	password=#{password} 
+		where email=#{email}
+	</update>
+	<!-- 비밀번호 변경 관련 -->
+	
 </mapper>

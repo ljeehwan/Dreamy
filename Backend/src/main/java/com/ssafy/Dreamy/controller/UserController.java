@@ -39,7 +39,7 @@ public class UserController {
 	private JwtServiceImpl jwtService;
 
 	@Autowired
-	private UserService memberService;
+	private UserService userService;
 
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto memberDto) {
@@ -49,7 +49,7 @@ public class UserController {
 		String email = memberDto.getEmail();
 		String password = memberDto.getPassword();
 		try {
-			UserDto loginUser = memberService.login(email, password);
+			UserDto loginUser = userService.login(email, password);
 			System.out.println("--로그인 시도"); //
 			if (loginUser != null) {
 				String token = jwtService.create("userid", loginUser.getEmail(), "access-token");// key, data, subject
@@ -85,8 +85,8 @@ public class UserController {
 		System.out.println("--회원가입 함수 진입"); //
 		try {
 			System.out.println("--회원가입 시도"); //
-			int emailNum = memberService.getEmail(email);
-			int nameNum = memberService.getName(name);
+			int emailNum = userService.getEmail(email);
+			int nameNum = userService.getName(name);
 			if (emailNum != 0) {
 				resultMap.put("message", "email conflict");
 				status = HttpStatus.CONFLICT;
@@ -96,7 +96,7 @@ public class UserController {
 				status = HttpStatus.CONFLICT;
 				System.out.println("--닉네임 중복"); //
 			} else {
-				memberService.signup(email, name, password, phone);
+				userService.signup(email, name, password, phone);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				System.out.println("--회원가입 성공"); //
@@ -122,7 +122,7 @@ public class UserController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 				// 사용가능한 토큰이면 토큰의 사용자정보를 탈퇴처리(DB에서 제거)
-				memberService.delete(email);
+				userService.delete(email);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
@@ -148,7 +148,7 @@ public class UserController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 				System.out.println("--회원정보 수정 시도"); //
-				memberService.update(memberDto.getEmail(), memberDto.getPassword(), memberDto.getPhone());
+				userService.update(memberDto.getEmail(), memberDto.getPassword(), memberDto.getPhone());
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				System.out.println("--회원정보 수정 성공"); //
@@ -166,14 +166,59 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	//////////회원정보 인증///////////
+	@PostMapping("/userCert") // 파라미터 확인
+	public ResponseEntity<Map<String, Object>> userCert(@PathVariable("email") String email, @PathVariable("phone") String phone,
+			HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+			
+		try {
+			System.out.println("--회원정보 인증 시도");
 	
+			if(userService.certification(email, phone) != 0) {
+				resultMap.put("message", SUCCESS);		
+				status = HttpStatus.ACCEPTED;
+				System.out.println("--회원정보 인증 성공 ");
+			}
+			else {
+				resultMap.put("message", "회원정보 인증 실패");
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				System.out.println("--회원정보 인증 실패"); //
+			}		
+		} catch (Exception e) {
+			logger.error("회원정보 인증 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("--회원정보 인증 실패"); //
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	
-	
-	
-	
-	
-	
-	
+	//////////비밀번호 변경///////////
+	@PostMapping("/chagePassword") // 파라미터 확인
+	public ResponseEntity<Map<String, Object>> chagePassword(@PathVariable("email") String email, @PathVariable("password") String password,
+			HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			System.out.println("--비밀번호 변경 시도");
+			
+			userService.updatePassword(email, password);
+				
+			resultMap.put("message", SUCCESS);				
+			status = HttpStatus.ACCEPTED;			
+			System.out.println("--비밀번호 변경 성공 ");
+		} catch (Exception e) {
+			logger.error("비밀번호 변경 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("--비밀번호 변경 실패"); //
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid,
 			HttpServletRequest request) {
@@ -184,7 +229,7 @@ public class UserController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				UserDto memberDto = memberService.userInfo(userid);
+				UserDto memberDto = userService.userInfo(userid);
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
