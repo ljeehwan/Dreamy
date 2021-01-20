@@ -1,11 +1,14 @@
 <template>
+<v-app>
   <div id="app">
     <NavBar/>
     <div class="body-component">
-      <router-view></router-view>
+       <router-view></router-view>
     </div>
   </div>
+</v-app>
 </template>
+
 
 <script>
 import "./assets/css/style.css"
@@ -19,6 +22,7 @@ export default {
 </script>
 
 
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -26,6 +30,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
