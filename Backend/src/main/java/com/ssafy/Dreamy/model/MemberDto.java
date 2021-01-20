@@ -52,4 +52,20 @@ public class MemberDto {
 		this.phone = phone;
 	}
 
+	public final Date getJoindate() {
+		return joindate;
+	}
+
+	public final void setJoindate(Date joindate) {
+		this.joindate = joindate;
+	}
+
+	public final String getProfileUrl() {
+		return profileUrl;
+	}
+
+	public final void setProfileUrl(String profileUrl) {
+		this.profileUrl = profileUrl;
+	}
+
 }

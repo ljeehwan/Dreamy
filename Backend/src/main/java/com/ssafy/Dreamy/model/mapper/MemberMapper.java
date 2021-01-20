@@ -10,11 +10,13 @@ import com.ssafy.Dreamy.model.MemberDto;
 @Mapper
 public interface MemberMapper {
 
-//	public MemberDto login(String email, String password) throws SQLException;
 	public MemberDto login(Map<String, String> map) throws SQLException;
+	public void signup(Map<String, String> map) throws SQLException;
+	public int getEmail(String email) throws SQLException;
+	public int getName(String name) throws SQLException;
+	public void delete(String email) throws SQLException;
+	public void update(Map<String, String> map) throws SQLException;
+	
 	public MemberDto userInfo(String userid) throws SQLException;
-	public void signup(Map<String, String> map)throws SQLException;
-	public void delete(String email);
-	public void update(Map<String, String> map);
 	
 }

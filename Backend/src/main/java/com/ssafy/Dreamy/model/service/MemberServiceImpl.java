@@ -28,11 +28,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberDto userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
-	}
-
-	@Override
 	public void signup(String email, String name, String password, String phone) throws Exception {
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
@@ -41,20 +36,36 @@ public class MemberServiceImpl implements MemberService {
 		map.put("phone", phone);
 		sqlSession.getMapper(MemberMapper.class).signup(map);
 	}
-
+	
 	@Override
-	public void delete(String email) {
-		sqlSession.getMapper(MemberMapper.class).delete(email);
-
+	public int getEmail(String email) throws Exception {
+		int ret = sqlSession.getMapper(MemberMapper.class).getEmail(email);
+		return ret;
+	}
+	
+	@Override
+	public int getName(String name) throws Exception {
+		int ret = sqlSession.getMapper(MemberMapper.class).getName(name);
+		return ret;
 	}
 
 	@Override
-	public void update(String email, String password, String phone) {
+	public void delete(String email) throws Exception {
+		sqlSession.getMapper(MemberMapper.class).delete(email);
+	}
+
+	@Override
+	public void update(String email, String password, String phone) throws Exception {
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
 		map.put("password", password);
 		map.put("phone", phone);
 		sqlSession.getMapper(MemberMapper.class).update(map);
+	}
+	
+	@Override
+	public MemberDto userInfo(String userid) throws Exception {
+		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
 	}
 
 }
