@@ -2,7 +2,6 @@
   <div class="joinForm">
     <h2>환영합니다</h2>
     <h4>드루와 드루와</h4>
-    <h4>드루와 드루와</h4>
 
     <br>
     <div class="input-label">
@@ -13,9 +12,9 @@
 
     <div class="input-label">
       <label for="nickname"><b>닉네임</b></label>
-      <input v-model="nickname" id="nickname" class="inputs" type="text" placeholder="드리미" >
+      <input v-model="name" id="nickname" class="inputs" type="text" placeholder="드리미" >
     </div>
-    <p v-if="!availableNickname" class="join-error-msg"> {{errorNickname}} </p>
+    <p v-if="!availablename" class="join-error-msg"> {{errorname}} </p>
 
     <div class="input-label">
       <label for="password"><b>비밀번호</b></label>
@@ -153,7 +152,7 @@ export default {
           this.errorUnmatch = null
           // 전송할 크레덴셜 입력
           this.credentials.email = this.email
-          this.credentials.name = this.nickname
+          this.credentials.name = this.name
           this.credentials.password = this.password
           this.credentials.phone = this.phone
           // JSON 화 하기
