@@ -4,7 +4,7 @@ import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import myPage from './views/user/Mypage.vue'
 //Main
-import feedMain from './views/Main/feedMain.vue'
+import Main from './views/Main/Main.vue'
 // Community
 import Bucket from './views/Community/Bucket'
 import Challenge from './views/Community/Challenge'
@@ -17,8 +17,8 @@ export default [
 
     {
         path : '/',
-        name : 'feedMain',
-        component : feedMain
+        name : 'Main',
+        component : Main
     },
     {
         path : '/user/join',
