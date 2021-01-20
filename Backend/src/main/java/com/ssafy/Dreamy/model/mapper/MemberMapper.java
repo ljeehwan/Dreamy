@@ -15,4 +15,6 @@ public interface MemberMapper {
 	public MemberDto userInfo(String userid) throws SQLException;
 	public void signup(Map<String, String> map)throws SQLException;
 	public void delete(String email);
+	public void update(Map<String, String> map);
+	
 }
