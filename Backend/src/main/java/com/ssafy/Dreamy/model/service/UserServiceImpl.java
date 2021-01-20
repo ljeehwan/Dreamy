@@ -7,24 +7,24 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.Dreamy.model.MemberDto;
-import com.ssafy.Dreamy.model.mapper.MemberMapper;
+import com.ssafy.Dreamy.model.UserDto;
+import com.ssafy.Dreamy.model.mapper.UserMapper;
 
 @Service
-public class MemberServiceImpl implements MemberService {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private SqlSession sqlSession;
 
 	@Override
-	public MemberDto login(String email, String password) throws Exception {
+	public UserDto login(String email, String password) throws Exception {
 		if (email == null || password == null)
 			return null;
 		System.out.println("--로그인 정보 / 이메일 : " + email + " 비번 : " + password);
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
 		map.put("password", password);
-		return sqlSession.getMapper(MemberMapper.class).login(map);
+		return sqlSession.getMapper(UserMapper.class).login(map);
 	}
 
 	@Override
@@ -34,24 +34,24 @@ public class MemberServiceImpl implements MemberService {
 		map.put("name", name);
 		map.put("password", password);
 		map.put("phone", phone);
-		sqlSession.getMapper(MemberMapper.class).signup(map);
+		sqlSession.getMapper(UserMapper.class).signup(map);
 	}
 	
 	@Override
 	public int getEmail(String email) throws Exception {
-		int ret = sqlSession.getMapper(MemberMapper.class).getEmail(email);
+		int ret = sqlSession.getMapper(UserMapper.class).getEmail(email);
 		return ret;
 	}
 	
 	@Override
 	public int getName(String name) throws Exception {
-		int ret = sqlSession.getMapper(MemberMapper.class).getName(name);
+		int ret = sqlSession.getMapper(UserMapper.class).getName(name);
 		return ret;
 	}
 
 	@Override
 	public void delete(String email) throws Exception {
-		sqlSession.getMapper(MemberMapper.class).delete(email);
+		sqlSession.getMapper(UserMapper.class).delete(email);
 	}
 
 	@Override
@@ -60,12 +60,12 @@ public class MemberServiceImpl implements MemberService {
 		map.put("email", email);
 		map.put("password", password);
 		map.put("phone", phone);
-		sqlSession.getMapper(MemberMapper.class).update(map);
+		sqlSession.getMapper(UserMapper.class).update(map);
 	}
 	
 	@Override
-	public MemberDto userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(MemberMapper.class).userInfo(userid);
+	public UserDto userInfo(String userid) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
 	}
 
 }

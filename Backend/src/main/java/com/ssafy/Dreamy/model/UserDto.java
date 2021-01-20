@@ -2,7 +2,7 @@ package com.ssafy.Dreamy.model;
 
 import java.util.Date;
 
-public class MemberDto {
+public class UserDto {
 
 	private int uid;
 	private String email;

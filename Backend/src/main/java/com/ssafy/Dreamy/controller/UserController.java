@@ -21,17 +21,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.Dreamy.model.MemberDto;
+import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.JwtServiceImpl;
-import com.ssafy.Dreamy.model.service.MemberService;
+import com.ssafy.Dreamy.model.service.UserService;
 
 //@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 @RequestMapping("/account")
-public class MemberController {
+public class UserController {
 
-	public static final Logger logger = LoggerFactory.getLogger(MemberController.class);
+	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
@@ -39,17 +39,17 @@ public class MemberController {
 	private JwtServiceImpl jwtService;
 
 	@Autowired
-	private MemberService memberService;
+	private UserService memberService;
 
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto memberDto) {
+	public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		System.out.println("--로그인 함수 진입"); //
 		String email = memberDto.getEmail();
 		String password = memberDto.getPassword();
 		try {
-			MemberDto loginUser = memberService.login(email, password);
+			UserDto loginUser = memberService.login(email, password);
 			System.out.println("--로그인 시도"); //
 			if (loginUser != null) {
 				String token = jwtService.create("userid", loginUser.getEmail(), "access-token");// key, data, subject
@@ -74,7 +74,7 @@ public class MemberController {
 
 	////////// 회원가입///////////
 	@PostMapping("/signup")
-	public ResponseEntity<Map<String, Object>> signup(@RequestBody MemberDto memberDto) {
+	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		String email = memberDto.getEmail();
 		String name = memberDto.getName();
@@ -140,7 +140,7 @@ public class MemberController {
 
 	////////// 회원정보수정///////////
 	@PostMapping("/update") // 요부분도 frontend랑 협의진행 필요!
-	public ResponseEntity<Map<String, Object>> userUpdate(@RequestBody MemberDto memberDto,
+	public ResponseEntity<Map<String, Object>> userUpdate(@RequestBody UserDto memberDto,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -184,7 +184,7 @@ public class MemberController {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 //				로그인 사용자 정보.
-				MemberDto memberDto = memberService.userInfo(userid);
+				UserDto memberDto = memberService.userInfo(userid);
 				resultMap.put("userInfo", memberDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
