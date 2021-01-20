@@ -1,12 +1,12 @@
 <template>
-<v-app>
   <div id="app">
-    <NavBar/>
-    <div class="body-component">
-       <router-view></router-view>
-    </div>
+    <v-app>
+      <NavBar/>
+      <div class="body-component">
+        <router-view></router-view>
+      </div>
+    </v-app>
   </div>
-</v-app>
 </template>
 
 
@@ -30,5 +30,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin-top: 60px;
 }
 </style>

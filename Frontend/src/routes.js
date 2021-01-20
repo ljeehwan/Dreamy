@@ -4,7 +4,7 @@ import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import myPage from './views/user/Mypage.vue'
 //Main
-import Main from './views/Main/Main.vue'
+import feedMain from './views/Main/feedMain.vue'
 // Community
 import Bucket from './views/Community/Bucket'
 import Challenge from './views/Community/Challenge'
@@ -12,13 +12,12 @@ import Ranking from './views/Community/Ranking'
 // import { userSetter } from 'core-js/fn/symbol'
 
 
-
 export default [
 
     {
         path : '/',
-        name : 'Main',
-        component : Main
+        name : 'feedMain',
+        component : feedMain
     },
     {
         path : '/user/join',

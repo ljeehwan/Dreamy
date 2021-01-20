@@ -1,175 +1,120 @@
 <template>
-  <div class="joinForm">
-    <h2>환영합니다</h2>
-    <h4>드루와 드루와</h4>
+  <v-container>
+    <v-row align="center" class="fill-height" justify="center">
+      <div class="register elevation-12">
 
-    <br>
-    <div class="input-label">
-      <label for="email"><b>Email</b></label>
-      <input v-model="email" id="email" class="inputs" type="text" placeholder="ssafy@example.com" >
-    </div>
-    <p v-if="!availableEmail"  class="join-error-msg">{{errorEmail}}</p>
+          <h3 class="font-weight-bold text-center py-3 black--text">
+          회 원 가 입
+          </h3>
+          <v-form class="pa-3 text-center" ref="form" lazy-validation>
+            <v-alert v-if="!isCorrect" type="error">
+            비밀번호가 일치하지 않습니다.
+            </v-alert>
 
-    <div class="input-label">
-      <label for="nickname"><b>닉네임</b></label>
-      <input v-model="name" id="nickname" class="inputs" type="text" placeholder="드리미" >
-    </div>
-    <p v-if="!availablename" class="join-error-msg"> {{errorname}} </p>
+            <!-- 이메일 -->
+            <v-text-field class="pl-3 pr-3" v-model="credentials.email" label="E-mail"
+            prepend-icon="mdi-email" required type="email" :rules="emailRules"
+            placeholder="ssafy@example.com"
+            ></v-text-field>
+            <!-- 닉네임 -->
+            <v-text-field class="pl-3 par-3" v-model="credentials.name" 
+            :counter="10" :rules="nameRules"
+            label="Nickname" required prepend-icon="mdi-account"
+            ></v-text-field>
 
-    <div class="input-label">
-      <label for="password"><b>비밀번호</b></label>
-      <input v-model="password" id="password" class="inputs" type="password" placeholder="영어, 숫자 8자이상" >
-    </div>
-
-    <p v-if="!availablePwd" class="join-error-msg">{{errorPwd}}</p>
-
-    <div class="input-label">
-      <label for="password-confirm"><b>비밀번호 확인</b></label>
-      <input v-model="passwordConfirm" id="password-confirm" class="inputs" type="password" placeholder="비밀번호 확인">        
-    </div>
-
-    <p v-if="!unmatchPassword" class="join-error-msg"><b>{{errorUnmatch}}</b></p>
-
-    <div class="input-label">
-      <label for="phone"><b>핸드폰 번호</b></label>
-      <input v-model="phone" @keypress.enter="onJoin" id="phone" class="inputs" type="text" placeholder="01043218765">
-    </div>
-    <p v-if="!availablePhone" class="join-error-msg">{{errorPhone}}</p>
-
-    <div class="btn-container">
-      <button class="join-button cancel">취소</button>
-      <button @click="onJoin" class="join-button confirm">확인</button>
-    </div>
-    
-  </div>
+            <!-- 비밀번호 -->
+            <v-text-field :rules="passwordRules" 
+            class="pl-3 pr-3" v-model="credentials.password"
+            label="비밀번호" prepend-icon="mdi-lock"
+            required type="password">
+            </v-text-field>
+            <!-- 비밀번호 확인 -->
+            <v-text-field :rules="validatePasswordRules" class="pl-3 pr-3" 
+            label="비밀번호 확인"
+            prepend-icon="mdi-lock"
+            required type="password" v-model="validatePassword">
+            </v-text-field>
+            
+            <!-- 이용 약관 -->
+            <v-checkbox
+            class="pr-3 pl-3"
+            v-model="checkbox"
+            :rules="[v => !!v || '약관에 동의하셔야 합니다!']"
+            label="약관에 동의하십니까?"
+            required
+            ></v-checkbox>
+            <!-- :disabled="!valid" -->
+            <v-btn  color="success" class="mr-4" depressed
+            @click="onSignup">
+            가입하기
+            </v-btn>
+            
+          </v-form>
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-
-import * as EmailValidator from "email-validator"
-import PV from "password-validator";
-
-export default {
-    name: "Join",
-    data: function () {
+  export default {
+    data:() => {
       return {
+        // valid: true,
         credentials: {
-          email: null,
-          name: null,
-          password: null,
-          phone: null
+          name: '',
+          email: '',
+          password: '',
         },
-        email:"",
-        name:"",
-        password:"",
-        phone: "",
+        nameRules: [
+          v => !!v || '닉네임을 작성해주세요',
+          v => (v && v.length <= 10) || '10자 이내로 작성해주세요',
+        ],
 
-        errorEmail: null,
-        errorPwd: null,
-        errorname:null,
-        errorPhone: null,
-        errorUnmatch: null,
-
-        passwordSchema: new PV(),
-
-        passwordConfirm: "",
-
-        availablename: false,
-        availableEmail: false,
-        availablePwd: false,
-        availablePhone: false,
-        unmatchPassword: false
-      }
-    },
-    created() {
-      this.component = this;
-
-      this.passwordSchema
-        .is()
-        .min(8)
-        .is()
-        .max(100)
-        .has()
-        .digits()
-        .has()
-        .letters();
-    },
-    watch: {
-      email: function() {
-        this.checkForm()
-      },
-      password: function() {
-        this.checkForm()
-      },
-      name: function () {
-        this.checkForm()
-      },
-      phone: function () {
-        this.checkForm()
-      },
-      passwordConfirm: function () {
-        this.checkForm()
+        emailRules: [
+          v => !!v || 'E-mail을 작성해주세요',
+          v => /.+@.+\..+/.test(v) || '올바른 E-mail을 작성해주세요',
+        ],
+        passwordRules: [
+          v => !!v || '비밀번호를 작성해주세요',
+          v => (v && v.length >= 8) || '8자 이상으로로 작성해주세요',
+          v => v.search(/\s/) === -1 || '공백을 제거해주세요!'
+        ],
+        validatePassword: '',
+        validatePasswordRules: [
+            v => (v && v.length >= 8) || '8자 이상으로로 작성해주세요',
+        ],
+        isCorrect : true,
+        checkbox: false,
       }
     },
 
     methods: {
-      checkForm: function () {
-        this.availableEmail = true
-        this.availablePwd = true
-        this.availablename = true
-        this.availablePhone = true
-        this.unmatchPassword = true
-
-        if (this.email.length >= 0 && !EmailValidator.validate(this.email)) {
-          this.errorEmail = "이메일 형식에 맞지 않습니다."
-          this.availableEmail = false
+      onSignup () {
+        this.isCorrect = true
+        if (this.$refs.form.validate()) {
+          if (this.validatePassword === this.credentials.password) {
+            console.log(this.credentials)
+            this.$store.dispatch('SIGNUP', this.credentials)
+          } else {
+            this.isCorrect = false
+          }
         } 
-        if (this.password.length >= 0 && !this.passwordSchema.validate(this.password)) {
-          this.errorPwd = "최소 8자 이상, 영어와 숫자 조합이여야 합니다."
-          this.availablePwd = false
-        } 
-        if (this.name.length < 2) {
-          this.errorname = "최소 한 글자 이상이여야 합니다."
-          this.availablename = false
-        }
-        if (this.phone.length !== 11) {
-          this.errorPhone = "핸드폰 번호 숫자 11자만 적어야합니다."
-          this.availablePhone = false
-        }
-        if (this.password !== this.passwordConfirm) {
-          this.errorUnmatch = "비밀번호와 비밀번호 확인이 일치하지 않습니다."
-          this.unmatchPassword = false
-        }
-
       },
-      onJoin: function () {
-        // 비밀번호와 비밀번호 확인이 같지 않으면
-        if (this.availablename === false || this.availableEmail === false || this.availablePwd === false || this.availablePhone === false
-        || this.unmatchPassword === false) {
-          alert("입력란을 확인해 수정해주세요.")
-        } else {
-          // 비밀번호와 비밀번호 확인이 같고 모든 항목이 true면 가입
-          this.errorUnmatch = null
-          // 전송할 크레덴셜 입력
-          this.credentials.email = this.email
-          this.credentials.name = this.name
-          this.credentials.password = this.password
-          this.credentials.phone = this.phone
-          // JSON 화 하기
-          // const sendingData = JSON.stringify(this.credentials)
-
-          //입력
-          // axios.post(`${SERVER_URL}/account/signup/`, this.credentials)
-          this.$store.dispatch('signup',this.credentials)
-            .then(() => {
-              this.$router.push("/user/login")
-            })
-        }
-      }
     },
-}
+  }
 </script>
 
-<style>
-
+<style scoped>
+@media (min-width: 700px) {
+    .register {
+        width: 400px !important;
+    }
+}
+.register {
+  background-color: white;
+  border-radius: 8px;
+  width: 80%;
+  border: white 1px solid;
+  padding: 20px;
+}
 </style>
