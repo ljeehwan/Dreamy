@@ -42,5 +42,11 @@ public class MemberServiceImpl implements MemberService {
 //		MemberDto memberDto = new MemberDto(email,nickname,password,phone);
 		sqlSession.getMapper(MemberMapper.class).signup(map);
 	}
+	
+	@Override
+	public void delete(String email) {
+		sqlSession.getMapper(MemberMapper.class).delete(email);
+
+	}
 
 }

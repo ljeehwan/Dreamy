@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -96,6 +97,36 @@ public class MemberController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	
+	////////// 회원탈퇴///////////
+	@DeleteMapping("/delete/{email}") // 이부분은 frontend랑 맞출것!
+	public ResponseEntity<Map<String, Object>> userDelete(@PathVariable("email") String email, // 넘어오는 userid는 이메일로
+																								// 넘겨주도록 frontend와 맞춰보쟈
+			HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		if (jwtService.isUsable(request.getHeader("access-token"))) {
+			System.out.println(email);
+			logger.info("사용 가능한 토큰!!!");
+			try {
+				// 사용가능한 토큰이면 토큰의 사용자정보를 탈퇴처리(DB에서 제거)
+				memberService.delete(email);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.error("회원탈퇴 실패 : {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
+		} else {
+			logger.error("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.ACCEPTED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
 
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid, HttpServletRequest request) {
