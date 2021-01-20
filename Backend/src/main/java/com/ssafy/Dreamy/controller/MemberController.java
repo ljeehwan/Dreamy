@@ -132,9 +132,6 @@ public class MemberController {
 	
 	
 	
-	
-	
-	
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid,
 			HttpServletRequest request) {
