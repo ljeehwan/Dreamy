@@ -155,6 +155,14 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid,
 			HttpServletRequest request) {
