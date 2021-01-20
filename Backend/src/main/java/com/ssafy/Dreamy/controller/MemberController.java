@@ -74,22 +74,33 @@ public class MemberController {
 
 	////////// 회원가입///////////
 	@PostMapping("/signup")
-	public ResponseEntity<Map<String, Object>> userJoin(@RequestBody MemberDto memberDto) {// 아이디랑 이름 중복처리 추가할것
+	public ResponseEntity<Map<String, Object>> signup(@RequestBody MemberDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		String email = memberDto.getEmail();
 		String name = memberDto.getName();
 		String password = memberDto.getPassword();
 		String phone = memberDto.getPhone();
-
-		System.out.println(name);
+		
 		HttpStatus status = null;
 		System.out.println("--회원가입 함수 진입"); //
 		try {
 			System.out.println("--회원가입 시도"); //
-			memberService.signup(email, name, password, phone);
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-			System.out.println("--회원가입 성공"); //
+			int emailNum = memberService.getEmail(email);
+			int nameNum = memberService.getName(name);
+			if (emailNum != 0) {
+				resultMap.put("message", "email conflict");
+				status = HttpStatus.CONFLICT;
+				System.out.println("--이메일 중복"); //
+			} else if (nameNum != 0) {
+				resultMap.put("message", "name conflict");
+				status = HttpStatus.CONFLICT;
+				System.out.println("--닉네임 중복"); //
+			} else {
+				memberService.signup(email, name, password, phone);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+				System.out.println("--회원가입 성공"); //
+			}
 		} catch (Exception e) {
 			logger.error("회원가입 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
