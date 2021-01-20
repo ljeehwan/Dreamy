@@ -60,16 +60,13 @@ export default new Vuex.Store({
           })
         },
 
-        signup(context,credentials){
-            axios({
-                method:"post",
-                url:`${SERVER_URL}/account/signup`,
-                data:credentials
-            }).then((response)=>{
+        SIGNUP(context, credentials){
+            axios.post(`${SERVER_URL}/user/signup`, credentials)
+              .then((response)=>{
                 console.log(response.data.message);
                 context.commit("setIsSign",response.data.message);
-            })
-            .catch((err) => {
+              })
+              .catch((err) => {
                 console.log(err)
               })
         }
