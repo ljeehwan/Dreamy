@@ -127,6 +127,42 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	////////// 회원정보수정///////////
+	@PostMapping("/update") // 요부분도 frontend랑 협의진행 필요!
+	public ResponseEntity<Map<String, Object>> userUpdate(@RequestBody MemberDto memberDto,
+			HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		if (jwtService.isUsable(request.getHeader("access-token"))) {
+			logger.info("사용 가능한 토큰!!!");
+			try {
+				System.out.println("--회원정보 수정 시도"); //
+				memberService.update(memberDto.getEmail(), memberDto.getPassword(), memberDto.getPhone());
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+				System.out.println("--회원정보 수정 성공"); //
+			} catch (Exception e) {
+				logger.error("회원정보 수정 실패 : {}", e);
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				System.out.println("--회원정보 수정 실패"); //
+			}
+		} else {
+			logger.error("사용 불가능 토큰!!!");
+			resultMap.put("message", FAIL);
+			status = HttpStatus.ACCEPTED;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
 	@GetMapping("/info/{userid}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid,
 			HttpServletRequest request) {
