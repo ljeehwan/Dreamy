@@ -39,13 +39,14 @@ public class MemberServiceImpl implements MemberService {
 		map.put("name", name);
 		map.put("password", password);
 		map.put("phone", phone);
+//		MemberDto memberDto = new MemberDto(email,nickname,password,phone);
 		sqlSession.getMapper(MemberMapper.class).signup(map);
 	}
-
+	
 	@Override
 	public void delete(String email) {
 		sqlSession.getMapper(MemberMapper.class).delete(email);
-		
+
 	}
 
 }
