@@ -1,5 +1,6 @@
 package com.ssafy.Dreamy.model.service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +62,24 @@ public class UserServiceImpl implements UserService {
 		map.put("password", password);
 		map.put("phone", phone);
 		sqlSession.getMapper(UserMapper.class).update(map);
+	}
+	
+	@Override
+	public int certification(String email, String phone) throws Exception {
+		Map<String, String> map = new HashMap<>();
+		map.put("email", email);
+		map.put("phone", phone);
+		int result = sqlSession.getMapper(UserMapper.class).certification(map);
+		
+		return result;
+	}
+
+	@Override
+	public void updatePassword(String email, String password) throws SQLException {
+		Map<String, String> map = new HashMap<>();
+		map.put("email", email);
+		map.put("password", password);
+		sqlSession.getMapper(UserMapper.class).updatePassword(map);
 	}
 	
 	@Override
