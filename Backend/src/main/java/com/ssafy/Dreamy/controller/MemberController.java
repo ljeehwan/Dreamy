@@ -40,65 +40,65 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
-	
+
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody MemberDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		System.out.println("--로그인 함수 진입");	//
-		String email=memberDto.getEmail();
-		String password=memberDto.getPassword();
+		System.out.println("--로그인 함수 진입"); //
+		String email = memberDto.getEmail();
+		String password = memberDto.getPassword();
 		try {
 			MemberDto loginUser = memberService.login(email, password);
-			System.out.println("--로그인 시도");		//
+			System.out.println("--로그인 시도"); //
 			if (loginUser != null) {
 				String token = jwtService.create("userid", loginUser.getEmail(), "access-token");// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
-				resultMap.put("user",loginUser);
+				resultMap.put("user", loginUser);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--토큰 생성");	
+				System.out.println("--토큰 생성");
 			} else {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NOT_FOUND;
-				System.out.println("--로그인 실패");	
+				System.out.println("--로그인 실패");
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--로그인 실패");	//
+			System.out.println("--로그인 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	//////////회원가입///////////
+
+	////////// 회원가입///////////
 	@PostMapping("/signup")
-	public ResponseEntity<Map<String, Object>> userJoin(@RequestBody MemberDto memberDto) {
+	public ResponseEntity<Map<String, Object>> userJoin(@RequestBody MemberDto memberDto) {// 아이디랑 이름 중복처리 추가할것
 		Map<String, Object> resultMap = new HashMap<>();
 		String email = memberDto.getEmail();
 		String name = memberDto.getName();
 		String password = memberDto.getPassword();
 		String phone = memberDto.getPhone();
-		
+
 		System.out.println(name);
 		HttpStatus status = null;
-		System.out.println("--회원가입 함수 진입");	//		
+		System.out.println("--회원가입 함수 진입"); //
 		try {
-			System.out.println("--회원가입 시도");		//
-			memberService.signup(email, name,password,phone);
+			System.out.println("--회원가입 시도"); //
+			memberService.signup(email, name, password, phone);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
-			System.out.println("--회원가입 성공");	//
+			System.out.println("--회원가입 성공"); //
 		} catch (Exception e) {
 			logger.error("회원가입 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--회원가입 실패");	//
+			System.out.println("--회원가입 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	
+
 	////////// 회원탈퇴///////////
 	@DeleteMapping("/delete/{email}") // 이부분은 frontend랑 맞출것!
 	public ResponseEntity<Map<String, Object>> userDelete(@PathVariable("email") String email, // 넘어오는 userid는 이메일로
@@ -127,9 +127,9 @@ public class MemberController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-
 	@GetMapping("/info/{userid}")
-	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid,
+			HttpServletRequest request) {
 //		logger.debug("userid : {} ", userid);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;

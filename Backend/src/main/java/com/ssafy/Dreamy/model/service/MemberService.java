@@ -9,4 +9,6 @@ public interface MemberService {
 //	public MemberDto userJoin(MemberDto memberDto) throws Exception;
 	public void signup(String email, String name, String password, String phone) throws Exception;
 	public void delete(String email);
+	public void update(String email, String password, String phone);
+	
 }
