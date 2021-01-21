@@ -8,27 +8,41 @@ import com.ssafy.Dreamy.model.FollowDto;
 import com.ssafy.Dreamy.model.mapper.FollowMapper;
 
 @Service
-public class FollowServiceImpl implements FollowService{
+public class FollowServiceImpl implements FollowService {
 
 	@Autowired
 	private SqlSession sqlSession;
 
 	@Override
-	public void followService(int following, int follow) {//팔로우버튼 누른사람, 팔로우당한사람
+	public void followService(int following, int follow) {// 팔로우버튼 누른사람, 팔로우당한사람
 		FollowDto followdto = new FollowDto();
-		
-		followdto.setFollowuid(following);
-		followdto.setFollowuid(follow);
-		
+
+		followdto.setFollowUid(following);
+		followdto.setFollowUid(follow);
+
 		sqlSession.getMapper(FollowMapper.class).setFollow(followdto);
 	}
 
 	@Override
-	public void unfollowService(int followed, int follow) {//언팔로우버튼 누른사람, 언팔로우 당하는사람
+	public void unfollowService(int followed, int follow) {// 언팔로우버튼 누른사람, 언팔로우 당하는사람
 
-		sqlSession.getMapper(FollowMapper.class).revokeFollow(followed,follow);
+		sqlSession.getMapper(FollowMapper.class).revokeFollow(followed, follow);
 	}
-	
-	
+
+	@Override
+	public int countfollowing(int userid) {
+		return sqlSession.getMapper(FollowMapper.class).countFollowing(userid);
+	}
+
+	@Override
+	public int countfollower(int userid) {
+		return sqlSession.getMapper(FollowMapper.class).countFollower(userid);
+	}
+
+	@Override
+	public boolean followcheck(int userid, int targetid) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
