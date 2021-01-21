@@ -13,4 +13,6 @@ public interface FollowMapper {
 	public int countFollowing(int userid);
 
 	public int countFollower(int userid);
+
+	public int checkFollow(FollowDto followdto);
 }
