@@ -14,7 +14,7 @@ import com.ssafy.Dreamy.model.service.BoardService;
 @RequestMapping("/board")
 public class BoardController {
 
-	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
