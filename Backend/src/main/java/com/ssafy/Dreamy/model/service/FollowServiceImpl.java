@@ -17,7 +17,7 @@ public class FollowServiceImpl implements FollowService {
 	public void followService(int following, int follow) {// 팔로우버튼 누른사람, 팔로우당한사람
 		FollowDto followdto = new FollowDto();
 
-		followdto.setFollowUid(following);
+		followdto.setFollowingUid(following);
 		followdto.setFollowUid(follow);
 
 		sqlSession.getMapper(FollowMapper.class).setFollow(followdto);
@@ -41,8 +41,14 @@ public class FollowServiceImpl implements FollowService {
 
 	@Override
 	public boolean followcheck(int userid, int targetid) {
-		// TODO Auto-generated method stub
-		return false;
+		FollowDto followdto = new FollowDto();
+
+		followdto.setFollowingUid(userid);
+		followdto.setFollowUid(targetid);
+		if (sqlSession.getMapper(FollowMapper.class).checkFollow(followdto)==0) {
+			return false; //해당유저가 타겟유저한테 팔로우요청한게 없으면 false => 이 부분은 나중에 수락/거절 기능이 생긴다면 바뀌어야함!!
+		}
+		return true; //0이 아니라면 팔로우관계성립
 	}
 
 }

@@ -14,15 +14,21 @@
 		following=#{followed} and follower=#{follow}
 	</delete>
 
-	<select id="countfollowing" parameterType="Integer"
+	<select id="countFollowing" parameterType="Integer"
 		resultType="Integer">
 		select count(*) from Follow
 		where following = #{userid}
 	</select>
 
-	<select id="countfollower" parameterType="Integer"
+	<select id="countFollower" parameterType="Integer"
 		resultType="Integer">
 		select count(*) from Follow
 		where follower = #{userid}
+	</select>
+
+	<select id="checkFollow" parameterType="FollowDto">
+		select count(*) from Follow
+		where following=#{userid} and follower =
+		#{targetid}
 	</select>
 </mapper>
