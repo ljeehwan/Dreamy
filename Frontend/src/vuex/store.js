@@ -61,12 +61,15 @@ export default new Vuex.Store({
         },
 
         SIGNUP(context, credentials){
-            axios.post(`${SERVER_URL}/user/signup`, credentials)
+            axios.post(`${SERVER_URL}/account/signup`, credentials)
               .then((response)=>{
                 console.log(response.data.message);
                 context.commit("setIsSign",response.data.message);
+                alert('회원가입 성공')
+                .then(()=>this.$router.push("/user/login"))
               })
               .catch((err) => {
+                alert("회원가입 실패")
                 console.log(err)
               })
         }
