@@ -3,6 +3,12 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.Dreamy.model.mapper.BoardMapper">
-
+	
+	<insert id="create" parameterType="Map">
+		insert into Board (uid, board_type, title, content, start_date, end_date,
+							category, image_url, date_type, total_date, running)
+		values (#{uid}, #{boardType}, #{title}, #{content}, #{startDate}, #{endDate},
+							#{category}, #{imageUrl}, #{dateType}, #{totalDate}, #{running})
+	</insert>
 
 </mapper>
