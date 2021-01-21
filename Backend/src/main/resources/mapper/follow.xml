@@ -6,11 +6,23 @@
 	<insert id="setFollow" parameterType="FollowDto">
 		insert into Follow
 		(following,follower) values
-		(#{followinguid},#{followuid});
+		(#{followingUid},#{followUid})
 	</insert>
 
-	<delete id="revokeFollow" parameterType="int">
+	<delete id="revokeFollow" parameterType="Integer">
 		delete from Follow where
-		following=#{followed} and follower=#{follow};
+		following=#{followed} and follower=#{follow}
 	</delete>
+
+	<select id="countfollowing" parameterType="Integer"
+		resultType="Integer">
+		select count(*) from Follow
+		where following = #{userid}
+	</select>
+
+	<select id="countfollower" parameterType="Integer"
+		resultType="Integer">
+		select count(*) from Follow
+		where follower = #{userid}
+	</select>
 </mapper>

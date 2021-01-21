@@ -1,23 +1,23 @@
 package com.ssafy.Dreamy.model;
 
 public class FollowDto {
-	private int followinguid;
-	private int followuid;
+	private int followingUid;
+	private int followUid;
 
-	public int getFollowinguid() {
-		return followinguid;
+	public int getFollowingUid() {
+		return followingUid;
 	}
 
-	public void setFollowinguid(int followinguid) {
-		this.followinguid = followinguid;
+	public void setFollowingUid(int followingUid) {
+		this.followingUid = followingUid;
 	}
 
-	public int getFollowuid() {
-		return followuid;
+	public int getFollowUid() {
+		return followUid;
 	}
 
-	public void setFollowuid(int followuid) {
-		this.followuid = followuid;
+	public void setFollowUid(int followUid) {
+		this.followUid = followUid;
 	}
 
 }
