@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -139,7 +140,7 @@ public class UserController {
 	}
 
 	////////// 회원정보수정///////////
-	@PostMapping("/update") // 요부분도 frontend랑 협의진행 필요!
+	@PutMapping("/update") // 요부분도 frontend랑 협의진행 필요!
 	public ResponseEntity<Map<String, Object>> userUpdate(@RequestBody UserDto memberDto,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -167,9 +168,13 @@ public class UserController {
 	}
 
 	//////////회원정보 인증///////////
-	@PostMapping("/userCert") // 파라미터 확인
+	/*@PostMapping("/userCert") // 파라미터 확인
 	public ResponseEntity<Map<String, Object>> userCert(@PathVariable("email") String email, @PathVariable("phone") String phone,
-			HttpServletRequest request) {
+			HttpServletRequest request) {*/
+	@GetMapping("/userCert")
+	public ResponseEntity<Map<String, Object>> userCert(@RequestParam("email") String email, @RequestParam("phone") String phone,
+			HttpServletRequest request){
+		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 			
@@ -196,8 +201,8 @@ public class UserController {
 	}
 	
 	//////////비밀번호 변경///////////
-	@PostMapping("/chagePassword") // 파라미터 확인
-	public ResponseEntity<Map<String, Object>> chagePassword(@PathVariable("email") String email, @PathVariable("password") String password,
+	@PutMapping("/changePassword") // 파라미터 확인
+	public ResponseEntity<Map<String, Object>> changePassword(@PathVariable("email") String email, @PathVariable("password") String password,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
