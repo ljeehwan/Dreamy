@@ -4,36 +4,36 @@ import java.sql.Date;
 
 public class BoardDto {
 	
-	private int postid;
-	private int userid;
+	private int pid;			// AI
+	private int uid;			// FK
 	private int boardType;
 	private String title;
 	private String content;
-	private Date writtenDate;	// DATETIME을 잘 모르겠습니다..
+	private Date writtenDate;	// DATETIME, DEFAULT CURRENT_TIMESTAMP
 	private Date startDate;		// DATE
 	private Date endDate;		// DATE
-	private String category;
+	private int category;		// DEFAULT 6
 	private String imageUrl;	// TEXT
 	private int dateType;
 	private int totalDate;
 	private int running;
 	
-	public final int getPostid() {
-		return postid;
+	public final int getPid() {
+		return pid;
 	}
-	
-	public final void setPostid(int postid) {
-		this.postid = postid;
+
+	public final void setPid(int pid) {
+		this.pid = pid;
 	}
-	
-	public final int getUserid() {
-		return userid;
+
+	public final int getUid() {
+		return uid;
 	}
-	
-	public final void setUserid(int userid) {
-		this.userid = userid;
+
+	public final void setUid(int uid) {
+		this.uid = uid;
 	}
-	
+
 	public final int getBoardType() {
 		return boardType;
 	}
@@ -82,14 +82,14 @@ public class BoardDto {
 		this.endDate = endDate;
 	}
 	
-	public final String getCategory() {
+	public final int getCategory() {
 		return category;
 	}
-	
-	public final void setCategory(String category) {
+
+	public final void setCategory(int category) {
 		this.category = category;
 	}
-	
+
 	public final String getImageUrl() {
 		return imageUrl;
 	}
