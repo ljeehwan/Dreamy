@@ -1,7 +1,5 @@
 package com.ssafy.Dreamy.model.service;
 
-import java.sql.SQLException;
-
 import com.ssafy.Dreamy.model.UserDto;
 
 public interface UserService {

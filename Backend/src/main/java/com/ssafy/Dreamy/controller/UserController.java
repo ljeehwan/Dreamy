@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +41,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	//////////로그인///////////
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
