@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
 
+import {router} from "@/routes.js"
+import {requestJoinMember, setSnackBarInfo} from "../apis/accounts_api.js"
+
 Vue.use(Vuex)
 
 const SERVER_URL="http://localhost:8080";
@@ -16,7 +19,13 @@ export default new Vuex.Store({
             email:"",
             name:"",
             phone:""
-        }
+        },
+        // 로딩 관련~~~~~~
+        loadingState: false,
+        spinnerLoading: false,
+        snackbar: {open: false, text: '', location: 'top',},
+        modal: {open: false, title: '', content: '', option1: '', option2: '',},
+        errorMessage: '잘못된 요청입니다'
     },
     mutations:{
         setUser(state,payload){
@@ -29,7 +38,37 @@ export default new Vuex.Store({
         },
         setIsSign(state,payload){
             state.isSign=payload;
-        }
+        },
+        // COMMON적으로 이용할 것들. -> loading
+        CLOSE_MODAL(state) {
+            state.modal.open = false
+        },
+        OPEN_MODAL(state, modalTexts) {
+            state.loadingState = false,
+            state.modal.title = modalTexts.title
+            state.modal.content = modalTexts.content
+            state.modal.option1 = modalTexts.option1
+            state.modal.option2 = modalTexts.option2 ? modalTexts.option2 : null;
+            state.modal.open = true
+        },
+        START_LOADING(state) {
+            state.loadingState = true
+        },
+        END_LOADING(state) {
+            state.loadingState = false
+        },
+        SET_SNACKBAR(state, snackbarInfo) {
+            state.snackbar.open = true;
+            state.snackbar.text = snackbarInfo.text
+            state.snackbar.color = snackbarInfo.color
+            state.snackbar.location = snackbarInfo.location
+        },
+        START_SPINNER(state) {
+            state.spinnerLoading = true
+        },
+        END_SPINNER(state) {
+            state.spinnerLoading = false
+        },
 
     },
     getters:{
@@ -60,18 +99,22 @@ export default new Vuex.Store({
           })
         },
 
-        SIGNUP(context, credentials){
-            axios.post(`${SERVER_URL}/account/signup`, credentials)
-              .then((response)=>{
-                console.log(response.data.message);
-                context.commit("setIsSign",response.data.message);
-                alert('회원가입 성공')
-                .then(()=>this.$router.push("/user/login"))
-              })
-              .catch((err) => {
-                alert("회원가입 실패")
-                console.log(err)
-              })
-        }
+        async SIGNUP(context, credentials){
+            try {
+                context.commit('START_LOADING')
+                context.commit('START_SPINNER')
+                const response = await requestJoinMember(credentials)  
+                setTimeout(function () {
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다.', 'info', 'top'))
+                    context.commit('END_SPINNER')
+                    context.commit('END_LOADING')
+                    router.push('/')
+                    return response                    
+                }, 2000)
+            } catch (e) {
+                context.commit('END_LOADING')
+                context.commit('OPEN_MODAL', {title: '회원가입 실패', content: e.response.data.message, option1: '닫기',})
+            }
+        },
     }
 })
