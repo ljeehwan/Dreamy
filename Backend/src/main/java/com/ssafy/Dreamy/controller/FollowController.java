@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.Dreamy.model.MemberDto;
+import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.FollowService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
