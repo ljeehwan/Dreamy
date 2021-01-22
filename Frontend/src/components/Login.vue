@@ -40,7 +40,7 @@
         <v-row  class="mx-9">
             <v-spacer></v-spacer>
             <v-btn text color="red" @click="dialog.value = false" class="mx-3">Close</v-btn>            
-              <v-btn text color="blue" class="mx-3">
+              <v-btn text color="blue" class="mx-3" @click="login">
                 Login
               </v-btn>
         </v-row>
@@ -59,22 +59,22 @@
 
             <v-layout row wrap align-center justify-center>
               <v-card-actions>
-                <v-btn color="primary" block>
-                  <v-icon>mdi-google</v-icon>
+                <v-btn id="google" block>
+                <img src="@/assets/snsLogin/google.png"/>
                   <v-divider vertical class="mx-3"></v-divider>
                   GOOGLE
                 </v-btn>
               </v-card-actions>
               <v-card-actions>
-             <v-btn color="success" block>
-                  <v-icon>mdi-alpha-n-box-outline</v-icon>
+             <v-btn id="naver" block>
+                <img src="@/assets/snsLogin/naver.png"/>
                   <v-divider vertical class="mx-3"></v-divider>
                   NAVER
                 </v-btn>                
               </v-card-actions>
               <v-card-actions>
-                <v-btn color="yellow" block>
-                  <v-icon>mdi-temperature-kelvin</v-icon>
+                <v-btn id="kakao" block>
+                <img src="@/assets/snsLogin/kakao.png"/>
                   <v-divider vertical class="mx-3"></v-divider>
                   KAKAO
                 </v-btn>
@@ -94,7 +94,7 @@
                     <v-row>
                         <v-spacer></v-spacer>
                         <v-btn class="mx-2 my-2" color="blue" text>비밀번호를 잊으셨나요?</v-btn>
-                        <v-btn class="mx-2 my-2" color="blue" text>아직 회원이 아니신가요?</v-btn>
+                        <v-btn class="mx-2 my-2" color="blue" text href="/user/join">아직 회원이 아니신가요?</v-btn>
                     </v-row>
               </v-container>
       </v-card>
@@ -111,6 +111,12 @@ export default {
       },
     };
   },
+  methods:{
+    login:function(){
+      this.$store.dispatch('login',this.user)
+      .then(()=>this.$router.push('/'));
+    },
+  }
 };
 </script>
 

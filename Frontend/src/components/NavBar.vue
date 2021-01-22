@@ -21,7 +21,7 @@
             <v-col md="4">
             </v-col>
             <v-col md="4">
-                <div class="v-input--dense v-input--hide-details theme--light v-text-field v-text-field--single-line v-text-field--solo 
+                <!-- <div class="v-input--dense v-input--hide-details theme--light v-text-field v-text-field--single-line v-text-field--solo 
                 v-text-field--solo-inverted v-text-field--solo-flat v-text-field--is-booted v-text-field--enclosed rounded-lg" style="max-width: 300px;">
                     <div class="v-input__control">
                         <div class="v-input__slot">
@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>    
+                        </div>     -->
             </v-col>
             </v-row>
         </v-spacer>
@@ -47,7 +47,7 @@
     </v-btn>
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
 
-        <v-btn target="_blank" text style="width:120px;">
+    <v-btn target="_blank" text style="width:120px;">
         <span class="mr-2"><router-link to="/user/join" style="color:black; text-decoration:none; font-size: 13px;">SIGNUP</router-link></span>
     </v-btn>
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
