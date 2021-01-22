@@ -1,7 +1,18 @@
 * {
   box-sizing: border-box;
 }
-
+#naver{
+  color: #FFFFFF;
+  background-color: #1EC800;
+}
+#google{
+  color: black;
+  background-color: #FFFFFF;
+}
+#kakao{
+  color:#000000;
+  background-color:#FEE500 ;
+}
 .wrapC {
     padding: 0 20px;
     -webkit-box-sizing: border-box;
