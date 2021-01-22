@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(String email) throws Exception {
-		sqlSession.getMapper(UserMapper.class).delete(email);
+	public void delete(int uid) throws Exception {
+		sqlSession.getMapper(UserMapper.class).delete(uid);
 	}
 
 	@Override
@@ -82,9 +82,9 @@ public class UserServiceImpl implements UserService {
 		sqlSession.getMapper(UserMapper.class).updatePassword(map);
 	}
 	
-	@Override
-	public UserDto userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
-	}
+//	@Override
+//	public UserDto userInfo(String userid) throws Exception {
+//		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
+//	}
 
 }
