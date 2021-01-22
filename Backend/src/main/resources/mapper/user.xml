@@ -33,7 +33,7 @@
 
 	<update id="update" parameterType="Map">
 		update User set password=#{password}, phone=#{phone}
-		where email=#{email}
+		where uid=#{uid}
 	</update>
 	
 	<!-- 비밀번호 변경 관련 -->
