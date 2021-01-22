@@ -34,5 +34,13 @@ public class BoardServiceImpl implements BoardService {
 		return sqlSession.getMapper(BoardMapper.class).create(map);
 	}
 	
+	@Override
+	public void update(int pid, String content) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("pid", pid);
+		map.put("content", content);
+		
+		sqlSession.getMapper(BoardMapper.class).update(map);
+	}
 }
 

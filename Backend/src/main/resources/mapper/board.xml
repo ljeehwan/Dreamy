@@ -11,4 +11,10 @@
 							#{category}, #{imageUrl}, #{dateType}, #{totalDate}, #{running})
 	</insert>
 
+	<update id="update" parameterType="Map">
+		update Board
+		set content=#{content}
+		where pid=#{pid}
+	</update>
+	
 </mapper>

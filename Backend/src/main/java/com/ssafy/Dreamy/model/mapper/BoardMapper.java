@@ -9,5 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface BoardMapper {
 	
 	public Object create(Map<String, Object> map) throws SQLException;
-	
+	public void update(Map<String, Object> map) throws SQLException;
 }

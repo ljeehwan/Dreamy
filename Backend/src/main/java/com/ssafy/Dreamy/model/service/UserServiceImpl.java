@@ -29,12 +29,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void signup(String email, String name, String password, String phone) throws Exception {
-		Map<String, String> map = new HashMap<>();
-		map.put("email", email);
-		map.put("name", name);
-		map.put("password", password);
-		map.put("phone", phone);
+	public void signup(UserDto userDto) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("email", userDto.getEmail());
+		map.put("name", userDto.getName());
+		map.put("password", userDto.getPassword());
+		map.put("phone", userDto.getPhone());
 		sqlSession.getMapper(UserMapper.class).signup(map);
 	}
 	
@@ -51,16 +51,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(String email) throws Exception {
-		sqlSession.getMapper(UserMapper.class).delete(email);
+	public void delete(int uid) throws Exception {
+		sqlSession.getMapper(UserMapper.class).delete(uid);
 	}
 
 	@Override
-	public void update(String email, String password, String phone) throws Exception {
-		Map<String, String> map = new HashMap<>();
-		map.put("email", email);
-		map.put("password", password);
-		map.put("phone", phone);
+	public void update(UserDto userDto) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", userDto.getUid());
+		map.put("password", userDto.getPassword());
+		map.put("phone", userDto.getPhone());
 		sqlSession.getMapper(UserMapper.class).update(map);
 	}
 	
@@ -82,9 +82,9 @@ public class UserServiceImpl implements UserService {
 		sqlSession.getMapper(UserMapper.class).updatePassword(map);
 	}
 	
-	@Override
-	public UserDto userInfo(String userid) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
-	}
+//	@Override
+//	public UserDto userInfo(String userid) throws Exception {
+//		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
+//	}
 
 }
