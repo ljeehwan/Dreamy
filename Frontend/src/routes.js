@@ -2,11 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 // user
-import Login from './views/user/Login.vue'
+// import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import myPage from './views/user/Mypage.vue'
 //Main
-import feedMain from './views/Main/feedMain.vue'
+import Main from './views/Main/Main.vue'
 // Community
 import Bucket from './views/Community/Bucket'
 import Challenge from './views/Community/Challenge'
