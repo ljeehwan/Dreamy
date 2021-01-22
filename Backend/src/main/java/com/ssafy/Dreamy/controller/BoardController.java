@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,4 +49,30 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	//////////게시물 수정(내용만)///////////
+	@PutMapping("/update") 
+	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto){
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		HttpStatus status = null;
+		
+		try {
+			System.out.println("-- 게시물 수정 시도");
+			
+			int pid = boardDto.getPid();
+			String content = boardDto.getContent();
+			
+			boardService.update(pid, content);
+			status = HttpStatus.ACCEPTED;
+			System.out.println("-- 게시물 수정 성공");
+		}catch(Exception e) {
+			logger.error("게시물 수정 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("-- 게시물 수정 실패");
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
 }
