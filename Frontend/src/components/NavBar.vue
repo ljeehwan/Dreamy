@@ -47,7 +47,12 @@
         <span class="mr-2"><router-link to="/user/login" style="color:black; text-decoration:none; font-size: 13px;">LOGIN</router-link></span>
     </v-btn>
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
-    
+    <!-- my page 잠깐 넣었습니다 -->
+    <v-btn target="_blank" text style="width:120px;">
+        <span class="mr-2"><router-link to="/user/mypage" style="color:black; text-decoration:none; font-size: 13px;">MYPAGE</router-link></span>
+    </v-btn>
+    <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
+
     <v-btn target="_blank" text style="width:120px;">
         <span class="mr-2"><router-link to="/user/join" style="color:black; text-decoration:none; font-size: 13px;">SIGNUP</router-link></span>
     </v-btn>

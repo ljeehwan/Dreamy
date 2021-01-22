@@ -1,4 +1,5 @@
 <template>
+  <div>
   <v-container fluid class="mb-7">
     <v-row align="center" class="fill-height" justify="center">
       <div class="register elevation-12">
@@ -54,7 +55,6 @@
             required
             ></v-checkbox>
             <!-- 약관 -->
-
               <v-col class="shrink">
                 <v-btn
                 class="ma-1"
@@ -66,32 +66,45 @@
                 <v-expand-x-transition>
                   <v-card
                     v-show="expand2"
-                    height="100"
+                    height="300"
                     width="100%"
                     color="grey lighten-5"
                     class="mx-auto pa-3"
-                  ><p class="text-caption" color="grey">수집된 정보를 타인에게 노출, 공개하지 아니한다.</p></v-card>
+                  ><p class="text-caption" color="grey">수집된 정보를 타인에게 노출, 공개하지 아니한다.
+                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.
+                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.
+                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.
+                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.</p></v-card>
+
                 </v-expand-x-transition>
               </v-col>
 
             <!-- 가입 버튼 -->
-            <v-btn  color="error" class="mr-4 mt-3 mr-9" depressed
-            @click="onSignup">
-            취소
-            </v-btn>
-            <v-btn  color="success" class="mt-3 ml-9" depressed
-            @click="onSignup">
-            가입하기
-            </v-btn>
-            
+            <div>
+              <v-btn  color="error" class="mr-4 mt-3 mr-9" depressed
+              @click="onSignup">
+              취소
+              </v-btn>
+              <v-btn  color="success" class="mt-3 ml-9" depressed
+              @click="onSignup">
+              가입하기
+              </v-btn>
+            </div>
           </v-form>
       </div>
     </v-row>
   </v-container>
+  <Modal/>
+  </div>
 </template>
 
 <script>
+  import Modal from "@/components/Modal.vue"
+
   export default {
+    components: {
+      Modal
+    },
     data:() => {
       return {
         expand2: false,
@@ -138,7 +151,6 @@
             console.log(this.credentials)
             this.$store.dispatch('SIGNUP', this.credentials)
 
-            
           } else {
             this.isCorrect = false
           }
