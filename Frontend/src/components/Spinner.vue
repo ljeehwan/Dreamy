@@ -1,6 +1,6 @@
 <template>
-<!-- v-if="spinnerLoading" -->
-    <div class="lds-facebook" >
+
+    <div class="lds-facebook " v-if="spinnerLoading">
         <div>
         </div>
         <div>

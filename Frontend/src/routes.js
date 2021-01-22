@@ -21,19 +21,19 @@ const router = new VueRouter({
     
         {
             path : '/',
-            name : 'feedMain',
-            component : feedMain
+            name : 'Main',
+            component : Main
         },
         {
             path : '/user/join',
             name : 'Join',
             component : Join
         },
-        {
-            path : '/user/login',
-            name : 'Login',
-            component : Login
-        },
+        // {
+        //     path : '/user/login',
+        //     name : 'Login',
+        //     component : Login
+        // },
         {
             path: '/user/mypage',
             name: 'myPage',
