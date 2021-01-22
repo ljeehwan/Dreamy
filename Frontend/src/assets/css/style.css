@@ -1,78 +1,7 @@
 * {
   box-sizing: border-box;
 }
-/* 네비게이션 바 */
-.nav {
-  position: fixed;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.3rem;
-  height: 4.5rem;
-  top: 15px;
-  width: 99%;
-  background-color: #D2F0F3;
-}
-.nav-left {
-  border: 2px solid red;
-  width: 3.4rem;
-  height: 3.4rem;
-  margin: auto 0; 
-}
-.nav-left .logo {
-  border: dashed 2px peru;
-  height: 100%;
-  width: 100%;
-  background-color: white;
-}
-/* 검색 바 */
-.nav-center {
-  border: 2px solid rgb(161, 161, 161);
-  width: 20rem;
-  padding: 0;
-  border-radius: 26px;
-  background-color: white;
-}
-.search-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  
-}
-.nav-center .search-container input {
-  display: inline-block;
-  height: 100%;
-  width: 100%;
-  border: none;
-  border-right:0px; 
-  border-top:0px; 
-  border-left:0px; 
-  border-bottom:0px;
-}
 
-.nav-center .search-button {
-  position: absolute;
-  display: inline-block;
-  background-color: #4CAF50;
-  border: 1.5px solid green;
-  height: 25px;
-  width: 25px;
-  top: 14px;
-  right: 15px;
-
-}
-
-.nav-right {
-  border: 2px solid green;
-  display: flex;
-  justify-content: space-around;
-  width: 48%;
-}
-.nav-right p {
-  margin-left: 5px;
-  margin-right: 5px;
-}
-/* #################네브바 끝############### */
 .wrapC {
     padding: 0 20px;
     -webkit-box-sizing: border-box;
@@ -138,10 +67,9 @@
 input {
     background: transparent;
     font-size: 1em;
-    height: 50px;
+    height: 40px;
     line-height: 1em;
     border: 1px solid #CCCCCC;
-    padding: 0 20px;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     -webkit-transition: .2s;
@@ -161,10 +89,6 @@ input:focus {
     outline: 0;
   }
   
-input:hover {
-    border: 2px solid #000;
-  }
-
 
   button {
     font-size: 1em;
