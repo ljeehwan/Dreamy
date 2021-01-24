@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
-
 import {router} from "@/routes.js"
 import {requestJoinMember, setSnackBarInfo} from "../apis/accounts_api.js"
 
@@ -11,7 +10,6 @@ const SERVER_URL="http://localhost:8080";
 
 export default new Vuex.Store({
     state:{
-        accessToken:null,
         isLogined:false,
         isSign:false,
         user:{
@@ -28,13 +26,23 @@ export default new Vuex.Store({
         errorMessage: '잘못된 요청입니다'
     },
     mutations:{
-        setUser(state,payload){
+        setUserinfo(state,payload){
             state.isLogined=true;
-            state.accessToken=payload["access-token"];
             state.user.uid=payload["user"].uid;
             state.user.email=payload["user"].email;
             state.user.name=payload["user"].name;
             state.user.phone=payload["user"].phone;
+        },
+        setKakaoUser(state,payload){
+            state.user.email=payload.email;
+            state.user.name=payload.name;
+        },
+        logout(state){
+            state.accessToken = null;
+            state.user.uid = "";
+            state.user.email = "";
+            state.user.name="";
+            state.user.phone= "";
         },
         setIsSign(state,payload){
             state.isSign=payload;
@@ -72,11 +80,18 @@ export default new Vuex.Store({
 
     },
     getters:{
-        getIsuser(state){
-            return state.isUser;
+        getIsLogined(state){
+            return state.isLogined;
         },
+        getUsername(state){
+            return state.user.name;
+        },
+        getEmail(state){
+            return state.user.email;
+        }
     },
     actions:{
+        //로그인성공시 토큰 정보 받기
         login(context,user){
             axios({
                 method: "post",
@@ -88,15 +103,59 @@ export default new Vuex.Store({
            })
           .then((response) => {
             localStorage.setItem("access_token", response.data["access-token"])
-            localStorage.setItem("access_id", response.data["user"].uid)
-            localStorage.setItem("access_name", response.data["user"].name)
-            context.commit("setUser",response.data);
-            axios.defaults.headers.common["auth-token"]=`${response.data["access-token"]}`;
-            console.log(response.data["user"]);
+            localStorage.setItem("isLogin", true)
+            axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
+            router.go(router.currentRoute);
+            context.dispatch("getUserinfo");
           }).catch((error) => {
-            alert("로그인 실패");
+            alert("이메일과 비밀번호를 확인하세요");
             console.log(error);
           })
+        },
+
+        // 받은 토큰으로 유저 정보 가져오기
+        getUserinfo(context){
+            let token=localStorage.getItem("access_token")
+            axios({
+                method: "post",
+                url: `${SERVER_URL}/account/checkJwt`,
+                data : token,
+            }).then((response)=>{
+                context.commit("setUserinfo",response.data);
+                // console.log(response.data);
+            }).catch(()=>{
+                alert("jwt 인증 오류");
+            })
+        },
+
+        getkakaoUserinfo(context,user){
+            axios({
+                method:"post",
+                url:`${SERVER_URL}/account/checkUser`,
+                data: {
+                    email: user.email,
+                }
+              }).then((res)=>{
+                  context.commit("setKakaoUser",user);
+                  console.log(res);
+                  if(res.data["message"]==="needLogin"){
+                    alert("계정이 이미 존재합니다! 로그인해주세요")
+                  }
+                  else if(res.data["message"]==="needSignup"){
+                    alert("해당 소셜로 등록된 계정이 존재하지 않습니다! 회원가입해주세요")
+                    router.push("/user/join");
+                  }
+              }).catch((error)=>{
+                  console.log(error.message)
+              })
+        },
+
+        logout(context){
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("isLogin");
+            location.reload();
+            context.commit("logout");
+            axios.defaults.headers.common["auth-token"] = undefined;
         },
 
         async SIGNUP(context, credentials){
@@ -116,5 +175,7 @@ export default new Vuex.Store({
                 context.commit('OPEN_MODAL', {title: '회원가입 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
+
+
     }
 })

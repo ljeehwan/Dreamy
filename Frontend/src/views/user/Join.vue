@@ -148,9 +148,8 @@
         this.isCorrect = true
         if (this.$refs.form.validate()) {
           if (this.validatePassword === this.credentials.password) {
-            console.log(this.credentials)
+            // console.log(this.credentials)
             this.$store.dispatch('SIGNUP', this.credentials)
-
           } else {
             this.isCorrect = false
           }
