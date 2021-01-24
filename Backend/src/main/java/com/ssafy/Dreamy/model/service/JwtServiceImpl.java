@@ -51,7 +51,6 @@ public class JwtServiceImpl implements JwtService {
 	public boolean isUsable(String jwt) {
 		try {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
-			System.out.println("--토큰 생성 성공");	//
 			return true;
 		} catch (Exception e) {
 //			if (logger.isInfoEnabled()) {
@@ -67,32 +66,27 @@ public class JwtServiceImpl implements JwtService {
 	}
 
 	@Override
-	public Map<String, Object> get(String key) {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
-		String jwt = request.getHeader("access-token");
-		Jws<Claims> claims = null;
+	public String get(String key) {
+		Claims claims = null;
+		String email="";
 		try {
-			claims = Jwts.parser().setSigningKey(TK.getBytes("UTF-8")).parseClaimsJws(jwt);
+			claims = Jwts.parser().setSigningKey(TK.getBytes("UTF-8")).parseClaimsJws(key).getBody();
+			email=(String) claims.get("userEmail");
+			System.out.println("토큰으로부터 이메일 받기");
 		} catch (Exception e) {
-//			if (logger.isInfoEnabled()) {
-//				e.printStackTrace();
-//			} else {
+			if (logger.isInfoEnabled()) {
+				e.printStackTrace();
+			} else {
 				logger.error(e.getMessage());
-//			}
-			throw new UnauthorizedException();
+			}
+			
 //			개발환경
 //			Map<String,Object> testMap = new HashMap<>();
 //			testMap.put("userid", userid);
 //			return testMap;
 		}
-		Map<String, Object> value = claims.getBody();
-		logger.info("value : {}", value);
-		return value;
+		return email;
 	}
 
-	@Override
-	public String getUserId() {
-		return (String) this.get("user").get("userid");
-	}
+	
 }

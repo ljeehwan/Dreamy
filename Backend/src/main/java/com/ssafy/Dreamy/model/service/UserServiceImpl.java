@@ -18,14 +18,23 @@ public class UserServiceImpl implements UserService {
 	private SqlSession sqlSession;
 
 	@Override
-	public UserDto login(String email, String password) throws Exception {
+	public boolean login(String email, String password) throws Exception {
 		if (email == null || password == null)
-			return null;
-		System.out.println("--로그인 정보 / 이메일 : " + email + " 비번 : " + password);
+			return false;
+//		System.out.println("--로그인 정보 / 이메일 : " + email + " 비번 : " + password);
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
 		map.put("password", password);
-		return sqlSession.getMapper(UserMapper.class).login(map);
+		int res=sqlSession.getMapper(UserMapper.class).login(map);
+		if(res==1)
+			return true;
+		else
+			return false; 
+	}
+	
+	@Override
+	public UserDto setUser(String email) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).setUser(email);
 	}
 
 	@Override
@@ -81,6 +90,7 @@ public class UserServiceImpl implements UserService {
 		map.put("password", password);
 		sqlSession.getMapper(UserMapper.class).updatePassword(map);
 	}
+
 	
 //	@Override
 //	public UserDto userInfo(String userid) throws Exception {
