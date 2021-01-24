@@ -14,10 +14,15 @@ Vue.use(VueRouter)
 //   routes,
 // });
 
+window.Kakao.init('d047127b3a3904b500f8dcdf1e91a71d');
 
 new Vue({
   router,
   store,
   vuetify,
+  beforeCreate(){
+    if(localStorage.getItem("isLogin"))
+      this.$store.dispatch("getUserinfo")
+  },
   render: h => h(App)
 }).$mount('#app')

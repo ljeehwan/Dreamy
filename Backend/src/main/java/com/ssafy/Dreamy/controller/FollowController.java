@@ -58,7 +58,7 @@ public class FollowController {
 	}
 
 	////////// 팔로우 취소 ///////////
-	@DeleteMapping
+	@DeleteMapping("/unfollow")
 	public ResponseEntity<Map<String, Object>> unfollow(HttpServletRequest request, Model model) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -83,7 +83,7 @@ public class FollowController {
 	}
 
 	////////// 팔로우 관계 검증 ///////////
-	@GetMapping
+	@GetMapping("/checkfollow")
 	public ResponseEntity<Map<String, Object>> relationcheck(HttpServletRequest request, Model model) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -108,14 +108,14 @@ public class FollowController {
 	}
 
 	////////// following 목록 ///////////
-	@GetMapping
+	@GetMapping("/listfollowing")
 	public List<UserDto> followinglist(HttpServletRequest request, Model model) throws Exception {
 
 		return followservice.listfollowing(Integer.parseInt(request.getParameter("login_id")));
 	}
 
 	////////// follower 목록 ///////////
-	@GetMapping
+	@GetMapping("/listfollower")
 	public List<UserDto> followerlist(HttpServletRequest request, Model model) throws Exception {
 
 		return followservice.listfollower(Integer.parseInt(request.getParameter("login_id")));

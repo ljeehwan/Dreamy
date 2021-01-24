@@ -4,7 +4,8 @@ import com.ssafy.Dreamy.model.UserDto;
 
 public interface UserService {
 
-	public UserDto login(String email, String password) throws Exception;
+	public boolean login(String email, String password) throws Exception;
+	public UserDto setUser(String email) throws Exception;
 //	public void signup(String email, String name, String password, String phone) throws Exception;
 	public void signup(UserDto userDto) throws Exception;
 	public int getEmail(String email) throws Exception;

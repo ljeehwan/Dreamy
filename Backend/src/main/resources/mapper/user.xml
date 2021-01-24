@@ -4,9 +4,15 @@
 
 <mapper namespace="com.ssafy.Dreamy.model.mapper.UserMapper">
 
-	<select id="login" parameterType="Map" resultType="userDto">
-		select uid, email, name, phone from User
+	<select id="login" parameterType="Map" resultType="Integer">
+		select count(*) 
+		from User
 		where email = #{email} and password = #{password}
+	</select>
+	
+	<select id="setUser" parameterType="String" resultType="userDto">
+		select uid, email, name, phone from User
+		where email = #{email}
 	</select>
 
 	<insert id="signup" parameterType="Map">

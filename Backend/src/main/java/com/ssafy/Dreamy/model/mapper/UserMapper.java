@@ -10,7 +10,8 @@ import com.ssafy.Dreamy.model.UserDto;
 @Mapper
 public interface UserMapper {
 
-	public UserDto login(Map<String, String> map) throws SQLException;
+	public int login(Map<String, String> map) throws SQLException;
+	public UserDto setUser(String email) throws SQLException;
 	public void signup(Map<String, Object> map) throws SQLException;
 	public int getEmail(String email) throws SQLException;
 	public int getName(String name) throws SQLException;

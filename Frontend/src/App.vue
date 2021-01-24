@@ -23,7 +23,6 @@ import Modal from '@/components/Modal.vue'
 import SnackBar from '@/components/SnackBar.vue'
 import Spinner from '@/components/Spinner.vue'
 
-
 export default {
   name: "app",
   components:{
