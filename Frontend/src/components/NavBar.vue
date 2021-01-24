@@ -41,64 +41,70 @@
             </v-row>
         </v-spacer>
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
-
-    <v-btn target="_blank" text style="width:120px;">
-        <span class="mr-2"><router-link to="/" style="color:black; text-decoration:none; font-size: 13px;">HOME</router-link></span>
-    </v-btn>
+        <span><router-link to="/" style="text-decoration:none;">
+         <v-btn target="_blank" text style="width:120px;">HOME
+         </v-btn></router-link></span>
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
 
-    <v-btn target="_blank" text style="width:120px;">
-        <span class="mr-2"><router-link to="/user/join" style="color:black; text-decoration:none; font-size: 13px;">SIGNUP</router-link></span>
-    </v-btn>
-    <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
-
+    <div v-if="!getIsLogined">
+        <span><router-link to="/user/join" style="text-decoration:none;">
+        <v-btn target="_blank" text style="width:120px;">SIGNUP
+        </v-btn></router-link></span>
+         <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
+    </div>
    <v-menu open-on-hover bottom offset-y  >
         <template v-slot:activator="{on}">
-            <v-btn target="_blank" v-on="on" text style="width:120px;">
-                <span class="mr-2 v-icon notranslate hidden-sm-and-down theme--light" style="font-size: 13px;">MORE
+                <span class="v-icon notranslate hidden-sm-and-down theme--light"> <v-btn target="_blank" v-on="on" text style="width:120px;">MORE
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true" class="v-icon__svg" style="height: 14px; width: 14px;">
                 <path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"></path></svg>
+                </v-btn>
                 </span>
-            </v-btn>
         </template>
         <v-list>
             <v-list-item>
-                <v-btn target="_blank" text style="width:120px;">
-                <router-link to="/community/Bucket" style="color:black; text-decoration:none; font-size: 13px;">Bucket List</router-link>
-                </v-btn>
+                 <span><router-link to="/community/Bucket" style="text-decoration:none;">
+                 <v-btn target="_blank" text style="width:120px;">Bucket List</v-btn></router-link></span>
             </v-list-item>
             
 
             <v-list-item>
-                <v-btn target="_blank" text style="width:120px;">
-                <router-link to="/community/challenge" style="color:black; text-decoration:none; font-size: 13px;">Challenge</router-link>
-                </v-btn>
+                <span><router-link to="/community/challenge" style="text-decoration:none;">
+                <v-btn target="_blank" text style="width:120px;">Challenge</v-btn></router-link></span>
             </v-list-item>
             
             
             <v-list-item>
-                <v-btn target="_blank" text style="width:120px;">
-                <router-link to="/community/ranking" style="color:black; text-decoration:none; font-size: 13px;">Ranking</router-link>
-                </v-btn>
+                <span><router-link to="/community/Ranking"  style="text-decoration:none;">
+                <v-btn target="_blank" text style="width:120px;">Ranking</v-btn></router-link></span>
             </v-list-item>
         </v-list>
     </v-menu>
-        <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
-    <loginComponent />
+    <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
     
+    <loginComponent v-if="!getIsLogined"></loginComponent>
+
+    <div v-if="getIsLogined">
+        <loginUser/>
+    </div>
     </v-app-bar>
 </template>
 
 <script>
 import loginComponent from './Login.vue'
+import { mapGetters } from 'vuex';
+import LoginUser from './LoginUser.vue';
+
 export default {
     data :()=>({
         searchWord:"",
     }),
     components:{
-        loginComponent
-    }
-   
+        loginComponent,
+        LoginUser
+    },
+    computed:{
+        ...mapGetters(['getIsLogined'])
+    },
 }
 </script>
 

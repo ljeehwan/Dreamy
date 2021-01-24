@@ -1,5 +1,6 @@
 package com.ssafy.Dreamy.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,13 +51,12 @@ public class UserController {
 		String email = memberDto.getEmail();
 		String password = memberDto.getPassword();
 		try {
-			UserDto loginUser = userService.login(email, password);
+			boolean isUser = userService.login(email, password);
 			System.out.println("--로그인 시도"); //
-			if (loginUser != null) {
-				String token = jwtService.create("userid", loginUser.getEmail(), "access-token");	// key, data, subject
+			if (isUser) {
+				String token = jwtService.create("userEmail", email, "access-token");	// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
-				resultMap.put("user", loginUser);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				System.out.println("--토큰 생성");
@@ -73,6 +73,50 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	@PostMapping("/checkJwt")
+	public ResponseEntity<Map<String, Object>> jwtOauth(@RequestBody String token) throws IOException{
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		System.out.println("--jwt 함수 진입"); 
+		try {
+			status = HttpStatus.ACCEPTED;
+			String email=jwtService.get(token);
+			UserDto loginUser=userService.setUser(email);
+			resultMap.put("user", loginUser);
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("-jwt 인증 실패"); //
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@PostMapping("/checkUser")
+		public ResponseEntity<Map<String, Object>> checkUser(@RequestBody UserDto memberDto) throws IOException{
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		String email=memberDto.getEmail();
+		System.out.println("--db 유저 정보 확인"); 
+		try {
+			int user=userService.getEmail(email);
+			System.out.println(email);
+			if(user==0) {	// db에 유저 정보가 없음 => 가입
+				resultMap.put("message", "needSingup");
+				status = HttpStatus.ACCEPTED;
+				System.out.println("--가입"); 
+			}
+			else if(user==1){//db에 유저정보가 있음 => 로그인
+				resultMap.put("message", "needLogin");
+				status = HttpStatus.ACCEPTED;
+				System.out.println("로그인"); 
+			}
+		}catch(Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+			return new ResponseEntity<Map<String, Object>>(resultMap, status);
+			
+	}
 	// 회원가입
 	@PostMapping("/signup")
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto userDto) {
@@ -250,7 +294,8 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
+	
+	
 //	@GetMapping("/info/{userid}")
 //	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userid") String userid,
 //			HttpServletRequest request) {

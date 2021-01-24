@@ -4,15 +4,16 @@
       <v-btn
         target="_blank"
         text
-        style="width:120px; font-size: 13px;"
+        style="width:120px"
         v-on="on"
+        id="loginbtn"
         >
-        <span class="mr-2">Login</span></v-btn
+        <span>Login</span></v-btn
       >
     </template>
 
     <template v-slot:default="dialog">
-      <v-card height="450" sm5 class="hidden-xs-only">
+      <v-card height="470" sm5 class="hidden-xs-only">
         <v-card-title>
           <v-layout align-center justify-center class="my-4">
             <h2>DREAMY</h2>
@@ -73,11 +74,12 @@
                 </v-btn>                
               </v-card-actions>
               <v-card-actions>
-                <v-btn id="kakao" block>
+                <kakaoLogin :component="component" />
+                <!-- <v-btn id="kakao" block>
                 <img src="@/assets/snsLogin/kakao.png"/>
                   <v-divider vertical class="mx-3"></v-divider>
                   KAKAO
-                </v-btn>
+                </v-btn> -->
               </v-card-actions>
             </v-layout>
           </v-container>
@@ -102,7 +104,15 @@
   </v-dialog>
 </template>
 <script>
+import kakaoLogin from "@/components/socialLogin/kakao.vue";
+
 export default {
+   components: {
+    kakaoLogin,
+  },
+  created(){
+    this.component = this;
+  },
   data: () => {
     return {
       user: {
@@ -113,20 +123,23 @@ export default {
   },
   methods:{
     login:function(){
-      this.$store.dispatch('login',this.user)
-      .then(()=>this.$router.push('/'));
-    },
-  }
+      this.$store.dispatch('login',this.user);
+    }, 
+  },
 };
 </script>
 
-<style>
-.v-dialog::-webkit-scrollbar {
+<style scoped>
+.v-card::-webkit-scrollbar {
     display: none;
 }
 
 .v-text-field{
     width:500px;
+}
+
+#loginbtn:hover{
+  color:blue;
 }
 
 </style>
