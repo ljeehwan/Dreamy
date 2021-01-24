@@ -1,6 +1,7 @@
 package com.ssafy.Dreamy.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +22,7 @@ import com.ssafy.Dreamy.model.service.FollowService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/follow")
 public class FollowController {
 
 	private static final String SUCCESS = "success";
@@ -105,5 +105,19 @@ public class FollowController {
 
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	////////// following 목록 ///////////
+	@GetMapping
+	public List<UserDto> followinglist(HttpServletRequest request, Model model) throws Exception {
+
+		return followservice.listfollowing(Integer.parseInt(request.getParameter("login_id")));
+	}
+
+	////////// follower 목록 ///////////
+	@GetMapping
+	public List<UserDto> followerlist(HttpServletRequest request, Model model) throws Exception {
+
+		return followservice.listfollower(Integer.parseInt(request.getParameter("login_id")));
 	}
 }
