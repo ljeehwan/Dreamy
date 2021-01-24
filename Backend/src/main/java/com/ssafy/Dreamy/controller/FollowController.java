@@ -22,7 +22,7 @@ import com.ssafy.Dreamy.model.service.FollowService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/follow")
 public class FollowController {
 
 	private static final String SUCCESS = "success";
