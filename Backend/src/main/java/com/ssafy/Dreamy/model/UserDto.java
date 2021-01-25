@@ -69,11 +69,11 @@ public class UserDto {
 		this.profileUrl = profileUrl;
 	}
 
-	public final String getLoginType() {
+	public String getLoginType() {
 		return loginType;
 	}
 
-	public final void setLoginType(String loginType) {
+	public void setLoginType(String loginType) {
 		this.loginType = loginType;
 	}
 

@@ -81,6 +81,9 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 			String email=jwtService.get(token);
 			UserDto loginUser=userService.setUser(email);
+			System.out.println("로그인 완료");
+			
+			System.out.println(loginUser.getLoginType());
 			resultMap.put("user", loginUser);
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
