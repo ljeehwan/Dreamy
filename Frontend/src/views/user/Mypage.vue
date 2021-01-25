@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h3>MY PAGE</h3>
       <div class="user-info">
-        <UserInfo/>
+        <MyInfo/>
         <!-- 그리드 쓸때 
         https://vuetifyjs.com/en/components/images/#height
         Misc grid 참고하기 -->
@@ -11,12 +10,13 @@
 </template>
 
 <script>
-import UserInfo from '@/components/UserInfo.vue'
+import MyInfo from '@/components/MyInfo.vue'
 export default {
   name: 'Mypage',
   components: {
-    UserInfo,
+    MyInfo,
   },
+
 }
 </script>
 
