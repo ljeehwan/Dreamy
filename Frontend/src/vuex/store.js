@@ -138,13 +138,13 @@ export default new Vuex.Store({
             })
         },
 
-        getkakaoUserinfo(context,user){
+        getSocialUserinfo(context,user){
             axios({
                 method:"post",
                 url:`${SERVER_URL}/account/checkUser`,
                 data: {
                     email: user.email,
-                    logintype:user.logintype
+                    loginType:user.logintype
                 }
               }).then((response)=>{
                   if(response.data["message"]=="otherSocialLogin"){
@@ -153,7 +153,7 @@ export default new Vuex.Store({
                   else if(response.data["message"]=='needSignup'){
                     //이메일, 가입타입, 이름으로 자동회원가입  - 카카오에서 이미 인증이 된 회원이므로..?
                     context.commit("setSocialUser",user);
-                    context.dispatch("socialSignup","kakao");
+                    context.dispatch("socialSignup",user.logintype);
                     alert("자동 회원가입 완료! 초기 비밀번호를 수정해주세요");
                   }
                   //자동 로그인
@@ -161,8 +161,6 @@ export default new Vuex.Store({
                     localStorage.setItem("access_token", response.data["access-token"])
                     localStorage.setItem("isLogin", true)
                     axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
-                    console.log(axios.defaults.headers.common["access-token"]);
-                    router.go(router.currentRoute);
                     context.dispatch("getUserinfo");
                   }
               }).catch((error)=>{
@@ -174,16 +172,15 @@ export default new Vuex.Store({
             let user={
                 email:this.state.user.email,
                 password:"1q2w3e4r",
-                name:this.state.user.name,
+                name:this.state.user.name,   
             }
-
             axios({
                 method:"post",
                 url:`${SERVER_URL}/account/signup`,
                 data:{
                     email:user.email,
                     name:user.name,
-                    logintype:type,
+                    loginType:type,
                 }
             }).then((res)=>{
                 console.log(res);

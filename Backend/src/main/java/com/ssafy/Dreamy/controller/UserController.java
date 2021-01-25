@@ -97,6 +97,7 @@ public class UserController {
 		String email=memberDto.getEmail();
 		String type=memberDto.getLoginType();
 		System.out.println("1. socail 로그인 db 유저 정보 확인"); 
+
 		try {
 			//이메일 중복 검사
 			int user=userService.getEmail(email);
@@ -135,7 +136,8 @@ public class UserController {
 			userDto.setPassword("1q2w3e4r");
 		}
 		HttpStatus status = null;
-		
+		String type=userDto.getLoginType();
+		System.out.println(type+"type: signup");
 		try {
 			System.out.println("1.회원가입 시도");
 			int emailNum = userService.getEmail(userDto.getEmail());
