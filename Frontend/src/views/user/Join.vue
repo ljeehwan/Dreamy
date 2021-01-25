@@ -3,7 +3,7 @@
   <v-container fluid class="mb-7">
     <v-row align="center" class="fill-height" justify="center">
       <div class="register elevation-12">
-
+  
           <h3 class="text-h6  text-center py-3 darkgrey--text">
           회 원 가 입
           </h3>
@@ -18,6 +18,7 @@
             prepend-icon="mdi-email" required type="email" :rules="emailRules"
             placeholder="ssafy@example.com" loading
             ></v-text-field>
+            
             <!-- 닉네임 -->
             <v-text-field class="pl-3 pr-3" v-model="credentials.name" 
             :counter="10" :rules="nameRules" loading
