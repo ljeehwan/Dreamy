@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto setUser(String email) throws Exception {
 		return sqlSession.getMapper(UserMapper.class).setUser(email);
-		//dd
+		
 	}
 
 	@Override
