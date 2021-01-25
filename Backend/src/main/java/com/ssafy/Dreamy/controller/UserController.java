@@ -95,7 +95,7 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		String email=memberDto.getEmail();
-		String type=memberDto.getLogintype();
+		String type=memberDto.getLoginType();
 		System.out.println("1. socail 로그인 db 유저 정보 확인"); 
 		try {
 			//이메일 중복 검사
@@ -106,7 +106,7 @@ public class UserController {
 				System.out.println("2-1 소셜 계정 자동 가입"); 
 			}
 			else if(user==1){//db에 유저정보가 있음 => 로그인
-				if(!(type.equals(userService.getLogintype(email)))) {	//db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
+				if(!(type.equals(userService.getLoginType(email)))) {	//db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
 					resultMap.put("message", "otherSocialLogin");					
 					status = HttpStatus.ACCEPTED;
 					System.out.println("2-2 소셜 계정존재시 거부");
@@ -130,13 +130,10 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		if(userDto.getPassword()==null) {
-			//초기비밀번호 설정
+			// 초기비밀번호 설정
+			// 난수생성 함수 추가
 			userDto.setPassword("1q2w3e4r");
 		}
-//		String email = memberDto.getEmail();
-//		String name = memberDto.getName();
-//		String password = memberDto.getPassword();
-//		String phone = memberDto.getPhone();
 		HttpStatus status = null;
 		
 		try {
@@ -152,7 +149,6 @@ public class UserController {
 				status = HttpStatus.CONFLICT;
 				System.out.println("2-2닉네임 중복");
 			} else {
-//				userService.signup(email, name, password, phone);
 				userService.signup(userDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
