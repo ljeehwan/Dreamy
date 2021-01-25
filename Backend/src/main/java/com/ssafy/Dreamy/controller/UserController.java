@@ -227,7 +227,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto memberDto, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		if (jwtService.isUsable(request.getHeader("access-token"))) {
+//		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 				System.out.println("--회원정보 수정 시도");
@@ -241,11 +241,11 @@ public class UserController {
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 				System.out.println("--회원정보 수정 실패");
 			}
-		} else {
-			logger.error("사용 불가능 토큰!!!");
-			resultMap.put("message", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
-		}
+//		} else {
+//			logger.error("사용 불가능 토큰!!!");
+//			resultMap.put("message", FAIL);
+//			status = HttpStatus.UNAUTHORIZED;
+//		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
