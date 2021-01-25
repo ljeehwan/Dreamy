@@ -15,31 +15,13 @@
          src="http://placehold.it/150x50"
         />
         <v-spacer>
-            <v-row>
-            <v-col md="4">
-            </v-col>    
-            <v-col md="4">
-            </v-col>
-            <v-col md="4">
-                <!-- <div class="v-input--dense v-input--hide-details theme--light v-text-field v-text-field--single-line v-text-field--solo 
-                v-text-field--solo-inverted v-text-field--solo-flat v-text-field--is-booted v-text-field--enclosed rounded-lg" style="max-width: 300px;">
-                    <div class="v-input__control">
-                        <div class="v-input__slot">
-                            <div class="v-text-field__slot">
-                                <input type="text" v-model="searchWord" placeholder="Search">
-                                </div>
-                                <div class="v-input__append-inner">
-                                    <div class="v-input__icon v-input__icon--append">
-                                        <i aria-hidden="true" class="v-icon notranslate mdi mdi-magnify theme--light">
-                                            </i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>     -->
-            </v-col>
-            </v-row>
         </v-spacer>
+        <v-btn icon class="mx-2 my-auto">
+        <v-icon size="26">   <!--프로필 이미지 가져오기-->
+                mdi-magnify
+        </v-icon>
+        </v-btn>
+
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
         <span><router-link to="/" style="text-decoration:none;">
          <v-btn target="_blank" text style="width:120px;">HOME

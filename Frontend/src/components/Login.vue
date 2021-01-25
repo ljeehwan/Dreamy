@@ -59,7 +59,7 @@
                     </v-layout>
 
             <v-layout row wrap align-center justify-center>
-              <v-card-actions>
+              <!-- <v-card-actions>
                 <v-btn id="google" block>
                 <img src="@/assets/snsLogin/google.png"/>
                   <v-divider vertical class="mx-3"></v-divider>
@@ -72,14 +72,9 @@
                   <v-divider vertical class="mx-3"></v-divider>
                   NAVER
                 </v-btn>                
-              </v-card-actions>
+              </v-card-actions> -->
               <v-card-actions>
                 <kakaoLogin :component="component" />
-                <!-- <v-btn id="kakao" block>
-                <img src="@/assets/snsLogin/kakao.png"/>
-                  <v-divider vertical class="mx-3"></v-divider>
-                  KAKAO
-                </v-btn> -->
               </v-card-actions>
             </v-layout>
           </v-container>

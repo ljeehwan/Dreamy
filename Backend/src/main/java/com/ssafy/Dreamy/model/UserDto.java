@@ -11,6 +11,15 @@ public class UserDto {
 	private String phone;
 	private Date joindate;
     private String profileUrl;
+    private String logintype;
+
+	public String getLogintype() {
+		return logintype;
+	}
+
+	public void setLogintype(String logintype) {
+		this.logintype = logintype;
+	}
 
 	public int getUid() {
 		return uid;
