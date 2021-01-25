@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
 import {router} from "@/routes.js"
-import {requestJoinMember, setSnackBarInfo} from "../apis/accounts_api.js"
+import {requestJoinMember, setSnackBarInfo, requestUpdateMember} from "../apis/accounts_api.js"
 
 Vue.use(Vuex)
 
@@ -79,17 +79,22 @@ export default new Vuex.Store({
         END_SPINNER(state) {
             state.spinnerLoading = false
         },
-
     },
     getters:{
         getIsLogined(state){
             return state.isLogined;
+        },
+        getUserId(state) {
+            return state.user.uid
         },
         getUsername(state){
             return state.user.name;
         },
         getEmail(state){
             return state.user.email;
+        },
+        getPhone(state){
+            return state.user.phone;
         },
         getLogintype(state){
             return state.user.logintype;
@@ -213,7 +218,27 @@ export default new Vuex.Store({
                 context.commit('OPEN_MODAL', {title: '회원가입 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
-
-
+        async UPDATE_MEMBER(context, credentials){
+            try {
+                // context.commit('START_LOADING')
+                // context.commit('START_SPINNER')
+                const userId = this.state.user.uid
+                console.log(`스토어 진입성공 : ${userId}`)
+                const response = await requestUpdateMember(credentials, userId)
+                console.log(response)
+                // setTimeout(function () {
+                //     console.log('셋 타임아웃 시작')
+                //     context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'info', 'top'))
+                //     context.commit('END_SPINNER')
+                //     context.commit('END_LOADING')
+                //     // 어디로 보낼지 다시 정해야함
+                //     router.push('/')
+                //     return response                    
+                // }, 2000)
+            } catch (e) {
+                context.commit('END_LOADING')
+                context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data.message, option1: '닫기',})
+            }
+        },
     }
 })

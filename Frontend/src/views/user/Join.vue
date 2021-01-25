@@ -43,8 +43,7 @@
             class="pr-3 pl-3 loading" v-model="credentials.phone"
             prepend-icon="mdi-cellphone-information" :counter="11"
             label="핸드폰 번호" :rules="phoneNumberRules"
-            required 
-            >
+            required >
             </v-text-field>
 
             <!-- 이용 약관 -->
