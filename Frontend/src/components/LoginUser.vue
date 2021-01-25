@@ -1,12 +1,17 @@
 <template>
    <v-menu offset-y>
     <template v-slot:activator="{on}">
-        <v-btn icon v-on="on">
-            <v-avatar class="mx-1" size="34">  
+        <v-btn icon v-on="on" class="mx-3 my-auto">
+            <v-avatar size="34">  
             <v-icon size="34">   <!--프로필 이미지 가져오기-->
                 mdi-account-circle
             </v-icon>
         </v-avatar>
+        </v-btn>
+        <v-btn icon class="mx-3 my-auto">
+        <v-icon size="26">   <!--프로필 이미지 가져오기-->
+                mdi-bell
+        </v-icon>
         </v-btn>
     </template>
     <v-card width="300">
@@ -25,7 +30,10 @@
                     {{getEmail}} </v-card-text>
                 </v-flex>
             </v-layout>
-            <v-btn target="_blank" text @click="logout" style="width:120px; color:red;">Logout</v-btn>
+            <router-link to="/user/Mypage" style="text-decoration:none;">
+            <v-btn target="_blank" text style="width:180px;">MyPage</v-btn></router-link>
+            <br>
+            <v-btn target="_blank" text @click="logout" style="width:180px; color:red;">Logout</v-btn>
         </v-container>
     </v-card>
     </v-menu>
@@ -33,6 +41,7 @@
 </template>
 
 <script>
+
 export default {
     computed:{
         getEmail(){         // 렌더링 시점때문에 mapgetters 사용시 오류가 나므로 이렇게 쓰기
@@ -41,12 +50,24 @@ export default {
         getUsername(){
             return this.$store.getters.getUsername;
         },
+        getLogintype(){
+             return this.$store.getters.getLogintype;
+        }
     },
 
     methods:{
         logout(){
         this.$store.dispatch('logout')
-        .then(() => this.$router.replace('/').catch(() => {}));
+        if(this.getLogintype=="kakao"){
+            window.Kakao.API.request({
+                url: '/v1/user/unlink',
+                 success:((res)=>{
+                     console.log(res);
+                     this.$store.state.user.logintype="default"
+                     window.location.reload();
+                 }) 
+            })
+            }
         }
     }
 }

@@ -10,9 +10,12 @@ public interface UserService {
 	public void signup(UserDto userDto) throws Exception;
 	public int getEmail(String email) throws Exception;
 	public int getName(String name) throws Exception;
+	public String getLogintype(String email) throws Exception;
+	
 	public void delete(int uid) throws Exception;
 	public void update(UserDto userDto) throws Exception;
 	
+
 	public int certification(String email, String phone) throws Exception;
 	public void updatePassword(String email, String password)throws Exception;
 	
