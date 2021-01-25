@@ -47,28 +47,27 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> login(@RequestBody UserDto memberDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		System.out.println("--로그인 함수 진입"); //
 		String email = memberDto.getEmail();
 		String password = memberDto.getPassword();
 		try {
 			boolean isUser = userService.login(email, password);
-			System.out.println("--로그인 시도"); //
+			System.out.println("1.로그인 시도"); //
 			if (isUser) {
 				String token = jwtService.create("userEmail", email, "access-token");	// key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--토큰 생성");
+				System.out.println("2-1토큰 생성");
 			} else {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NOT_FOUND;
-				System.out.println("--로그인 실패");
+				System.out.println("2-2로그인 실패");
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--로그인 실패"); //
+			System.out.println("2-3 서버 오류 로그인 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -77,7 +76,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> jwtOauth(@RequestBody String token) throws IOException{
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		System.out.println("--jwt 함수 진입"); 
+		System.out.println("3-1jwt 함수 진입"); 
 		try {
 			status = HttpStatus.ACCEPTED;
 			String email=jwtService.get(token);
@@ -86,7 +85,7 @@ public class UserController {
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("-jwt 인증 실패"); //
+			System.out.println("3-2 jwt 인증 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -96,19 +95,28 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		String email=memberDto.getEmail();
-		System.out.println("--db 유저 정보 확인"); 
+		String type=memberDto.getLogintype();
+		System.out.println("1. socail 로그인 db 유저 정보 확인"); 
 		try {
+			//이메일 중복 검사
 			int user=userService.getEmail(email);
-			System.out.println(email);
-			if(user==0) {	// db에 유저 정보가 없음 => 가입
-				resultMap.put("message", "needSingup");
+			if(user==0) {	// db에 유저 정보가 없음 => 자동가입 시키기
+				resultMap.put("message", "needSignup");
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--가입"); 
+				System.out.println("2-1 소셜 계정 자동 가입"); 
 			}
 			else if(user==1){//db에 유저정보가 있음 => 로그인
-				resultMap.put("message", "needLogin");
-				status = HttpStatus.ACCEPTED;
-				System.out.println("로그인"); 
+				if(!(type.equals(userService.getLogintype(email)))) {	//db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
+					resultMap.put("message", "otherSocialLogin");					
+					status = HttpStatus.ACCEPTED;
+					System.out.println("2-2 소셜 계정존재시 거부");
+				}else{// 맞으면 자동 로그인
+					String token = jwtService.create("userEmail", email, "access-token");
+					resultMap.put("access-token", token);
+					resultMap.put("message", "success");
+					status = HttpStatus.ACCEPTED;
+					System.out.println("2-3 소셜 계정 자동 로그인");
+				}
 			}
 		}catch(Exception e) {
 			resultMap.put("message", e.getMessage());
@@ -121,37 +129,40 @@ public class UserController {
 	@PostMapping("/signup")
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
+		if(userDto.getPassword()==null) {
+			//초기비밀번호 설정
+			userDto.setPassword("1q2w3e4r");
+		}
 //		String email = memberDto.getEmail();
 //		String name = memberDto.getName();
 //		String password = memberDto.getPassword();
 //		String phone = memberDto.getPhone();
 		HttpStatus status = null;
 		
-		System.out.println("--회원가입 함수 진입");
 		try {
-			System.out.println("--회원가입 시도");
+			System.out.println("1.회원가입 시도");
 			int emailNum = userService.getEmail(userDto.getEmail());
 			int nameNum = userService.getName(userDto.getName());
 			if (emailNum != 0) {
 				resultMap.put("message", "동일한 이메일이 사용중입니다.");
 				status = HttpStatus.CONFLICT;
-				System.out.println("--이메일 중복");
+				System.out.println("2-1이메일 중복");
 			} else if (nameNum != 0) {
 				resultMap.put("message", "동일한 닉네임이 사용중입니다.");
 				status = HttpStatus.CONFLICT;
-				System.out.println("--닉네임 중복");
+				System.out.println("2-2닉네임 중복");
 			} else {
 //				userService.signup(email, name, password, phone);
 				userService.signup(userDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--회원가입 성공");
+				System.out.println("3-1 회원가입 성공");
 			}
 		} catch (Exception e) {
 			logger.error("회원가입 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--회원가입 실패");
+			System.out.println("4-1 회원가입 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

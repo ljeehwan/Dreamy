@@ -16,7 +16,8 @@ export default new Vuex.Store({
             uid:"",
             email:"",
             name:"",
-            phone:""
+            phone:"",
+            logintype:"",
         },
         // 로딩 관련~~~~~~
         loadingState: false,
@@ -32,8 +33,9 @@ export default new Vuex.Store({
             state.user.email=payload["user"].email;
             state.user.name=payload["user"].name;
             state.user.phone=payload["user"].phone;
+            state.user.logintype=payload["user"].logintype;
         },
-        setKakaoUser(state,payload){
+        setSocialUser(state,payload){
             state.user.email=payload.email;
             state.user.name=payload.name;
         },
@@ -88,6 +90,9 @@ export default new Vuex.Store({
         },
         getEmail(state){
             return state.user.email;
+        },
+        getLogintype(state){
+            return state.user.logintype;
         }
     },
     actions:{
@@ -134,29 +139,60 @@ export default new Vuex.Store({
                 url:`${SERVER_URL}/account/checkUser`,
                 data: {
                     email: user.email,
+                    logintype:user.logintype
                 }
-              }).then((res)=>{
-                  context.commit("setKakaoUser",user);
-                  console.log(res);
-                  if(res.data["message"]==="needLogin"){
-                    alert("계정이 이미 존재합니다! 로그인해주세요")
+              }).then((response)=>{
+                  if(response.data["message"]=="otherSocialLogin"){
+                    alert("해당 계정이 이미 다른 플랫폼으로 가입되어있습니다")
                   }
-                  else if(res.data["message"]==="needSignup"){
-                    alert("해당 소셜로 등록된 계정이 존재하지 않습니다! 회원가입해주세요")
-                    router.push("/user/join");
+                  else if(response.data["message"]=='needSignup'){
+                    //이메일, 가입타입, 이름으로 자동회원가입  - 카카오에서 이미 인증이 된 회원이므로..?
+                    context.commit("setSocialUser",user);
+                    context.dispatch("socialSignup",user.logintype);
+                    alert("자동 회원가입 완료! 초기 비밀번호를 수정해주세요");
+                  }
+                  //자동 로그인
+                  else if(response.data["message"]=="success"){
+                    localStorage.setItem("access_token", response.data["access-token"])
+                    localStorage.setItem("isLogin", true)
+                    axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
+                    router.go(router.currentRoute);
+                    context.dispatch("getUserinfo");
                   }
               }).catch((error)=>{
                   console.log(error.message)
               })
         },
 
+        socialSignup(context,type){
+            let user={
+                email:this.state.user.email,
+                password:"1q2w3e4r",
+                name:this.state.user.name,
+            }
+
+            axios({
+                method:"post",
+                url:`${SERVER_URL}/account/signup`,
+                data:{
+                    email:user.email,
+                    name:user.name,
+                    logintype:type,
+                }
+            }).then((res)=>{
+                console.log(res);
+                context.dispatch("login",user);
+            }).catch((error)=>{
+                console.log(error);
+            })
+        },
+
         logout(context){
             localStorage.removeItem("access_token");
             localStorage.removeItem("isLogin");
-            location.reload();
             context.commit("logout");
             axios.defaults.headers.common["auth-token"] = undefined;
-        },
+        },  
 
         async SIGNUP(context, credentials){
             try {
