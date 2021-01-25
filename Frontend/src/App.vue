@@ -9,8 +9,9 @@
         <Modal/>
         <SnackBar/>
         <Spinner/>
+        
+        <Upload v-if="getIsLogined"/>
       </div>
-
     </v-app>
   </div>
 </template>
@@ -22,6 +23,9 @@ import NavBar from '@/components/NavBar.vue'
 import Modal from '@/components/Modal.vue'
 import SnackBar from '@/components/SnackBar.vue'
 import Spinner from '@/components/Spinner.vue'
+import Upload from './components/upload.vue'
+
+import { mapGetters } from 'vuex';
 
 export default {
   name: "app",
@@ -29,8 +33,12 @@ export default {
     NavBar,
     Modal,
     SnackBar,
-    Spinner
-  }
+    Spinner,
+    Upload,
+  },
+  computed:{
+        ...mapGetters(['getIsLogined'])
+    },
 };
 </script>
 

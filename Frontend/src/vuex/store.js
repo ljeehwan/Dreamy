@@ -148,7 +148,7 @@ export default new Vuex.Store({
                   else if(response.data["message"]=='needSignup'){
                     //이메일, 가입타입, 이름으로 자동회원가입  - 카카오에서 이미 인증이 된 회원이므로..?
                     context.commit("setSocialUser",user);
-                    context.dispatch("socialSignup",user.logintype);
+                    context.dispatch("socialSignup","kakao");
                     alert("자동 회원가입 완료! 초기 비밀번호를 수정해주세요");
                   }
                   //자동 로그인
@@ -156,6 +156,7 @@ export default new Vuex.Store({
                     localStorage.setItem("access_token", response.data["access-token"])
                     localStorage.setItem("isLogin", true)
                     axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
+                    console.log(axios.defaults.headers.common["access-token"]);
                     router.go(router.currentRoute);
                     context.dispatch("getUserinfo");
                   }
@@ -191,7 +192,8 @@ export default new Vuex.Store({
             localStorage.removeItem("access_token");
             localStorage.removeItem("isLogin");
             context.commit("logout");
-            axios.defaults.headers.common["auth-token"] = undefined;
+            axios.defaults.headers.common["access-token"] = undefined;
+            window.location.reload();
         },  
 
         async SIGNUP(context, credentials){

@@ -82,7 +82,7 @@ export default {
     }),
     components:{
         loginComponent,
-        LoginUser
+        LoginUser,
     },
     computed:{
         ...mapGetters(['getIsLogined'])
