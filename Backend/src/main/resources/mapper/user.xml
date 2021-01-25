@@ -11,17 +11,17 @@
 	</select>
 	
 	<select id="setUser" parameterType="String" resultType="userDto">
-		select uid, email, name, phone, logintype from User
+		select uid, email, name, phone, login_type from User
 		where email = #{email}
 	</select>
 
 	<insert id="signup" parameterType="Map">
-		insert into User (email, name, password, phone, logintype)
-		values (#{email}, #{name}, #{password}, #{phone}, #{logintype})
+		insert into User (email, name, password, phone, login_type)
+		values (#{email}, #{name}, #{password}, #{phone}, #{loginType})
 	</insert>
 
-	<select id="getLogintype" parameterType="String" resultType="String">
-		select logintype from User
+	<select id="getLoginType" parameterType="String" resultType="String">
+		select login_type from User
 		where email = #{email}
 	</select>
 	
