@@ -55,15 +55,17 @@ export default {
 
     methods:{
         logout(){
+            if(this.getLogintype=="kakao"){
             window.Kakao.API.request({
                 url: '/v1/user/unlink',
                  success:((res)=>{
                      console.log(res);
-                     this.$store.state.user.logintype="default";
-                    this.$store.dispatch('logout');        
+                     this.$store.state.user.logintype="default";    
                  }) 
             })
-        }
+            }
+            this.$store.dispatch('logout');    
+        },
     }
 }
 </script>

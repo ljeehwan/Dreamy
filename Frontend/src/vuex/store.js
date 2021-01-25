@@ -33,7 +33,7 @@ export default new Vuex.Store({
             state.user.email=payload["user"].email;
             state.user.name=payload["user"].name;
             state.user.phone=payload["user"].phone;
-            state.user.logintype=payload["user"].logintype;
+            state.user.logintype=payload["user"].loginType;
         },
         setSocialUser(state,payload){
             state.user.email=payload.email;
@@ -115,7 +115,6 @@ export default new Vuex.Store({
             localStorage.setItem("access_token", response.data["access-token"])
             localStorage.setItem("isLogin", true)
             axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
-            router.go(router.currentRoute);
             context.dispatch("getUserinfo");
           }).catch((error) => {
             alert("이메일과 비밀번호를 확인하세요");
@@ -131,8 +130,8 @@ export default new Vuex.Store({
                 url: `${SERVER_URL}/account/checkJwt`,
                 data : token,
             }).then((response)=>{
+                console.log(response.data);
                 context.commit("setUserinfo",response.data);
-                // console.log(response.data);
             }).catch(()=>{
                 alert("jwt 인증 오류");
             })
@@ -191,8 +190,7 @@ export default new Vuex.Store({
         },
 
         logout(context){
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("isLogin");
+            localStorage.clear();
             context.commit("logout");
             axios.defaults.headers.common["access-token"] = undefined;
             window.location.reload();
