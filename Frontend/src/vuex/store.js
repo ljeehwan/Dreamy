@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
 import {router} from "@/routes.js"
-import {requestJoinMember, setSnackBarInfo} from "../apis/accounts_api.js"
+import {requestJoinMember, setSnackBarInfo, requestUpdateMember} from "../apis/accounts_api.js"
 
 Vue.use(Vuex)
 
@@ -33,7 +33,7 @@ export default new Vuex.Store({
             state.user.email=payload["user"].email;
             state.user.name=payload["user"].name;
             state.user.phone=payload["user"].phone;
-            state.user.logintype=payload["user"].logintype;
+            state.user.logintype=payload["user"].loginType;
         },
         setSocialUser(state,payload){
             state.user.email=payload.email;
@@ -79,17 +79,22 @@ export default new Vuex.Store({
         END_SPINNER(state) {
             state.spinnerLoading = false
         },
-
     },
     getters:{
         getIsLogined(state){
             return state.isLogined;
+        },
+        getUserId(state) {
+            return state.user.uid
         },
         getUsername(state){
             return state.user.name;
         },
         getEmail(state){
             return state.user.email;
+        },
+        getPhone(state){
+            return state.user.phone;
         },
         getLogintype(state){
             return state.user.logintype;
@@ -110,7 +115,6 @@ export default new Vuex.Store({
             localStorage.setItem("access_token", response.data["access-token"])
             localStorage.setItem("isLogin", true)
             axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
-            router.go(router.currentRoute);
             context.dispatch("getUserinfo");
           }).catch((error) => {
             alert("이메일과 비밀번호를 확인하세요");
@@ -126,20 +130,20 @@ export default new Vuex.Store({
                 url: `${SERVER_URL}/account/checkJwt`,
                 data : token,
             }).then((response)=>{
+                console.log(response.data);
                 context.commit("setUserinfo",response.data);
-                // console.log(response.data);
             }).catch(()=>{
                 alert("jwt 인증 오류");
             })
         },
 
-        getkakaoUserinfo(context,user){
+        getSocialUserinfo(context,user){
             axios({
                 method:"post",
                 url:`${SERVER_URL}/account/checkUser`,
                 data: {
                     email: user.email,
-                    logintype:user.logintype
+                    loginType:user.logintype
                 }
               }).then((response)=>{
                   if(response.data["message"]=="otherSocialLogin"){
@@ -156,7 +160,6 @@ export default new Vuex.Store({
                     localStorage.setItem("access_token", response.data["access-token"])
                     localStorage.setItem("isLogin", true)
                     axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
-                    router.go(router.currentRoute);
                     context.dispatch("getUserinfo");
                   }
               }).catch((error)=>{
@@ -168,16 +171,15 @@ export default new Vuex.Store({
             let user={
                 email:this.state.user.email,
                 password:"1q2w3e4r",
-                name:this.state.user.name,
+                name:this.state.user.name,   
             }
-
             axios({
                 method:"post",
                 url:`${SERVER_URL}/account/signup`,
                 data:{
                     email:user.email,
                     name:user.name,
-                    logintype:type,
+                    loginType:type,
                 }
             }).then((res)=>{
                 console.log(res);
@@ -188,10 +190,10 @@ export default new Vuex.Store({
         },
 
         logout(context){
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("isLogin");
+            localStorage.clear();
             context.commit("logout");
-            axios.defaults.headers.common["auth-token"] = undefined;
+            axios.defaults.headers.common["access-token"] = undefined;
+            window.location.reload();
         },  
 
         async SIGNUP(context, credentials){
@@ -211,7 +213,27 @@ export default new Vuex.Store({
                 context.commit('OPEN_MODAL', {title: '회원가입 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
-
-
+        async UPDATE_MEMBER(context, credentials){
+            try {
+                // context.commit('START_LOADING')
+                // context.commit('START_SPINNER')
+                const userId = this.state.user.uid
+                console.log(`스토어 진입성공 : ${userId}`)
+                const response = await requestUpdateMember(credentials, userId)
+                console.log(response)
+                // setTimeout(function () {
+                //     console.log('셋 타임아웃 시작')
+                //     context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'info', 'top'))
+                //     context.commit('END_SPINNER')
+                //     context.commit('END_LOADING')
+                //     // 어디로 보낼지 다시 정해야함
+                //     router.push('/')
+                //     return response                    
+                // }, 2000)
+            } catch (e) {
+                context.commit('END_LOADING')
+                context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data.message, option1: '닫기',})
+            }
+        },
     }
 })

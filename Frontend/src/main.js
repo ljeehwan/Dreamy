@@ -21,7 +21,7 @@ new Vue({
   store,
   vuetify,
   beforeCreate(){
-    if(localStorage.getItem("isLogin"))
+    if(localStorage.getItem("isLogin")=="true")
       this.$store.dispatch("getUserinfo")
   },
   render: h => h(App)

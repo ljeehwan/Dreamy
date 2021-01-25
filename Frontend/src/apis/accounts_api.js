@@ -1,10 +1,14 @@
 import axios from 'axios'
 
 const SERVER_URL="http://localhost:8080";
-
+// 회원가입
 function requestJoinMember(credentials) {
     credentials.email = credentials.email.toLowerCase()
     return axios.post(`${SERVER_URL}/account/signup`, credentials)
+}
+// 회원 정보 변경
+function requestUpdateMember(credentials, userId) {
+    return axios.put(`${SERVER_URL}/account/update/${userId}`, credentials)
 }
 
 //로그인
@@ -24,5 +28,6 @@ function setSnackBarInfo(text, color, location) {
 export {
     setSnackBarInfo,
     requestJoinMember,
-    requestLoginMember
+    requestLoginMember,
+    requestUpdateMember
 }

@@ -81,6 +81,9 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 			String email=jwtService.get(token);
 			UserDto loginUser=userService.setUser(email);
+			System.out.println("로그인 완료");
+			
+			System.out.println(loginUser.getLoginType());
 			resultMap.put("user", loginUser);
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
@@ -95,8 +98,9 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		String email=memberDto.getEmail();
-		String type=memberDto.getLogintype();
+		String type=memberDto.getLoginType();
 		System.out.println("1. socail 로그인 db 유저 정보 확인"); 
+
 		try {
 			//이메일 중복 검사
 			int user=userService.getEmail(email);
@@ -106,7 +110,7 @@ public class UserController {
 				System.out.println("2-1 소셜 계정 자동 가입"); 
 			}
 			else if(user==1){//db에 유저정보가 있음 => 로그인
-				if(!(type.equals(userService.getLogintype(email)))) {	//db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
+				if(!(type.equals(userService.getLoginType(email)))) {	//db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
 					resultMap.put("message", "otherSocialLogin");					
 					status = HttpStatus.ACCEPTED;
 					System.out.println("2-2 소셜 계정존재시 거부");
@@ -130,15 +134,13 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto userDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		if(userDto.getPassword()==null) {
-			//초기비밀번호 설정
+			// 초기비밀번호 설정
+			// 난수생성 함수 추가
 			userDto.setPassword("1q2w3e4r");
 		}
-//		String email = memberDto.getEmail();
-//		String name = memberDto.getName();
-//		String password = memberDto.getPassword();
-//		String phone = memberDto.getPhone();
 		HttpStatus status = null;
-		
+		String type=userDto.getLoginType();
+		System.out.println(type+"type: signup");
 		try {
 			System.out.println("1.회원가입 시도");
 			int emailNum = userService.getEmail(userDto.getEmail());
@@ -152,7 +154,6 @@ public class UserController {
 				status = HttpStatus.CONFLICT;
 				System.out.println("2-2닉네임 중복");
 			} else {
-//				userService.signup(email, name, password, phone);
 				userService.signup(userDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -227,7 +228,7 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto memberDto, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		if (jwtService.isUsable(request.getHeader("access-token"))) {
+//		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
 			try {
 				System.out.println("--회원정보 수정 시도");
@@ -241,11 +242,11 @@ public class UserController {
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 				System.out.println("--회원정보 수정 실패");
 			}
-		} else {
-			logger.error("사용 불가능 토큰!!!");
-			resultMap.put("message", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
-		}
+//		} else {
+//			logger.error("사용 불가능 토큰!!!");
+//			resultMap.put("message", FAIL);
+//			status = HttpStatus.UNAUTHORIZED;
+//		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
