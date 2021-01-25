@@ -73,7 +73,6 @@
 
 <script>
 import loginComponent from './Login.vue'
-import { mapGetters } from 'vuex';
 import LoginUser from './LoginUser.vue';
 
 export default {
@@ -85,7 +84,9 @@ export default {
         LoginUser,
     },
     computed:{
-        ...mapGetters(['getIsLogined'])
+       getIsLogined(){
+           return this.$store.getters.getIsLogined;
+       }
     },
 }
 </script>
