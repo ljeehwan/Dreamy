@@ -44,13 +44,16 @@ public class UserServiceImpl implements UserService {
 		map.put("name", userDto.getName());
 		map.put("password", userDto.getPassword());
 		map.put("phone", userDto.getPhone());
-		map.put("logintype", userDto.getLogintype());
+		if (userDto.getLoginType() == null)
+			map.put("loginType", "default");
+		else
+			map.put("loginType", userDto.getLoginType());
 		sqlSession.getMapper(UserMapper.class).signup(map);
 	}
 	
 	@Override
-	public String getLogintype(String email) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).getLogintype(email);
+	public String getLoginType(String email) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).getLoginType(email);
 	}
 	
 	@Override
