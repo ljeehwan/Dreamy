@@ -211,7 +211,5 @@ export default new Vuex.Store({
                 context.commit('OPEN_MODAL', {title: '회원가입 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
-
-
     }
 })
