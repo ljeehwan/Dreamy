@@ -37,7 +37,8 @@ const router = new VueRouter({
         {
             path: '/user/mypage/',
             name: 'myPage',
-            component: myPage
+            component: myPage,
+            props: true
         },
     
         {

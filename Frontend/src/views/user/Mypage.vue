@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="user-info">
-        <MyInfo/>
+        <MyInfo v-bind="name"/>
         <!-- 그리드 쓸때 
         https://vuetifyjs.com/en/components/images/#height
         Misc grid 참고하기 -->
@@ -16,6 +16,10 @@ export default {
   components: {
     MyInfo,
   },
+  props: {
+    name: {type: String}
+  },
+  
 
 }
 </script>

@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios"
 import {router} from "@/routes.js"
-import {requestJoinMember, setSnackBarInfo, requestUpdateMember} from "../apis/accounts_api.js"
+import {requestJoinMember, setSnackBarInfo, requestUpdateMember,
+requestMemberInfo,} from "../apis/accounts_api.js"
 
 Vue.use(Vuex)
 
@@ -10,6 +11,7 @@ const SERVER_URL="http://localhost:8080";
 
 export default new Vuex.Store({
     state:{
+        // targetName: '',
         isLogined:false,
         isSign:false,
         user:{
@@ -79,6 +81,9 @@ export default new Vuex.Store({
         END_SPINNER(state) {
             state.spinnerLoading = false
         },
+        // TARGET_NAME(state, name) {
+        //     state.targetName = name
+        // },
     },
     getters:{
         getIsLogined(state){
@@ -218,25 +223,50 @@ export default new Vuex.Store({
         },
         async UPDATE_MEMBER(context, credentials){
             try {
-                // context.commit('START_LOADING')
-                // context.commit('START_SPINNER')
+                context.commit('START_LOADING')
+                context.commit('START_SPINNER')
                 const userId = this.state.user.uid
                 console.log(`스토어 진입성공 : ${userId}`)
                 const response = await requestUpdateMember(credentials, userId)
                 console.log(response)
-                // setTimeout(function () {
-                //     console.log('셋 타임아웃 시작')
-                //     context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'info', 'top'))
-                //     context.commit('END_SPINNER')
-                //     context.commit('END_LOADING')
-                //     // 어디로 보낼지 다시 정해야함
-                //     router.push('/')
-                //     return response                    
-                // }, 2000)
+                setTimeout(function () {
+                    console.log('셋 타임아웃 시작')
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'info', 'top'))
+                    context.commit('END_SPINNER')
+                    context.commit('END_LOADING')
+                    // 어디로 보낼지 다시 정해야함
+                    router.push('/')
+                    return response                    
+                }, 2000)
             } catch (e) {
                 context.commit('END_LOADING')
                 context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
+        // 회원 상세 정보 요청 
+        async GET_MEMBER(context, targetName) {
+            try {
+                // 일단 요청하는 방식 uid 말고 name으로 바꿔달라고 해서 요청보내서 응답을 받아온다.
+                context.commit('START_LOADING')
+                context.commit('START_SPINNER')
+                const response = await requestMemberInfo(targetName)
+                setTimeout(function () {
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'info', 'top'))
+                    context.commit('END_SPINNER')
+                    context.commit('END_LOADING')
+                    // 받은 응답값을 리턴해준다.
+                    return response
+                }, 1500)
+            } catch (e) {
+                context.commit('END_LOADING')
+                context.commit('OPEN_MODAL', {title: '회원 정보 요청 실패', content: e.response.data.message, option1: '닫기',})
+            }
+        }
+
+
+        // 회원 상세 정보 요청
+        // GET_TARGET(context, name) {
+        //     context.commit('TARGET_NAME', name)
+        // },
     }
 })

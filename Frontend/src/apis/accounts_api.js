@@ -10,6 +10,10 @@ function requestJoinMember(credentials) {
 function requestUpdateMember(credentials, userId) {
     return axios.put(`${SERVER_URL}/account/update/${userId}`, credentials)
 }
+// 회원 상세 정보 요청
+function requestMemberInfo(targetName) {
+    return axios.get(`${SERVER_URL}/account/user/${targetName}`)
+}
 
 //로그인
 function requestLoginMember(user) {
@@ -29,5 +33,6 @@ export {
     setSnackBarInfo,
     requestJoinMember,
     requestLoginMember,
-    requestUpdateMember
+    requestUpdateMember,
+    requestMemberInfo,
 }

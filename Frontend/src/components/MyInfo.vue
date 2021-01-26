@@ -34,70 +34,19 @@
             </v-sheet>
           </v-bottom-sheet>
           <!-- 회원 상세 정보 -->
-          <div >
+          <div>
             <!-- email -->
             <div class="d-flex justify-start font-weight-bold">
               <p class="mr-6">
                 <v-icon left>mdi-email</v-icon>
-                E-mail : {{getEmail}}
+                E-mail : 
               </p>
-                <!-- 회원 정보 수정 -->
-              <v-dialog v-model="dialog" max-width="400px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on" text x-small>
-                    <v-icon class="grey--text">mdi-cog</v-icon>
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-card-title>
-                    <span class="headline">회원 정보 수정</span>
-                  </v-card-title>
-                  <v-card-text>
-                    <v-container>
-                      <v-alert v-if="!isCorrect" type="error">
-                        비밀번호가 일치하지 않습니다.
-                      </v-alert>
-                      <v-form class="pa-3 text-center" ref="form" lazy-validation>
-                        <!-- 비밀번호 입력 -->
-                        <v-text-field :rules="passwordRules" loading
-                        class="pl-3 pr-3" v-model="credentials.password"
-                        label="비밀번호" prepend-icon="mdi-lock"
-                        required type="password">
-                        </v-text-field>
-                        <!-- 비밀번호 확인 -->
-                        <v-text-field :rules="validatePasswordRules" class="pl-3 pr-3" 
-                        label="비밀번호 확인" loading
-                        prepend-icon="mdi-lock"
-                        required type="password" v-model="validatePassword">
-                        </v-text-field>
-                        <!-- 핸드폰 번호 -->
-                        <v-text-field loading
-                        class="pr-3 pl-3 loading" v-model="credentials.phone"
-                        prepend-icon="mdi-cellphone-information" :counter="11"
-                        :label="getPhone" :rules="phoneNumberRules"
-                        required >
-                        </v-text-field>
-                        <div>
-                          <!-- dialog = false만들어줘야함 성공시;; -->
-                          <v-btn  color="error" class="mr-4 mt-3 mr-9" depressed @click="dialog=false">
-                          취소
-                          </v-btn>
-                          <v-btn @click="onUpdate" color="success" class="mt-3 ml-9" depressed>
-                          가입하기
-                          </v-btn>
-                        </div>
-                      </v-form>
-                    </v-container>
-                  </v-card-text>
-                </v-card>
-              </v-dialog>
             </div>
-
             <!-- 닉네임 -->
             <div class="d-flex justify-start font-weight-bold">
               <p>
                 <v-icon left>mdi-account</v-icon>
-                닉네임 : {{getName}}
+                닉네임 :
                 </p>
             </div>
           </div>
@@ -105,7 +54,7 @@
           <div class="d-flex justify-start font-weight-bold">
             <p>
               <v-icon left>mdi-phone</v-icon>
-              핸드폰 번호 : {{getPhone}}
+              핸드폰 번호 : 
             </p>
           </div>
         </v-card>
@@ -124,59 +73,30 @@ export default {
     return {
       sheet: false,
       dialog: false,
-      isCorrect: true,
-      credentials: {
-        uid: '',
-        email: '',
-        name: '',
-        password: '',
-        phone: '',
-      },
-      passwordRules: [
-        v => !!v || '비밀번호를 작성해주세요',
-        v => (v && v.length >= 8) || '8자 이상으로로 작성해주세요',
-        v => v.search(/\s/) === -1 || '공백을 제거해주세요!'
-      ],
-      validatePassword: '',
-      validatePasswordRules: [
-        v => v.search(/\s/) === -1 || '공백이 포함되어있습니다',
-        v => (v && v.length >= 8) || '8자 이상으로로 작성해주세요',
-      ],
-      phoneNumberRules: [
-        v => (v && v.length === 11) || '숫자 11자로 작성해주세요',
-        v => v.search(/\s/) === -1 || '공백을 제거해주세요!'
-      ],
+      email : '',
+      username : '',
+      phone: '',
     }
   },
-  computed: {
-    getEmail() {
-      return this.$store.getters.getEmail
-    },
-    getName() {
-      return this.$store.getters.getUsername
-    },
-    getPhone() {
-      return this.$store.getters.getPhone
-    },
+  props: {
+    name: {type: String},
   },
   methods: {
-    onUpdate: function () {
-      this.isCorrect = true
-      if (this.$refs.form.validate()) {
-        if (this.validatePassword === this.credentials.password) {
-          this.credentials.uid = this.$store.state.user.uid
-          this.credentials.email = this.$store.state.user.email
-          this.credentials.name = this.$store.state.user.name
-          console.log(this.credentials)
-          console.log('마이 인포 는 오케이')
-          this.$store.dispatch('UPDATE_MEMBER', this.credentials)
-          // this.dialog = false
-        } else {
-          this.isCorrect = false
-        }
-      }
-    },
   },
+  created: function () {
+    // 파람스로 받은 이름을 타겟에 넣어서
+    const targetName = this.name
+    //1. 스토어에 있는 GET_MEMBER dispatch한다. (네브 바의 마이 페이지 버튼은 어차피 
+    // 자기 자신이기 때문에 이름을 내이름을 내려보내줌)
+    // 응답을 변수에 담아서 저장
+    const res = this.$store.dispatch('GET_MEMBER', targetName)
+    // this.email = res.data.~~~
+    // 저장한 변수에서 data의 email, username, phone으로 이름을 할당해주고 브라우저에 출력해준다
+
+    // 2. 응답받은(위에서 출력한) 유저의 name과 로그인한 유저의 이름이 같으면 수정 버튼 활성화
+    // 타겟과 로그인한 이름이 일치하면 수정 버튼을 보여준다.
+
+  }
 }
 </script>
 

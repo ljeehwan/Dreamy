@@ -30,8 +30,9 @@
                     {{getEmail}} </v-card-text>
                 </v-flex>
             </v-layout>
-            <router-link to="/user/Mypage" style="text-decoration:none;">
-            <v-btn target="_blank" text style="width:180px;">MyPage</v-btn></router-link>
+            
+            <v-btn @click="moveToMyPage" text style="width:180px;">MyPage</v-btn>
+
             <br>
             <v-btn target="_blank" text @click="logout" style="width:180px; color:red;">Logout</v-btn>
         </v-container>
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+import {router} from "../routes"
 
 export default {
     computed:{
@@ -68,7 +70,12 @@ export default {
                  }) 
             })
             }
-        }
+        },
+        moveToMyPage () {
+            const name = this.$store.state.getters.getUsername
+            // this.$store.dispatch('GET_TARGET', name)
+            router.push({name: 'myPage', params: {name}})
+        },
     }
 }
 </script>
