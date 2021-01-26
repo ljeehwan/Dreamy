@@ -11,17 +11,15 @@ import com.ssafy.Dreamy.model.UserDto;
 public interface UserMapper {
 
 	public int login(Map<String, String> map) throws SQLException;
-	public UserDto setUser(String email) throws SQLException;
+	public UserDto setUser(String email) throws SQLException;		// for social login
+	public String getLoginType(String email) throws SQLException;	// for social login
 	public void signup(Map<String, Object> map) throws SQLException;
-	public String getLoginType(String email) throws SQLException;
-	public int getEmail(String email) throws SQLException;
-	public int getName(String name) throws SQLException;
-	public void delete(int uid) throws SQLException;
+	public int getEmail(String email) throws SQLException;	// for signup
+	public int getName(String name) throws SQLException;	// for signup
 	public void update(Map<String, Object> map) throws SQLException;
-	
-	public int certification(Map<String, String> map)throws SQLException;
-	public void updatePassword(Map<String, String> map)throws SQLException;
-	
-//	public UserDto userInfo(String userid) throws SQLException;
+	public void delete(int uid) throws SQLException;
+	public int certification(Map<String, String> map)throws SQLException;	// for find password
+	public void updatePassword(Map<String, String> map)throws SQLException;	// for find password
+	public UserDto userInfo(String name) throws SQLException;
 	
 }
