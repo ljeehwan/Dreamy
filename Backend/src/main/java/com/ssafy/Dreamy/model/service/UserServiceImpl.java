@@ -38,22 +38,22 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void signup(UserDto userDto) throws Exception {
+	public String getLoginType(String email) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).getLoginType(email);
+	}
+	
+	@Override
+	public int signup(UserDto userDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", userDto.getEmail());
 		map.put("name", userDto.getName());
 		map.put("password", userDto.getPassword());
 		map.put("phone", userDto.getPhone());
-		if (userDto.getLoginType() == null)
+		if (userDto.getLoginType()==null)
 			map.put("loginType", "default");
 		else
 			map.put("loginType", userDto.getLoginType());
-		sqlSession.getMapper(UserMapper.class).signup(map);
-	}
-	
-	@Override
-	public String getLoginType(String email) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).getLoginType(email);
+		return sqlSession.getMapper(UserMapper.class).signup(map);
 	}
 	
 	@Override
@@ -69,11 +69,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(int uid) throws Exception {
-		sqlSession.getMapper(UserMapper.class).delete(uid);
-	}
-
-	@Override
 	public void update(UserDto userDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("uid", userDto.getUid());
@@ -82,6 +77,11 @@ public class UserServiceImpl implements UserService {
 		sqlSession.getMapper(UserMapper.class).update(map);
 	}
 	
+	@Override
+	public void delete(int uid) throws Exception {
+		sqlSession.getMapper(UserMapper.class).delete(uid);
+	}
+
 	@Override
 	public int certification(String email, String phone) throws Exception {
 		Map<String, String> map = new HashMap<>();
@@ -100,10 +100,9 @@ public class UserServiceImpl implements UserService {
 		sqlSession.getMapper(UserMapper.class).updatePassword(map);
 	}
 
+	@Override
+	public UserDto userInfo(String name) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).userInfo(name);
+	}
 	
-//	@Override
-//	public UserDto userInfo(String userid) throws Exception {
-//		return sqlSession.getMapper(UserMapper.class).userInfo(userid);
-//	}
-
 }

@@ -58,8 +58,7 @@ export default {
             if(this.getLogintype=="kakao"){
             window.Kakao.API.request({
                 url: '/v1/user/unlink',
-                 success:((res)=>{
-                     console.log(res);
+                 success:(()=>{
                      this.$store.state.user.logintype="default";    
                  }) 
             })
