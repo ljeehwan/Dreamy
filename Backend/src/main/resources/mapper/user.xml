@@ -17,7 +17,7 @@
 
 	<insert id="signup" parameterType="Map">
 		insert into User (email, name, password, phone, login_type)
-		values (#{email}, #{name}, #{password}, #{phone}, #{login_type})
+		values (#{email}, #{name}, #{password}, #{phone}, #{loginType})
 	</insert>
 
 	<select id="getLoginType" parameterType="String" resultType="String">
