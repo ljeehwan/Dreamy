@@ -5,7 +5,7 @@
         <v-card-title>지허니 100대 때리기</v-card-title>
 
         <v-card-actions>
-            <v-btn color="deep-purple lighten-2" text="text" @click="reserve">
+            <v-btn color="deep-purple lighten-2" text="text">
                 서와닝
             </v-btn>
             <v-spacer/>
@@ -66,8 +66,6 @@
         methods: {
             detail() {
                 this.loading = true
-
-
             }
         }
     }

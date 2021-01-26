@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 		map.put("name", userDto.getName());
 		map.put("password", userDto.getPassword());
 		map.put("phone", userDto.getPhone());
-		if (userDto.getLoginType().length()==0)
+		if (userDto.getLoginType()==null)
 			map.put("loginType", "default");
 		else
 			map.put("loginType", userDto.getLoginType());
