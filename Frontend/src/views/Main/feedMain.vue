@@ -17,7 +17,7 @@
 
         <v-divider class="mx-4"></v-divider>
         <v-card-actions>
-            <v-btn color="deep-purple lighten-2" text="text" @click="reserve">
+            <v-btn color="deep-purple lighten-2" text="text" @click="detail">
                 자세히보기
             </v-btn>
             <v-spacer/>
@@ -49,6 +49,13 @@
             </v-btn>
             <span>0</span>
         </v-card-actions>
+        <v-dialog v-model="loading" max-width="1000">
+            <v-card>
+                 <v-card-title>지허니 100대 때리기</v-card-title>
+            </v-card>
+
+
+        </v-dialog>
     </v-card>
 </template>
 
@@ -57,10 +64,10 @@
         data: () => ({loading: false, selection: 1}),
 
         methods: {
-            reserve() {
+            detail() {
                 this.loading = true
 
-                setTimeout(() => (this.loading = false), 2000)
+
             }
         }
     }

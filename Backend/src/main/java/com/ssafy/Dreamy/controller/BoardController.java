@@ -50,7 +50,7 @@ public class BoardController {
 	}
 
 	//////////게시물 수정(내용만)///////////
-	@PutMapping("/update") 
+	@PutMapping("/update")
 	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto){
 		Map<String, Object> resultMap = new HashMap<>();
 		
