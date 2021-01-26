@@ -11,6 +11,7 @@ function requestUpdateMember(credentials, userId) {
     return axios.put(`${SERVER_URL}/account/update/${userId}`, credentials)
 }
 
+
 //로그인
 function requestLoginMember(user) {
     return axios.post(`${SERVER_URL}/account/login`, user)
@@ -29,5 +30,6 @@ export {
     setSnackBarInfo,
     requestJoinMember,
     requestLoginMember,
-    requestUpdateMember
+    requestUpdateMember,
+    // requestMemberInfo,
 }
