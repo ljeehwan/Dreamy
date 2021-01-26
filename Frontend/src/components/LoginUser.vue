@@ -30,8 +30,7 @@
                     {{getEmail}} </v-card-text>
                 </v-flex>
             </v-layout>
-            <router-link to="/user/Mypage" style="text-decoration:none;">
-            <v-btn target="_blank" text style="width:180px;">MyPage</v-btn></router-link>
+                <v-btn @click="moveToMyPage" text style="width:180px;">MyPage</v-btn>
             <br>
             <v-btn target="_blank" text @click="logout" style="width:180px; color:red;">Logout</v-btn>
         </v-container>
@@ -40,7 +39,14 @@
 </template>
 
 <script>
+import {router} from "../routes"
+
 export default {
+    data: function () {
+        return {
+
+        }
+    },
     computed:{
         getEmail(){         // 렌더링 시점때문에 mapgetters 사용시 오류가 나므로 이렇게 쓰기
             return this.$store.getters.getEmail;
@@ -64,6 +70,14 @@ export default {
             })
             }
             this.$store.dispatch('logout');    
+        },
+        // 회원 상세 정보 페이지 보기 step1단계
+        moveToMyPage () {
+            // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
+            const name = this.$store.getters.getUsername
+            this.$store.dispatch('GET_TARGET', name)
+            router.push('/user/mypage/')
+            
         },
     }
 }
