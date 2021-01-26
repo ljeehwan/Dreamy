@@ -13,7 +13,7 @@ public interface UserMapper {
 	public int login(Map<String, String> map) throws SQLException;
 	public UserDto setUser(String email) throws SQLException;		// for social login
 	public String getLoginType(String email) throws SQLException;	// for social login
-	public void signup(Map<String, Object> map) throws SQLException;
+	public int signup(Map<String, Object> map) throws SQLException;
 	public int getEmail(String email) throws SQLException;	// for signup
 	public int getName(String name) throws SQLException;	// for signup
 	public void update(Map<String, Object> map) throws SQLException;

@@ -14,9 +14,7 @@ public class BoardDto {
 	private Date endDate;		// DATE
 	private int category;		// DEFAULT 6
 	private String imageUrl;	// TEXT
-	private int dateType;
-	private int totalDate;
-	private int running;
+	private long totalDate;		// not int
 	
 	public final int getPid() {
 		return pid;
@@ -97,29 +95,13 @@ public class BoardDto {
 	public final void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-	
-	public final int getDateType() {
-		return dateType;
-	}
-	
-	public final void setDateType(int dateType) {
-		this.dateType = dateType;
-	}
-	
-	public final int getTotalDate() {
+
+	public final long getTotalDate() {
 		return totalDate;
 	}
-	
-	public final void setTotalDate(int totalDate) {
+
+	public final void setTotalDate(long totalDate) {
 		this.totalDate = totalDate;
-	}
-	
-	public final int getRunning() {
-		return running;
-	}
-	
-	public final void setRunning(int running) {
-		this.running = running;
 	}
 	
 }
