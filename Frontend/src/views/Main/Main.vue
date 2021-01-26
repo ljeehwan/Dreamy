@@ -1,20 +1,16 @@
 <template>
   <v-row>
-      <v-col sm="3">
+      <v-col sm="4">
           <FeedMain/>
       </v-col>
-      <v-col sm="3">
+      <v-col sm="4">
           <FeedMain/>
       </v-col>
-      <v-col sm="3">
-          <FeedMain/>
-      </v-col>
-        <v-col sm="3">
+      <v-col sm="4">
           <FeedMain/>
       </v-col>
   </v-row>
-</template>
-
+</template>s
 <script>
 import FeedMain from './feedMain.vue'
 export default {

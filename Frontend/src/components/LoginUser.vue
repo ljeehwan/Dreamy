@@ -38,12 +38,14 @@
         </v-container>
     </v-card>
     </v-menu>
-    
 </template>
 
 <script>
+<<<<<<< HEAD
 import {router} from "../routes"
 
+=======
+>>>>>>> bb350aeaf27230510e0e10d9da4debad8137dac6
 export default {
     computed:{
         getEmail(){         // 렌더링 시점때문에 mapgetters 사용시 오류가 나므로 이렇게 쓰기
@@ -59,17 +61,16 @@ export default {
 
     methods:{
         logout(){
-        this.$store.dispatch('logout')
-        if(this.getLogintype=="kakao"){
+            if(this.getLogintype=="kakao"){
             window.Kakao.API.request({
                 url: '/v1/user/unlink',
                  success:((res)=>{
                      console.log(res);
-                     this.$store.state.user.logintype="default"
-                     window.location.reload();
+                     this.$store.state.user.logintype="default";    
                  }) 
             })
             }
+            this.$store.dispatch('logout');    
         },
         moveToMyPage () {
             const name = this.$store.state.getters.getUsername

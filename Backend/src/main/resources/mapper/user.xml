@@ -7,24 +7,28 @@
 	<select id="login" parameterType="Map" resultType="Integer">
 		select count(*) 
 		from User
-		where email = #{email} and password = #{password}
+		where email=#{email} and password=#{password}
 	</select>
 	
+	<!-- 소셜 로그인 관련 -->
 	<select id="setUser" parameterType="String" resultType="userDto">
-		select uid, email, name, phone, login_type from User
-		where email = #{email}
+		select uid, email, name, phone, login_type as loginType
+		from User
+		where email=#{email}
 	</select>
 
+	<select id="getLoginType" parameterType="String" resultType="String">
+		select login_type
+		from User
+		where email=#{email}
+	</select>
+	<!-- 소셜 로그인 관련 -->
+	
 	<insert id="signup" parameterType="Map">
 		insert into User (email, name, password, phone, login_type)
 		values (#{email}, #{name}, #{password}, #{phone}, #{loginType})
 	</insert>
 
-	<select id="getLoginType" parameterType="String" resultType="String">
-		select login_type from User
-		where email = #{email}
-	</select>
-	
 	<!-- 회원가입 관련 -->
 	<select id="getEmail" parameterType="String" resultType="Integer">
 		select count(*) from User
@@ -37,16 +41,16 @@
 	</select>
 	<!-- 회원가입 관련 -->
 	
-	<delete id="delete" parameterType="Integer">
-		delete from User
-		where uid=#{uid}
-	</delete>
-
 	<update id="update" parameterType="Map">
 		update User set password=#{password}, phone=#{phone}
 		where uid=#{uid}
 	</update>
 	
+	<delete id="delete" parameterType="Integer">
+		delete from User
+		where uid=#{uid}
+	</delete>
+
 	<!-- 비밀번호 변경 관련 -->
 	<select id="certification" parameterType="Map" resultType="Integer">
 		select count(*)
@@ -60,5 +64,11 @@
 		where email=#{email}
 	</update>
 	<!-- 비밀번호 변경 관련 -->
+	
+	<select id="userInfo" parameterType="String" resultType="userDto">
+		select uid, email, name, phone, login_type as loginType
+		from User
+		where name=#{name}
+	</select>
 	
 </mapper>
