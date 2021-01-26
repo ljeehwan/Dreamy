@@ -119,9 +119,9 @@
                 </v-container>
             </v-dialog>
         </v-card>
-    </template>
+</template>
 
-    <script>
+<script>
         export default {
             data: () => ({loading: false, selection: 1}),
 
@@ -132,9 +132,9 @@
                 }
             }
         }
-    </script>
+</script>
 
-    <style>
+<style>
         .data {
             text-align: left;
         }
@@ -145,4 +145,4 @@
         #detail_top {
             padding-top: 15px;
         }
-    </style>
+</style>
