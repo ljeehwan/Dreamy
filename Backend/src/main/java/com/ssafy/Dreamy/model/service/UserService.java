@@ -7,7 +7,7 @@ public interface UserService {
 	public boolean login(String email, String password) throws Exception;
 	public UserDto setUser(String email) throws Exception;		// for social login
 	public String getLoginType(String email) throws Exception;	// for social login
-	public void signup(UserDto userDto) throws Exception;
+	public int signup(UserDto userDto) throws Exception;
 	public int getEmail(String email) throws Exception;		// for signup
 	public int getName(String name) throws Exception;		// for signup
 	public void update(UserDto userDto) throws Exception;

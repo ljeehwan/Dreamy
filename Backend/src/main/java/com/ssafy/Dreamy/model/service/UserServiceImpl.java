@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void signup(UserDto userDto) throws Exception {
+	public int signup(UserDto userDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("email", userDto.getEmail());
 		map.put("name", userDto.getName());
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 			map.put("loginType", "default");
 		else
 			map.put("loginType", userDto.getLoginType());
-		sqlSession.getMapper(UserMapper.class).signup(map);
+		return sqlSession.getMapper(UserMapper.class).signup(map);
 	}
 	
 	@Override
