@@ -142,7 +142,6 @@ public class UserController {
 		}
 		HttpStatus status = null;
 		String type=userDto.getLoginType();
-		System.out.println(type+"type: signup");
 		try {
 			System.out.println("1.회원가입 시도");
 			int emailNum = userService.getEmail(userDto.getEmail());
