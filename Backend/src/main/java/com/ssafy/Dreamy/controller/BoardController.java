@@ -30,17 +30,28 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	//////////게시물 등록///////////
+	// 게시물 등록
 	@PostMapping("/create")	// 매핑주소 변경가능
 	public ResponseEntity<Map<String, Object>> create(@RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
-		
 		HttpStatus status = null;
+		int boardType = boardDto.getBoardType();
+		int ret = 0;
+		
 		try {
-			int ret = (int)boardService.create(boardDto);
-			// if
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
+			if (boardType == 1)			// 버킷리스트
+				ret = boardService.createBucket(boardDto);
+			else if (boardType == 2)	// 챌린지
+				ret = boardService.createChallenge(boardDto);
+			
+			// insert 성공하면 AI값을 return
+			if (ret > 0) {	// 등록 성공
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.CREATED;
+			} else {		// 등록 실패
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+			}
 		} catch (Exception e) {
 			logger.error("게시물 등록 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
@@ -49,19 +60,15 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	//////////게시물 수정(내용만)///////////
+	// 게시물 수정(내용만)
 	@PutMapping("/update") 
-	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto){
+	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
-		
 		HttpStatus status = null;
-		
 		try {
 			System.out.println("-- 게시물 수정 시도");
-			
 			int pid = boardDto.getPid();
 			String content = boardDto.getContent();
-			
 			boardService.update(pid, content);
 			status = HttpStatus.ACCEPTED;
 			System.out.println("-- 게시물 수정 성공");
@@ -71,8 +78,8 @@ public class BoardController {
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 			System.out.println("-- 게시물 수정 실패");
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-		
 	}
+	
+	
 }

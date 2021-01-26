@@ -106,17 +106,17 @@ public class UserController {
 		try {
 			//이메일 중복 검사
 			int user=userService.getEmail(email);
-			if(user==0) {	// db에 유저 정보가 없음 => 자동가입 시키기
+			if(user==0) {		// db에 유저 정보가 없음 => 자동가입 시키기
 				resultMap.put("message", "needSignup");
 				status = HttpStatus.ACCEPTED;
 				System.out.println("2-1 소셜 계정 자동 가입"); 
 			}
-			else if(user==1){//db에 유저정보가 있음 => 로그인
-				if(!(type.equals(userService.getLoginType(email)))) {	//db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
+			else if(user==1){	// db에 유저정보가 있음 => 로그인
+				if(!(type.equals(userService.getLoginType(email)))) {	// db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
 					resultMap.put("message", "otherSocialLogin");					
-					status = HttpStatus.ACCEPTED;
+					status = HttpStatus.CONFLICT;
 					System.out.println("2-2 소셜 계정존재시 거부");
-				}else{// 맞으면 자동 로그인
+				}else{	// 맞으면 자동 로그인
 					String token = jwtService.create("userEmail", email, "access-token");
 					resultMap.put("access-token", token);
 					resultMap.put("message", "success");
@@ -141,7 +141,7 @@ public class UserController {
 			userDto.setPassword("1q2w3e4r");
 		}
 		HttpStatus status = null;
-		String type=userDto.getLoginType();
+		String type = userDto.getLoginType();
 		System.out.println(type+"type: signup");
 		try {
 			System.out.println("1.회원가입 시도");
@@ -156,9 +156,11 @@ public class UserController {
 				status = HttpStatus.CONFLICT;
 				System.out.println("2-2닉네임 중복");
 			} else {
-				userService.signup(userDto);
+				// 회원가입 시도 시 return 값으로 회원가입 여부 확인
+				int ret = userService.signup(userDto);
+//				System.out.println("ret!!!!!!!!!!!!!!!!!!!!!! - " + ret);	// 1
 				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
+				status = HttpStatus.CREATED;
 				System.out.println("3-1 회원가입 성공");
 			}
 		} catch (Exception e) {
@@ -204,26 +206,21 @@ public class UserController {
 	@PutMapping("/update/{uid}")
 	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto memberDto, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-//		if (jwtService.isUsable(request.getHeader("access-token"))) {
-			logger.info("사용 가능한 토큰!!!");
-			try {
-				System.out.println("--회원정보 수정 시도");
-				userService.update(memberDto);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-				System.out.println("--회원정보 수정 성공");
-			} catch (Exception e) {
-				logger.error("회원정보 수정 실패 : {}", e);
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-				System.out.println("--회원정보 수정 실패");
-			}
-//		} else {
-//			logger.error("사용 불가능 토큰!!!");
-//			resultMap.put("message", FAIL);
-//			status = HttpStatus.UNAUTHORIZED;
-//		}
+		HttpStatus status = null;
+		logger.info("사용 가능한 토큰!!!");
+		
+		try {
+			System.out.println("--회원정보 수정 시도");
+			userService.update(memberDto);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+			System.out.println("--회원정보 수정 성공");
+		} catch (Exception e) {
+			logger.error("회원정보 수정 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("--회원정보 수정 실패");
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
@@ -231,7 +228,7 @@ public class UserController {
 	@DeleteMapping("/delete/{uid}")
 	public ResponseEntity<Map<String, Object>> userDelete(@PathVariable("uid") int uid, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = HttpStatus.ACCEPTED;
+		HttpStatus status = null;
 		
 		if (jwtService.isUsable(request.getHeader("access-token"))) {
 			logger.info("사용 가능한 토큰!!!");
@@ -253,16 +250,11 @@ public class UserController {
 	}
 
 	// 비로그인 시 DB에서 이메일, 핸드폰 번호 확인
-	/*@PostMapping("/userCert") // 파라미터 확인
+	@PostMapping("/userCert") ///////////////// 파라미터 확인!!
 	public ResponseEntity<Map<String, Object>> userCert(@PathVariable("email") String email, @PathVariable("phone") String phone,
-			HttpServletRequest request) {*/
-	@GetMapping("/userCert")
-	public ResponseEntity<Map<String, Object>> userCert(@RequestParam("email") String email, @RequestParam("phone") String phone,
-			HttpServletRequest request){
-		
+			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-			
 		try {
 			System.out.println("--회원정보 인증 시도");
 	
@@ -286,7 +278,7 @@ public class UserController {
 	}
 	
 	// 비로그인 시 비밀번호 변경
-	@PutMapping("/changePassword") // 파라미터 확인
+	@PutMapping("/changePassword") ///////////////// 파라미터 확인!!
 	public ResponseEntity<Map<String, Object>> changePassword(@PathVariable("email") String email, @PathVariable("password") String password,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
