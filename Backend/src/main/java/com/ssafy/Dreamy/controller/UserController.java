@@ -1,6 +1,10 @@
 package com.ssafy.Dreamy.controller;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.Dreamy.model.UserDto;
@@ -133,35 +136,53 @@ public class UserController {
 	
 	// 회원가입
 	@PostMapping("/signup")
-	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto userDto) {
+	public ResponseEntity<Map<String, Object>> signup(@RequestBody UserDto userDto) throws NoSuchAlgorithmException {
 		Map<String, Object> resultMap = new HashMap<>();
-		if(userDto.getPassword()==null) {
+		String password = null;
+		if(userDto.getPassword() == null) {
+			// 현재 날짜로 SHA-256 적용
+			SimpleDateFormat format = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+			Date date = new Date();
+			String msg = format.format(date);
+			// SHA-256으로 해싱
+	        MessageDigest md = MessageDigest.getInstance("SHA-256");
+	        md.update(msg.getBytes());
+	        // 바이트를 헥스값으로 변환
+	        StringBuilder sb = new StringBuilder();
+	        for (byte b: md.digest())
+	          sb.append(String.format("%02x", b));
+	        password = sb.substring(sb.length()-8, sb.length());
 			// 초기비밀번호 설정
-			// 난수생성 함수 추가
-			userDto.setPassword("1q2w3e4r");
+			userDto.setPassword(password);
 		}
 		HttpStatus status = null;
 		String type = userDto.getLoginType();
-		System.out.println(type+"type: signup");
+		System.out.println(type + "type: signup");
 		try {
-			System.out.println("1.회원가입 시도");
+			System.out.println("1 회원가입 시도");
 			int emailNum = userService.getEmail(userDto.getEmail());
 			int nameNum = userService.getName(userDto.getName());
 			if (emailNum != 0) {
 				resultMap.put("message", "동일한 이메일이 사용중입니다.");
 				status = HttpStatus.CONFLICT;
-				System.out.println("2-1이메일 중복");
+				System.out.println("2-1 이메일 중복");
 			} else if (nameNum != 0) {
 				resultMap.put("message", "동일한 닉네임이 사용중입니다.");
 				status = HttpStatus.CONFLICT;
-				System.out.println("2-2닉네임 중복");
+				System.out.println("2-2 닉네임 중복");
 			} else {
 				// 회원가입 시도 시 return 값으로 회원가입 여부 확인
 				int ret = userService.signup(userDto);
-//				System.out.println("ret!!!!!!!!!!!!!!!!!!!!!! - " + ret);	// 1
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.CREATED;
-				System.out.println("3-1 회원가입 성공");
+				if (ret > 0) {	// 회원가입 성공
+					resultMap.put("userInfo", userDto);
+					resultMap.put("message", SUCCESS);
+					status = HttpStatus.CREATED;
+					System.out.println("3-1 회원가입 성공");
+				} else {		// 회원가입 실패
+					resultMap.put("message", FAIL);
+					status = HttpStatus.EXPECTATION_FAILED;
+					System.out.println("3-2 회원가입 실패");
+				}
 			}
 		} catch (Exception e) {
 			logger.error("회원가입 실패 : {}", e);
