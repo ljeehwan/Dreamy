@@ -5,7 +5,7 @@
       :onSuccess="onSuccess"
       :onFailure="onFailure"
     >
-    <v-btn icon>
+    <v-btn icon elevation="4">
          <img src="@/assets/snsLogin/google.png" alt="google"/>
     </v-btn>
     </GoogleLogin>
@@ -51,4 +51,5 @@ export default {
 </script>
 
 <style>
+
 </style>

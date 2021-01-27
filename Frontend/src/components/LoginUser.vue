@@ -34,11 +34,9 @@
             </v-card-text>
           </v-flex>
         </v-layout>
-        <router-link to="/user/Mypage" style="text-decoration:none;">
-          <v-btn target="_blank" text style="width:180px;"
+          <v-btn target="_blank" @click="moveToMyPage" text style="width:180px;" 
             >MyPage</v-btn
-          ></router-link
-        >
+          >
         <br />
         <v-btn
           target="_blank"
@@ -53,6 +51,7 @@
 </template>
 
 <script>
+import {router} from '@/routes'
 export default {
   computed: {
     getEmail() {
@@ -69,6 +68,7 @@ export default {
 
   methods: {
     logout() {
+      this.$store.dispatch("logout");
       if (this.getLogintype == "kakao") {
         window.Kakao.API.request({
           url: "/v1/user/unlink",
@@ -84,11 +84,20 @@ export default {
         var auth2 = window.gapi.auth2.getAuthInstance();
         auth2.signOut().then(function() {
           console.log("User log out");
+          this.$store.state.user.logintype = "default";
         });
         auth2.disconnect();
       }
-      this.$store.dispatch("logout");
+
     },
+    moveToMyPage () {
+            // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
+            const name = this.$store.getters.getUsername
+            this.$store.dispatch('GET_TARGET', name)
+            router.push('/user/mypage/')
+            
+        },
+
   },
 };
 </script>
