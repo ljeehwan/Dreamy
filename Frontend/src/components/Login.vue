@@ -13,7 +13,7 @@
     </template>
 
     <template v-slot:default="dialog">
-      <v-card height="470" sm5 class="hidden-xs-only">
+      <v-card sm5 class="hidden-xs-only">
         <v-card-title>
           <v-layout align-center justify-center class="my-4">
             <h2>DREAMY</h2>
@@ -58,24 +58,14 @@
                           </v-flex>
                     </v-layout>
 
-            <v-layout row wrap align-center justify-center>
-              <!-- <v-card-actions>
-                <v-btn id="google" block>
-                <img src="@/assets/snsLogin/google.png"/>
-                  <v-divider vertical class="mx-3"></v-divider>
-                  GOOGLE
-                </v-btn>
-              </v-card-actions>
-              <v-card-actions>
-             <v-btn id="naver" block>
-                <img src="@/assets/snsLogin/naver.png"/>
-                  <v-divider vertical class="mx-3"></v-divider>
-                  NAVER
-                </v-btn>                
-              </v-card-actions> -->
-              <v-card-actions>
+            <v-layout align-center justify-center>
+              <v-col class="sm-6">
                 <kakaoLogin :component="component" />
-              </v-card-actions>
+                 </v-col>
+                 <v-col class="sm-6">
+                 <googleLogin :component="component" />
+                 </v-col>
+              
             </v-layout>
           </v-container>
 
@@ -100,10 +90,13 @@
 </template>
 <script>
 import kakaoLogin from "@/components/socialLogin/kakao.vue";
+import googleLogin from "@/components/socialLogin/google.vue";
+
 
 export default {
    components: {
     kakaoLogin,
+    googleLogin
   },
   created(){
     this.component = this;

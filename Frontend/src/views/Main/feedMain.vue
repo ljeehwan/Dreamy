@@ -125,9 +125,12 @@
         export default {
             data: () => ({loading: false, selection: 1}),
 
-            methods: {
+           methods: {
                 detail() {
                     this.loading = true
+
+                },
+                follow(){
 
                 }
             }
