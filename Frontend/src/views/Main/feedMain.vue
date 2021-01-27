@@ -198,12 +198,14 @@
                 ]
             }),
 
-            methods: {
+           methods: {
                 detail() {
                     this.loading = true
 
                 },
-                follow() {}
+                follow(){
+
+                }
             }
 
         }

@@ -4,12 +4,11 @@
       <NavBar/>
       
       <div class="body-component">
-        
         <router-view></router-view>
         <Modal/>
         <SnackBar/>
         <Spinner/>
-        
+
         <Upload v-if="getIsLogined"/>
       </div>
     </v-app>

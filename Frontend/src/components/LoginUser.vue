@@ -1,18 +1,20 @@
 <template>
-   <v-menu offset-y>
-    <template v-slot:activator="{on}">
-        <v-btn icon v-on="on" class="mx-3 my-auto">
-            <v-avatar size="34">  
-            <v-icon size="34">   <!--프로필 이미지 가져오기-->
-                mdi-account-circle
-            </v-icon>
+  <v-menu offset-y>
+    <template v-slot:activator="{ on }">
+      <v-btn icon v-on="on" class="mx-3 my-auto">
+        <v-avatar size="34">
+          <v-icon size="34">
+            <!--프로필 이미지 가져오기-->
+            mdi-account-circle
+          </v-icon>
         </v-avatar>
-        </v-btn>
-        <v-btn icon class="mx-3 my-auto">
-        <v-icon size="26">   <!--프로필 이미지 가져오기-->
-                mdi-bell
+      </v-btn>
+      <v-btn icon class="mx-3 my-auto">
+        <v-icon size="26">
+          <!--프로필 이미지 가져오기-->
+          mdi-bell
         </v-icon>
-        </v-btn>
+      </v-btn>
     </template>
     <v-card width="300">
         <v-container grid-list-md>
@@ -35,7 +37,7 @@
             <v-btn target="_blank" text @click="logout" style="width:180px; color:red;">Logout</v-btn>
         </v-container>
     </v-card>
-    </v-menu>
+  </v-menu>
 </template>
 
 <script>
@@ -58,31 +60,35 @@ export default {
              return this.$store.getters.getLogintype;
         }
     },
+    getLogintype() {
+      return this.$store.getters.getLogintype;
+    },
+  },
 
-    methods:{
-        logout(){
-            if(this.getLogintype=="kakao"){
-            window.Kakao.API.request({
-                url: '/v1/user/unlink',
-                 success:(()=>{
-                     this.$store.state.user.logintype="default";    
-                 }) 
-            })
-            }
-            this.$store.dispatch('logout');    
-        },
-        // 회원 상세 정보 페이지 보기 step1단계
-        moveToMyPage () {
-            // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
-            const name = this.$store.getters.getUsername
-            this.$store.dispatch('GET_TARGET', name)
-            router.push('/user/mypage/')
-            
-        },
-    }
-}
+  methods: {
+    logout() {
+      if (this.getLogintype == "kakao") {
+        window.Kakao.API.request({
+          url: "/v1/user/unlink",
+          success: () => {
+            this.$store.state.user.logintype = "default";
+          },
+        });
+        window.Kakao.Auth.logout(function() {
+          console.log("토큰 만료 설정");
+        });
+      }
+      if (this.getLogintype == "google") {
+        var auth2 = window.gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function() {
+          console.log("User log out");
+        });
+        auth2.disconnect();
+      }
+      this.$store.dispatch("logout");
+    },
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

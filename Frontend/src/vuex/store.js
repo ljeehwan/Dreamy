@@ -186,7 +186,7 @@ export default new Vuex.Store({
                     //이메일, 가입타입, 이름으로 자동회원가입  - 카카오에서 이미 인증이 된 회원이므로..?
                     context.commit("setSocialUser",user);
                     context.dispatch("socialSignup",user.logintype);
-                    alert("자동 회원가입 완료! 초기 비밀번호를 수정해주세요");
+                    alert("자동 회원가입 완료! 초기 비밀번호를 꼭 수정해주세요");
                   }
                   //자동 로그인
                   else if(response.data["message"]=="success"){
