@@ -29,10 +29,11 @@ import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.JwtServiceImpl;
 import com.ssafy.Dreamy.model.service.UserService;
 
-//@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @CrossOrigin(origins = { "http://localhost:3000" })
+// @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/account")
+// @RequestMapping("/user")
 public class UserController {
 
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -322,6 +323,7 @@ public class UserController {
 	
 	// 유저 정보 받아오기
 	@GetMapping("/user/{name}")
+//	@GetMapping("/{name}") // @RequestMapping("/user")으로 변경 시
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("name") String name, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
