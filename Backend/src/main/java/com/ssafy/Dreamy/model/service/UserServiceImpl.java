@@ -69,17 +69,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void update(UserDto userDto) throws Exception {
+	public int update(UserDto userDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("uid", userDto.getUid());
 		map.put("password", userDto.getPassword());
 		map.put("phone", userDto.getPhone());
-		sqlSession.getMapper(UserMapper.class).update(map);
+		return sqlSession.getMapper(UserMapper.class).update(map);
 	}
 	
 	@Override
-	public void delete(int uid) throws Exception {
-		sqlSession.getMapper(UserMapper.class).delete(uid);
+	public int delete(int uid) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).delete(uid);
 	}
 
 	@Override

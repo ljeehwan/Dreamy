@@ -228,19 +228,23 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto memberDto, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("사용 가능한 토큰!!!");
 		
 		try {
 			System.out.println("--회원정보 수정 시도");
-			userService.update(memberDto);
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-			System.out.println("--회원정보 수정 성공");
+			int ret = userService.update(memberDto);
+			if (ret > 0) {	// 회원정보 수정 성공
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+				System.out.println("--회원정보 수정 성공");
+			} else {		// 회원정보 수정 실패
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+				System.out.println("--회원정보 수정 실패");
+			}
 		} catch (Exception e) {
 			logger.error("회원정보 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--회원정보 수정 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -251,21 +255,21 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		if (jwtService.isUsable(request.getHeader("access-token"))) {
-			logger.info("사용 가능한 토큰!!!");
-			try {
-				userService.delete(uid);
+		try {
+			int ret = userService.delete(uid);
+			if (ret > 0) {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} catch (Exception e) {
-				logger.error("회원탈퇴 실패 : {}", e);
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				System.out.println("--회원탈퇴 성공");
+			} else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+				System.out.println("--회원탈퇴 실패");
 			}
-		} else {
-			logger.error("사용 불가능 토큰!!!");
-			resultMap.put("message", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
+		} catch (Exception e) {
+			logger.error("회원탈퇴 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
