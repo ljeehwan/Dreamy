@@ -69,6 +69,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public int confirm(int uid, String password) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("password", password);
+		return sqlSession.getMapper(UserMapper.class).confirm(map);
+	}
+	
+	@Override
 	public int update(UserDto userDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("uid", userDto.getUid());

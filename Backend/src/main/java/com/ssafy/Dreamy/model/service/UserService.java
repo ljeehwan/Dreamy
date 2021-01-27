@@ -10,6 +10,7 @@ public interface UserService {
 	public int signup(UserDto userDto) throws Exception;
 	public int getEmail(String email) throws Exception;		// for signup
 	public int getName(String name) throws Exception;		// for signup
+	public int confirm(int uid, String password) throws Exception;	// for update, delete
 	public int update(UserDto userDto) throws Exception;
 	public int delete(int uid) throws Exception;
 	public int certification(String email, String phone) throws Exception;		// for find password
