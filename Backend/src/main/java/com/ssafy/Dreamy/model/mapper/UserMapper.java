@@ -16,6 +16,7 @@ public interface UserMapper {
 	public int signup(Map<String, Object> map) throws SQLException;
 	public int getEmail(String email) throws SQLException;	// for signup
 	public int getName(String name) throws SQLException;	// for signup
+	public int confirm(Map<String, Object> map) throws SQLException;	// for update, delete
 	public int update(Map<String, Object> map) throws SQLException;
 	public int delete(int uid) throws SQLException;
 	public int certification(Map<String, String> map)throws SQLException;	// for find password
