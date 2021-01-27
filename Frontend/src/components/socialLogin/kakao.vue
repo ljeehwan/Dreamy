@@ -1,7 +1,7 @@
-<template>
-    <div id="kakao-login">
-        <img src="@/assets/snsLogin/kakao.png" @click="Kakaologin"/>
-    </div>
+<template>     
+    <v-btn icon elevation="4">
+        <img src="@/assets/snsLogin/kakao.png" @click="Kakaologin" alt="kakao"/>
+    </v-btn>
 </template>
 
 <script>
@@ -36,9 +36,4 @@ export default {
     }
 </script>
 <style scoped>
-img{
-    width:90%;
-    height:90%;
-    cursor: pointer;
-}
 </style>
