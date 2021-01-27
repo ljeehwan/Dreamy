@@ -29,10 +29,11 @@ import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.JwtServiceImpl;
 import com.ssafy.Dreamy.model.service.UserService;
 
-//@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @CrossOrigin(origins = { "http://localhost:3000" })
+// @CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RestController
 @RequestMapping("/account")
+// @RequestMapping("/user")
 public class UserController {
 
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -193,54 +194,52 @@ public class UserController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	/*
-	// 회원탈퇴 or 정보수정 시 비밀번호 검증, 미완성
+	// 회원탈퇴 or 정보수정 시 비밀번호 검증
 	@PostMapping("/confirm/{uid}")
-	public ResponseEntity<Map<String, Object>> login(@PathVariable("uid") int uid, @RequestBody UserDto memberDto) {
+	public ResponseEntity<Map<String, Object>> login(@PathVariable("uid") int uid, @RequestBody String password) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			UserDto loginUser = userService.login(email, password);
-			if (loginUser != null) {
-				String token = jwtService.create("userid", loginUser.getEmail(), "access-token");// key, data, subject
-				logger.debug("로그인 토큰정보 : {}", token);
-				resultMap.put("access-token", token);
-				resultMap.put("user", loginUser);
+			logger.debug("검증 정보 : {}, {}", uid, password);
+			int ret = userService.confirm(uid, password);
+			if (ret == 1) {	// uid, password 일치
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--토큰 생성");
+				System.out.println("--검증 성공");
 			} else {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NOT_FOUND;
-				System.out.println("--로그인 실패");
+				System.out.println("--검증 실패");
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--로그인 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	*/
 
 	// 회원정보 수정
 	@PutMapping("/update/{uid}")
 	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto memberDto, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("사용 가능한 토큰!!!");
 		
 		try {
 			System.out.println("--회원정보 수정 시도");
-			userService.update(memberDto);
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-			System.out.println("--회원정보 수정 성공");
+			int ret = userService.update(memberDto);
+			if (ret > 0) {	// 회원정보 수정 성공
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+				System.out.println("--회원정보 수정 성공");
+			} else {		// 회원정보 수정 실패
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+				System.out.println("--회원정보 수정 실패");
+			}
 		} catch (Exception e) {
 			logger.error("회원정보 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--회원정보 수정 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -251,21 +250,21 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		if (jwtService.isUsable(request.getHeader("access-token"))) {
-			logger.info("사용 가능한 토큰!!!");
-			try {
-				userService.delete(uid);
+		try {
+			int ret = userService.delete(uid);
+			if (ret > 0) {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} catch (Exception e) {
-				logger.error("회원탈퇴 실패 : {}", e);
-				resultMap.put("message", e.getMessage());
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
+				System.out.println("--회원탈퇴 성공");
+			} else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+				System.out.println("--회원탈퇴 실패");
 			}
-		} else {
-			logger.error("사용 불가능 토큰!!!");
-			resultMap.put("message", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
+		} catch (Exception e) {
+			logger.error("회원탈퇴 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -324,6 +323,7 @@ public class UserController {
 	
 	// 유저 정보 받아오기
 	@GetMapping("/user/{name}")
+//	@GetMapping("/{name}") // @RequestMapping("/user")으로 변경 시
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("name") String name, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
