@@ -93,7 +93,7 @@ public class BoardController {
 	}
 	
 	/*
-	// 버킷리스트 목록
+	// 버킷리스트 목록.
 	@GetMapping("/bucketList")
 	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
