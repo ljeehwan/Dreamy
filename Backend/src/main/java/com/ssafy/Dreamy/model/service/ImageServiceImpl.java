@@ -48,7 +48,7 @@ public class ImageServiceImpl implements ImageService {
 
 		String subFileName = fileName.substring(0, index) + "_" + LocalDateTime.now();
 		String subFileExtension = fileName.substring(index, nameLen);
-		String newFileName = "typeString/" + subFileName + subFileExtension;
+		String newFileName = typeString + "/" + subFileName + subFileExtension;
 
 		System.out.println("newFileName : " + newFileName);
 	    // + date.format(new Date());
