@@ -1,6 +1,7 @@
 package com.ssafy.Dreamy.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -17,7 +18,7 @@ public class BoardServiceImpl implements BoardService {
 	private SqlSession sqlSession;
 	
 	@Override
-	public int createBucket(BoardDto boardDto) throws Exception {
+	public int insertBucket(BoardDto boardDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("uid", boardDto.getUid());
 		map.put("boardType", 1);
@@ -26,11 +27,11 @@ public class BoardServiceImpl implements BoardService {
 		map.put("endDate", boardDto.getEndDate());
 		map.put("category", boardDto.getCategory());
 		map.put("imageUrl", boardDto.getImageUrl());
-		return (int)sqlSession.getMapper(BoardMapper.class).createBucket(map);
+		return (int)sqlSession.getMapper(BoardMapper.class).insertBucket(map);
 	}
 	
 	@Override
-	public int createChallenge(BoardDto boardDto) throws Exception {
+	public int insertChallenge(BoardDto boardDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		
 		// Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
@@ -49,8 +50,21 @@ public class BoardServiceImpl implements BoardService {
 		map.put("category", boardDto.getCategory());
 		map.put("imageUrl", boardDto.getImageUrl());
 		map.put("totalDate", totalDate);
-		return (int)sqlSession.getMapper(BoardMapper.class).createChallenge(map);
+		return (int)sqlSession.getMapper(BoardMapper.class).insertChallenge(map);
 	}
+	
+	@Override
+	public List<BoardDto> getList() throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).getList();
+	}
+	
+//	@Override
+//	public List<BoardDto> getBucketList() throws Exception {
+//	}
+	
+//	@Override
+//	public List<BoardDto> getChallengeList() throws Exception {
+//	}
 	
 	@Override
 	public void update(int pid, String content) throws Exception {
