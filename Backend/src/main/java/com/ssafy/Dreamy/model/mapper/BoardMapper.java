@@ -11,8 +11,8 @@ import com.ssafy.Dreamy.model.BoardDto;
 @Mapper
 public interface BoardMapper {
 	
-	public Object insertBucket(Map<String, Object> map) throws SQLException;	// 등록
-	public Object insertChallenge(Map<String, Object> map) throws SQLException;	// 등록
+	public int insertBucket(Map<String, Object> map) throws SQLException;	// 등록
+	public int insertChallenge(Map<String, Object> map) throws SQLException;	// 등록
 	public List<BoardDto> getList() throws SQLException;			// 조회
 	public List<BoardDto> getBucketList() throws SQLException;		// 조회
 	public List<BoardDto> getChallengeList() throws SQLException;	// 조회

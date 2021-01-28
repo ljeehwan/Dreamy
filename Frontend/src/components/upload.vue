@@ -45,11 +45,11 @@
           <v-stepper-content v-for="n in steps" :key="`${n}-content`" :step="n">
             <v-card class="ma-10" v-if="n == 1">
               <v-row class="align-center justify-center"
-                ><p><strong>타입 설정</strong></p></v-row
+                ><span><strong>타입 설정</strong></span></v-row
               >
               <v-row class="align-center">
                 <v-col class="sm-6 pa-5">
-                  <v-radio-group v-model="card.type">
+                  <v-radio-group v-model="card.boardType">
                     <template v-slot:label>
                       <div><strong>등록 타입</strong></div>
                     </template>
@@ -68,7 +68,7 @@
               </v-row>
             </v-card>
 
-            <v-card class="my-6 pa-5" v-if="n == 2 && card.type == 1">
+            <v-card class="my-6 pa-5" v-if="n == 2 && card.boardType == 1">
               <v-row class="align-center justify-center">
                 <v-spacer></v-spacer>
                 <v-tooltip left>
@@ -82,13 +82,13 @@
                 </v-tooltip>
               </v-row>
               <v-row class="align-center justify-center">
-                <p><strong>기간 설정</strong></p>
+                <span><strong>기간 설정</strong></span>
               </v-row>
               <v-row
                 ><v-spacer></v-spacer>
-                <p>
+                <span>
                   <small>작성일 : {{ card.writtenDate }}</small>
-                </p></v-row
+                </span></v-row
               >
               <v-row justify="space-around">
                 <v-text-field
@@ -110,6 +110,7 @@
 
               <v-row justify="space-around">
                 <v-date-picker
+                :min="card.startDate"
                   v-model="card.startDate"
                   readonly
                   :show-current="true"
@@ -121,7 +122,7 @@
               </v-row>
             </v-card>
             <!--첼린지 -->
-            <v-card class="my-6 pa-5" v-if="n == 2 && card.type == 2">
+            <v-card class="my-6 pa-5" v-if="n == 2 && card.boardType == 2">
               <v-row class="align-center justify-center">
                 <v-spacer></v-spacer>
                 <v-tooltip left>
@@ -135,13 +136,13 @@
                 </v-tooltip>
               </v-row>
               <v-row class="align-center justify-center">
-                <p><strong>기간 설정</strong></p>
+                <span><strong>기간 설정</strong></span>
               </v-row>
               <v-row
                 ><v-spacer></v-spacer>
-                <p>
+                <span>
                   <small>작성일 : {{ card.writtenDate }}</small>
-                </p></v-row
+                </span></v-row
               >
 
               <v-row>
@@ -172,34 +173,56 @@
             </v-card>
 
             <v-card class="my-6" v-if="n == 3">
-              <v-row class="align-center justify-center">
-                <p><strong>내용 입력</strong></p>
+              <v-row class="align-center justify-center my-7">
+                <!-- <span><strong>내용 입력</strong></span> -->
               </v-row>
               <v-row>
-                  <v-text-field
-                    v-model="card.title"
-                    label="제목 입력"
-                    clearable
-                    outlined
-                    dense
-                    class="mx-5"
-                  ></v-text-field>
-                  <v-file-input
-                  show-size
-                  label="이미지 등록"
+                <v-text-field
+                  v-model="card.title"
+                  label="제목 입력"
+                  clearable
+                  dense
                   class="mx-5"
-                  v-model="card.imageUrl"
-                  ></v-file-input>
+                ></v-text-field>
               </v-row>
               <v-row>
-                  <v-textarea
-                    clearable
-                    clear-icon="mdi-close-circle"
-                    outlined
-                    label="내용 입력"
-                    class="ma-5"
-                    v-model="card.content"
-                  ></v-textarea>
+                <v-textarea
+                  clearable
+                  clear-icon="mdi-close-circle"
+                  outlined
+                  dense
+                  label="내용 입력"
+                  class="ma-5"
+                  v-model="card.content"
+                ></v-textarea>
+              </v-row>
+              <v-row>
+                <v-col class="sm-6">
+                  <v-file-input
+                    show-size
+                    label="이미지 등록"
+                    dense
+                    v-model="image"
+                  ></v-file-input>
+                </v-col>
+                <v-col class="sm-6" justify-center align-center>
+                  <v-row class="mx-5">
+                    <v-checkbox
+                      v-model="defaultfile"
+                      label="기본 이미지로 등록"
+                    ></v-checkbox>
+                    <v-spacer></v-spacer>
+                    <v-tooltip left>
+                      <template v-slot:activator="{ on }">
+                        <v-icon v-on="on">mdi-help-circle</v-icon>
+                      </template>
+                      <span
+                        >기본 이미지로 등록 시,<br />
+                        카테고리와 연관된 사진이 등록됩니다.</span
+                      >
+                    </v-tooltip>
+                  </v-row>
+                </v-col>
               </v-row>
             </v-card>
 
@@ -220,6 +243,8 @@
 </template>
 
 <script>
+import axios from "axios";
+const SERVER_URL = "http://localhost:8080";
 //카테고리 1: 운동, 2:음식 3: 여행, 4:학슴, 5:문화/생활, 6:기타
 export default {
   data() {
@@ -227,16 +252,18 @@ export default {
       dialog: false,
       e1: 1,
       steps: 3,
-      bucketHelpMsg: "",
+      defaultfile: false,
+      image: [],
       card: {
-        type: "",
+        uid: "",
+        boardType: "",
         title: "",
         content: "",
         category: "",
         writtenDate: new Date().toISOString().substr(0, 10),
         startDate: "",
         endDate: "",
-        imageUrl:[]
+        imageUrl: "",
       },
       dateRange: ["", ""],
       items: [
@@ -256,6 +283,11 @@ export default {
       }
     },
   },
+  computed: {
+    getUserId() {
+      return this.$store.getters.getUserId;
+    },
+  },
   methods: {
     nextStep(n) {
       if (n === this.steps) {
@@ -265,21 +297,42 @@ export default {
       }
     },
     submit() {
-      if(this.card.type==2){
-        this.card.startDate=this.dateRange[0];
-        this.card.endDate=this.dateRange[1];
+      if (this.card.boardType == 2) {
+        this.card.startDate = this.dateRange[0];
+        this.card.endDate = this.dateRange[1];
       }
-      this.$store.dispatch('insertBoard',this.card);
+
+      let formData = new FormData();
+      formData.append("files", this.image);
+      axios
+        .post(`${SERVER_URL}/board/imageupload`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => {
+          this.card.imageUrl = res.data["imgPath"];
+          // console.log(this.card);
+          this.$store.dispatch('insertBoard',this.card);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     open() {
       this.dialog = true;
       this.e1 = 1;
-      this.card.type = "";
+      this.card.uid = this.getUserId;
+      this.card.boardType = "";
       this.card.category = "";
       this.card.startDate = new Date().toISOString().substr(0, 10);
       this.card.endDate = "";
       this.dateRange[0] = "";
       this.dateRange[1] = "";
+      this.card.title = "";
+      this.card.content = "";
+      this.image = [];
+      this.defaultfile = false;
     },
   },
 };
