@@ -10,6 +10,10 @@ function requestJoinMember(credentials) {
 function requestUpdateMember(credentials, userId) {
     return axios.put(`${SERVER_URL}/account/update/${userId}`, credentials)
 }
+// 회원 정보 삭제
+function requestDeleteMember(userId) {
+    return axios.delete(`${SERVER_URL}/account/delete/${userId}`)
+}
 
 
 //로그인
@@ -32,4 +36,5 @@ export {
     requestLoginMember,
     requestUpdateMember,
     // requestMemberInfo,
+    requestDeleteMember,
 }

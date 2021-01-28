@@ -6,6 +6,7 @@ import VueRouter from 'vue-router'
 import Join from './views/user/Join.vue'
 import myPage from './views/user/Mypage.vue'
 //Main
+import Landing from './views/Main/Landing.vue'
 import Main from './views/Main/Main.vue'
 // Community
 import Bucket from './views/Community/Bucket'
@@ -18,6 +19,11 @@ Vue.use(VueRouter)
 const router = new VueRouter({
     mode: 'history',
     routes: [
+        {
+            path: '/landing',
+            name: 'Landing',
+            component: Landing
+        },
     
         {
             path : '/',

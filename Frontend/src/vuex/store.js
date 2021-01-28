@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from "axios"
 import {router} from "@/routes.js"
 import {requestJoinMember, setSnackBarInfo, requestUpdateMember,
-} from "../apis/accounts_api.js"
+        requestDeleteMember,} from "../apis/accounts_api.js"
 // requestMemberInfo,
 Vue.use(Vuex)
 
@@ -255,7 +255,7 @@ export default new Vuex.Store({
                 context.commit('START_SPINNER')
                 const response = await requestJoinMember(credentials)  
                 setTimeout(function () {
-                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다.', 'info', 'top'))
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다.', 'primary', 'top'))
                     context.commit('END_SPINNER')
                     context.commit('END_LOADING')
                     router.push('/')
@@ -278,7 +278,7 @@ export default new Vuex.Store({
                     console.log('셋 타임아웃 시작')
                     context.commit('END_LOADING')
                     context.commit('END_SPINNER')
-                    context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'info', 'top'))
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'primary', 'top'))
                     // 어디로 보낼지 다시 정해야함
                     
                     return response                    
@@ -296,10 +296,10 @@ export default new Vuex.Store({
             context.commit('START_SPINNER')
             axios.get(`${SERVER_URL}/account/user/${targetName}`)
             .then(res => {
-                // console.log(res)
+                console.log(res)
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
-                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'info', 'top'))
+                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'primary', 'top'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone}
                 context.commit('PUT_TARGET_INFO', targetInfo)
@@ -314,6 +314,28 @@ export default new Vuex.Store({
         GET_TARGET(context, name) {
             context.commit('TARGET_NAME', name)
         },
-
+        async DELETE_MEMBER(context) {
+            try {
+                context.commit('START_LOADING')
+                context.commit('START_SPINNER')
+                const userId = this.state.user.uid
+                console.log(`삭제 스토어 진입성공 : ${userId}`)
+                const response = await requestDeleteMember(userId)
+                console.log(`회원 삭제 리스폰스 ${response}`)
+                setTimeout(function () {
+                    console.log('셋 타임아웃 시작')
+                    context.commit('END_LOADING')
+                    context.commit('END_SPINNER')
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원 탈퇴가 완료되었습니다.', 'primary', 'top'))
+                    // 어디로 보낼지 다시 정해야함
+                    
+                    return response                    
+                }, 500)
+            } catch (e) {
+                context.commit('END_LOADING')
+                context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data.message, option1: '닫기',})
+            }
+            
+        },
     }
 })
