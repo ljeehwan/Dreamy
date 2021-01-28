@@ -30,7 +30,7 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	// 게시물 등록
+	// 게시물 등록f
 	@PostMapping("/create")	// 매핑주소 변경가능
 	public ResponseEntity<Map<String, Object>> create(@RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
