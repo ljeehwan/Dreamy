@@ -2,6 +2,8 @@ package com.ssafy.Dreamy.model.service;
 
 import java.time.LocalDateTime;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +33,7 @@ public class ImageServiceImpl implements ImageService {
 	@Value("${cloud.aws.region.static}")
 	private String region;
 
-	@Override
+	@PostConstruct
 	public void setS3Client() throws Exception {
 		AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
 

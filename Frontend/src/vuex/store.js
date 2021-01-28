@@ -232,9 +232,22 @@ export default new Vuex.Store({
 
         insertBoard(context,card){
             let formData = new FormData();
+            
             console.log(card.imageUrl);
             formData.append('files', card.imageUrl);
-            axios({
+            axios.post(`${SERVER_URL}/board/imageupload`,
+            formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+            ).then((res)=>{
+                console.log(res.data);
+                console.log(res.data["imgPath"]);
+            }).catch((error)=>{
+                console.log(error);
+            });
+            /*axios({
                 method:"post",
                 url:`${SERVER_URL}/board/imageupload`,
                 formData,
@@ -246,7 +259,7 @@ export default new Vuex.Store({
                 console.log(res.data["imgPath"]);
             }).catch((error)=>{
                 console.log(error);
-            })
+            })*/
         },
 
         async SIGNUP(context, credentials){

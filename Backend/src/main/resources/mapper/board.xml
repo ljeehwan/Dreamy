@@ -20,13 +20,19 @@
 		order by written_date DESC
 	</select>
 	
-	<!-- 
-	<select id="getBucketList" parameterType="" resultType="">
+	<select id="getBucketList" resultType="com.ssafy.Dreamy.model.BoardListDto">
+		select pid, uid, board_type as boardType, title, content, written_date as writtenDate,
+		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from Board
+		where board_type = 1
+		order by written_date DESC
 	</select>
 	
-	<select id="getChallengeList" parameterType="" resultType="">
+	<select id="getChallengeList" resultType="com.ssafy.Dreamy.model.BoardListDto">
+		select pid, uid, board_type as boardType, title, content, written_date as writtenDate,
+		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from Board
+		where board_type = 2
+		order by written_date DESC
 	</select>
-	 -->
 	 
 	<update id="update" parameterType="Map">
 		update Board
