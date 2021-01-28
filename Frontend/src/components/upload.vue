@@ -176,27 +176,29 @@
                 <p><strong>내용 입력</strong></p>
               </v-row>
               <v-row>
-                <v-col class="sm-6" justify="center">
                   <v-text-field
                     v-model="card.title"
                     label="제목 입력"
                     clearable
-                    class="mx-3"
+                    outlined
+                    dense
+                    class="mx-5"
                   ></v-text-field>
                   <v-file-input
                   show-size
                   label="이미지 등록"
+                  class="mx-5"
                   ></v-file-input>
-                </v-col>
-                <v-col class="sm-6">
+              </v-row>
+              <v-row>
                   <v-textarea
                     clearable
                     clear-icon="mdi-close-circle"
+                    outlined
                     label="내용 입력"
-                    class="mx-3"
+                    class="ma-5"
                     v-model="card.content"
                   ></v-textarea>
-                </v-col>
               </v-row>
             </v-card>
 
@@ -233,6 +235,7 @@ export default {
         writtenDate: new Date().toISOString().substr(0, 10),
         startDate: "",
         endDate: "",
+        imageUrl:""
       },
       dateRange: ["", ""],
       items: [
@@ -260,7 +263,13 @@ export default {
         this.e1 = n + 1;
       }
     },
-    submit() {},
+    submit() {
+      if(this.card.type==2){
+        this.card.startDate=this.dateRange[0];
+        this.card.endDate=this.dateRange[1];
+      }
+      this.$store.dispatch('insertBoard',this.card);
+    },
     open() {
       this.dialog = true;
       this.e1 = 1;
