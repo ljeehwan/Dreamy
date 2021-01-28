@@ -96,11 +96,6 @@ export default {
             const name = this.$store.getters.getUsername
             this.$store.dispatch('GET_TARGET', name)
             router.push('/user/mypage/')
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> 4d13f0def24fc6699ff95299822de4af5b507b25
         },
 
   },
