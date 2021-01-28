@@ -98,7 +98,6 @@ export default {
             router.push('/user/mypage/')
             
         },
-
   },
 };
 </script>
