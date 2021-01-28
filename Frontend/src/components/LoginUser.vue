@@ -97,7 +97,6 @@ export default {
             this.$store.dispatch('GET_TARGET', name)
             router.push('/user/mypage/')
         },
-
   },
 };
 </script>

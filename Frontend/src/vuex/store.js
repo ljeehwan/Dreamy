@@ -232,6 +232,7 @@ export default new Vuex.Store({
 
         insertBoard(context,card){
             let formData = new FormData();
+            console.log(card.imageUrl);
             formData.append('files', card.imageUrl);
             axios({
                 method:"post",
@@ -239,10 +240,12 @@ export default new Vuex.Store({
                 formData,
                 headers: {
                     'Content-Type': 'multipart/form-data'
-            }
-        }).then((res)=>{
+                }
+            }).then((res)=>{
                 console.log(res.data);
                 console.log(res.data["imgPath"]);
+            }).catch((error)=>{
+                console.log(error);
             })
         },
 

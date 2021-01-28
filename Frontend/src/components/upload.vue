@@ -188,6 +188,7 @@
                   show-size
                   label="이미지 등록"
                   class="mx-5"
+                  v-model="card.imageUrl"
                   ></v-file-input>
               </v-row>
               <v-row>
@@ -235,7 +236,7 @@ export default {
         writtenDate: new Date().toISOString().substr(0, 10),
         startDate: "",
         endDate: "",
-        imageUrl:""
+        imageUrl:[]
       },
       dateRange: ["", ""],
       items: [
