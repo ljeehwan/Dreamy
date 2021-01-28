@@ -34,6 +34,7 @@ public class ImageController {
 
 	@PostMapping("/imageupload")
 	public ResponseEntity<Map<String, Object>> boardImageUpload(MultipartFile files) throws IOException {
+		System.out.println(files);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
