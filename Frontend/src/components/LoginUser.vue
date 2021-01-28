@@ -90,10 +90,10 @@ export default {
       this.$store.dispatch("logout");
     },
     moveToMyPage () {
-            // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
-            const name = this.$store.getters.getUsername
-            this.$store.dispatch('GET_TARGET', name)
-            router.push('/user/mypage/')
+        // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
+        const name = this.$store.getters.getUsername
+        this.$store.dispatch('GET_TARGET', name)
+        router.push('/user/mypage/')
 
         },
 
