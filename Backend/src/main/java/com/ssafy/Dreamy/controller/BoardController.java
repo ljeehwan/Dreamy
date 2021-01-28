@@ -93,30 +93,13 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	// 버킷리스트 목록
+	/*
+	// 버킷리스트 목록.
 	@GetMapping("/bucketList")
 	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("버킷리스트 목록");
-		try {
-			List<BoardDto> list = new ArrayList<>();
-			list = boardService.getBucketList();
-			if (list.size() > 0) {	// 리스트가 있을 때
-				System.out.println("버킷목록 size : " + list.size());
-				resultMap.put("list", list);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {				// 리스트가 없을 때
-				resultMap.put("list", null);
-				resultMap.put("message", FAIL);
-				status = HttpStatus.NO_CONTENT;
-			}
-		} catch (Exception e) {
-			logger.error("정보조회 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
@@ -125,27 +108,10 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> challengeList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("챌린지 목록");
-		try {
-			List<BoardDto> list = new ArrayList<>();
-			list = boardService.getChallengeList();
-			if (list.size() > 0) {	// 리스트가 있을 때
-				System.out.println("챌린지목록 size : " + list.size());
-				resultMap.put("list", list);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {				// 리스트가 없을 때
-				resultMap.put("list", null);
-				resultMap.put("message", FAIL);
-				status = HttpStatus.NO_CONTENT;
-			}
-		} catch (Exception e) {
-			logger.error("정보조회 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	*/
 	
 	// 게시물 수정(내용만)
 	@PutMapping("/update") 

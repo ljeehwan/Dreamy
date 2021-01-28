@@ -1,25 +1,25 @@
-<!--이거 temp폴더인가-->
 <template>
-    <v-card class="mx-auto my-12" max-width="320">
-        <v-img height="180" src="https://cdn.vuetifyjs.com/images/cards/cooking.png"></v-img>
+<v-layout row wrap>
+    <v-card class="mx-auto my-12" max-width="320" v-for="(list,index) in lists" :key="index">
+        <v-img height="180" v-bind:src="list.imglink"></v-img>
 
-        <v-card-title>지허니 100대 때리기</v-card-title>
+        <v-card-title>{{list.title}}</v-card-title>
 
         <v-card-actions>
-            <v-btn color="deep-purple lighten-2" text="text">
-                서와닝
+            <v-btn color="black" text="text">
+                {{list.name}}
             </v-btn>
             <v-spacer/>
 
             <v-icon left="left">
                 mdi-label
             </v-icon>
-            운동
+            {{list.category}}
         </v-card-actions>
 
         <v-divider class="mx-4"></v-divider>
         <v-card-actions>
-            <v-btn color="deep-purple lighten-2" text="text" @click="detail">
+            <v-btn color="black" text="text" @click="detail">
                 자세히보기
             </v-btn>
             <v-spacer/>
@@ -27,29 +27,26 @@
                 small="small"
                 class="ma-2"
                 text="text"
-                icon="icon"
-                color="purple lighten-2">
+                icon="icon">
                 <v-icon>mdi-heart</v-icon>
             </v-btn>
-            <span>0</span>
+            <span>{{list.likes}}</span>
             <v-btn
                 small="small"
                 class="ma-2"
                 text="text"
-                icon="icon"
-                color="purple lighten-2">
+                icon="icon">
                 <v-icon>mdi-comment-outline</v-icon>
             </v-btn>
-            <span>0</span>
+            <span>{{list.comment}}</span>
             <v-btn
                 small="small"
                 class="ma-2"
                 text="text"
-                icon="icon"
-                color="purple lighten-2">
+                icon="icon">
                 <v-icon>mdi-bookmark</v-icon>
             </v-btn>
-            <span>0</span>
+            <span>{{list.scraps}}</span>
         </v-card-actions>
         <v-dialog v-model="loading" max-width="1100">
             <v-container>
@@ -156,6 +153,7 @@
                 </v-container>
             </v-dialog>
         </v-card>
+</v-layout>
     </template>
 
     <script>
@@ -195,6 +193,53 @@
                         divider: true,
                         inset: true
                     }
+                ],
+                lists: [
+                    {
+                        imglink:'https://cdn.vuetifyjs.com/images/cards/cooking.png',
+                        title: '제목 1',
+                        name: '서와닝',
+                        category:'운동',
+                        likes:34,
+                        comment:4,
+                        scraps:5
+                    }, 
+                    {
+                        imglink:'https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg',
+                        title: '제목 2',
+                        name: '지허니',
+                        category:'음식',
+                        likes:56,
+                        comment:10,
+                        scraps:10
+                    }, 
+                    {
+                        imglink:'https://cdn.vuetifyjs.com/images/cards/sunshine.jpg',
+                        title: '제목 3',
+                        name: '잉구',
+                        category:'취미',
+                        likes:234,
+                        comment:25,
+                        scraps:45
+                    }, 
+                    {
+                        imglink:'https://cdn.vuetifyjs.com/images/cards/docks.jpg',
+                        title: '제목 4',
+                        name: '엽이',
+                        category:'기타',
+                        likes:344,
+                        comment:48,
+                        scraps:53
+                    }, 
+                    {
+                        imglink:'https://cdn.vuetifyjs.com/images/parallax/material.jpg',
+                        title: '제목 5',
+                        name: '화니',
+                        category:'여행',
+                        likes:734,
+                        comment:64,
+                        scraps:95
+                    }, 
                 ]
             }),
 
