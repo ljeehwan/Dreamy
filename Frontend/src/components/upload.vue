@@ -18,6 +18,7 @@
         </v-icon>
       </v-btn>
     </template>
+
     <v-card>
       <v-toolbar dark flat>
         <v-toolbar-title>
@@ -25,28 +26,13 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-divider></v-divider>
-      <v-stepper v-model="e1">
-        <v-stepper-header>
-          <template v-for="n in 3">
-            <v-stepper-step
-              :key="`${n}-step`"
-              :complete="e1 > n"
-              :step="n"
-              editable
-            >
-              Step {{ n }}
-            </v-stepper-step>
-
-            <v-divider v-if="n !== steps" :key="n"></v-divider>
-          </template>
-        </v-stepper-header>
-
-        <v-stepper-items>
-          <v-stepper-content v-for="n in steps" :key="`${n}-content`" :step="n">
-            <v-card class="ma-10" v-if="n == 1">
-              <v-row class="align-center justify-center"
-                ><span><strong>타입 설정</strong></span></v-row
-              >
+      <v-stepper v-model="upload" vertical>
+        <v-stepper-step step="1" v-bind:complete="upload > 1">
+               타입 등록
+                <small>등록할 게시물의 타입을 정해주세요</small>
+        </v-stepper-step>
+          <v-stepper-content step="1">
+            <v-card class="ma-10">
               <v-row class="align-center">
                 <v-col class="sm-6 pa-5">
                   <v-radio-group v-model="card.boardType">
@@ -66,9 +52,16 @@
                   ></v-select>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-spacer></v-spacer>
+            <v-btn class="mx-5" color="primary" @click.native="upload = 2">계속</v-btn>
+              </v-row>
             </v-card>
+          </v-stepper-content>
 
-            <v-card class="my-6 pa-5" v-if="n == 2 && card.boardType == 1">
+           <v-stepper-step step="2" v-bind:complete="upload > 2">날짜를 정해주세요</v-stepper-step>
+           <v-stepper-content step="2" >
+            <v-card class="my-6 pa-5" v-if="upload == 2 && card.boardType == 1">
               <v-row class="align-center justify-center">
                 <v-spacer></v-spacer>
                 <v-tooltip left>
@@ -120,9 +113,16 @@
                   :show-current="true"
                 ></v-date-picker>
               </v-row>
+            <v-row class="ma-10">
+              <v-spacer></v-spacer>
+              <v-btn class="mr-3" text @click.native="upload = 1">이전</v-btn>
+            <v-btn color="primary" @click.native="upload = 3">계속</v-btn>
+            </v-row>
             </v-card>
+           </v-stepper-content>
             <!--첼린지 -->
-            <v-card class="my-6 pa-5" v-if="n == 2 && card.boardType == 2">
+             <v-stepper-content step="2">
+            <v-card class="my-6 pa-5" v-if="upload == 2 && card.boardType == 2">
               <v-row class="align-center justify-center">
                 <v-spacer></v-spacer>
                 <v-tooltip left>
@@ -170,19 +170,24 @@
                   v-model="dateRange"
                 ></v-date-picker>
               </v-row>
+                <v-row class="ma-10">
+              <v-spacer></v-spacer>
+              <v-btn class="mr-3" text @click.native="upload = 1">이전</v-btn>
+            <v-btn color="primary" @click.native="upload = 3">계속</v-btn>
+            </v-row>
             </v-card>
+             </v-stepper-content>
 
-            <v-card class="my-6" v-if="n == 3">
-              <v-row class="align-center justify-center my-7">
-                <!-- <span><strong>내용 입력</strong></span> -->
-              </v-row>
+            <v-stepper-step step="3" v-bind:complete="upload > 3">내용을 입력해주세요</v-stepper-step>
+            <v-card class="ma-7" v-if="upload == 3">
+              <v-form>
               <v-row>
                 <v-text-field
                   v-model="card.title"
                   label="제목 입력"
                   clearable
                   dense
-                  class="mx-5"
+                  class="ma-10"
                 ></v-text-field>
               </v-row>
               <v-row>
@@ -191,13 +196,14 @@
                   clear-icon="mdi-close-circle"
                   outlined
                   dense
+                  width="500"
                   label="내용 입력"
-                  class="ma-5"
+                  class="mx-10"
                   v-model="card.content"
                 ></v-textarea>
               </v-row>
               <v-row>
-                <v-col class="sm-6">
+                <v-col class="sm-6 mx-10">
                   <v-file-input
                     show-size
                     label="이미지 등록"
@@ -206,7 +212,7 @@
                   ></v-file-input>
                 </v-col>
                 <v-col class="sm-6" justify-center align-center>
-                  <v-row class="mx-5">
+                  <v-row class="mx-10">
                     <v-checkbox
                       v-model="defaultfile"
                       label="기본 이미지로 등록"
@@ -224,20 +230,15 @@
                   </v-row>
                 </v-col>
               </v-row>
+              </v-form>
+              <v-row class="ma-10">
+                <v-spacer></v-spacer>
+              <v-btn class="mr-3" text @click.native="upload = 2">이전</v-btn>
+            <v-btn color="primary" @click="submit">등록</v-btn>
+            </v-row>
             </v-card>
-
-            <v-btn text @click="dialog = false">
-              취소
-            </v-btn>
-
-            <v-btn color="success" @click="submit" v-if="n == 3">등록</v-btn>
-
-            <v-btn color="primary" @click="nextStep(n)" v-if="n != 3">
-              다음
-            </v-btn>
-          </v-stepper-content>
-        </v-stepper-items>
       </v-stepper>
+      
     </v-card>
   </v-dialog>
 </template>
@@ -250,8 +251,7 @@ export default {
   data() {
     return {
       dialog: false,
-      e1: 1,
-      steps: 3,
+      upload: 1,
       defaultfile: false,
       image: [],
       card: {
@@ -276,26 +276,12 @@ export default {
       ],
     };
   },
-  watch: {
-    steps(val) {
-      if (this.e1 > val) {
-        this.e1 = val;
-      }
-    },
-  },
   computed: {
     getUserId() {
       return this.$store.getters.getUserId;
     },
   },
   methods: {
-    nextStep(n) {
-      if (n === this.steps) {
-        this.e1 = 1;
-      } else {
-        this.e1 = n + 1;
-      }
-    },
     submit() {
       if (this.card.boardType == 2) {
         this.card.startDate = this.dateRange[0];
@@ -321,7 +307,7 @@ export default {
     },
     open() {
       this.dialog = true;
-      this.e1 = 1;
+      this.upload = 1;
       this.card.uid = this.getUserId;
       this.card.boardType = "";
       this.card.category = "";

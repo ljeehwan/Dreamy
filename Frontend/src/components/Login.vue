@@ -60,10 +60,12 @@
 
             <v-layout align-center justify-center>
               <v-col class="sm-6">
-                <kakaoLogin :component="component" />
+                <!-- <kakaoLogin :component="component" /> -->
+                <kakaoLogin /> 
                  </v-col>
                  <v-col class="sm-6">
-                 <googleLogin :component="component" />
+                 <!-- <googleLogin :component="component" /> -->
+                <googleLogin />
                  </v-col>
               
             </v-layout>

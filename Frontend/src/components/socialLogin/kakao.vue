@@ -1,5 +1,5 @@
 <template>     
-    <v-btn icon elevation="4">
+    <v-btn icon elevation="3" outlined>
         <img src="@/assets/snsLogin/kakao.png" @click="Kakaologin" alt="kakao"/>
     </v-btn>
 </template>

@@ -165,6 +165,7 @@ export default new Vuex.Store({
             }).then((response)=>{
                 console.log(response.data);
                 context.commit("setUserinfo",response.data);
+                router.push('/main');
             }).catch(()=>{
                 alert("jwt 만료");
             })
@@ -227,6 +228,7 @@ export default new Vuex.Store({
             localStorage.clear();
             context.commit("logout");
             axios.defaults.headers.common["access-token"] = undefined;
+            router.push('/');
             window.location.reload();
         },  
 
@@ -319,6 +321,7 @@ export default new Vuex.Store({
                 console.log(`삭제 스토어 진입성공 : ${userId}`)
                 const response = await requestDeleteMember(userId)
                 console.log(`회원 삭제 리스폰스 ${response}`)
+                context.dispatch('logout')
                 setTimeout(function () {
                     console.log('셋 타임아웃 시작')
                     context.commit('END_LOADING')
