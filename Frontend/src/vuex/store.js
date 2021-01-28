@@ -166,7 +166,7 @@ export default new Vuex.Store({
                 console.log(response.data);
                 context.commit("setUserinfo",response.data);
             }).catch(()=>{
-                alert("jwt 인증 오류");
+                alert("jwt 만료");
             })
         },
 
@@ -176,6 +176,7 @@ export default new Vuex.Store({
                 url:`${SERVER_URL}/account/checkUser`,
                 data: {
                     email: user.email,
+                    name:user.name,
                     loginType:user.logintype
                 }
               }).then((response)=>{
@@ -183,13 +184,12 @@ export default new Vuex.Store({
                     alert("해당 계정이 이미 다른 플랫폼으로 가입되어있습니다")
                   }
                   else if(response.data["message"]=='needSignup'){
-                    //이메일, 가입타입, 이름으로 자동회원가입  - 카카오에서 이미 인증이 된 회원이므로..?
                     context.commit("setSocialUser",user);
                     context.dispatch("socialSignup",user.logintype);
                     alert("자동 회원가입 완료! 초기 비밀번호를 꼭 수정해주세요");
                   }
                   //자동 로그인
-                  else if(response.data["message"]=="success"){
+                  else if(response.data["message"]=="success"){ 
                     localStorage.setItem("access_token", response.data["access-token"])
                     localStorage.setItem("isLogin", true)
                     axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
@@ -203,8 +203,8 @@ export default new Vuex.Store({
         socialSignup(context,type){
             let user={
                 email:this.state.user.email,
-                password:"1q2w3e4r",
-                name:this.state.user.name,   
+                password:"",
+                name:this.state.user.name,
             }
             axios({
                 method:"post",
@@ -215,10 +215,11 @@ export default new Vuex.Store({
                     loginType:type,
                 }
             }).then((res)=>{
-                console.log(res);
+                user.password=res.data["userInfo"].password;
                 context.dispatch("login",user);
             }).catch((error)=>{
                 console.log(error);
+                alert(error.data["message"]);
             })
         },
 
@@ -228,6 +229,25 @@ export default new Vuex.Store({
             axios.defaults.headers.common["access-token"] = undefined;
             window.location.reload();
         },  
+
+        insertBoard(context,card){
+            let formData = new FormData();
+            console.log(card.imageUrl);
+            formData.append('files', card.imageUrl);
+            axios({
+                method:"post",
+                url:`${SERVER_URL}/board/imageupload`,
+                formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }).then((res)=>{
+                console.log(res.data);
+                console.log(res.data["imgPath"]);
+            }).catch((error)=>{
+                console.log(error);
+            })
+        },
 
         async SIGNUP(context, credentials){
             try {
