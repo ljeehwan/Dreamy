@@ -33,7 +33,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int insertChallenge(BoardDto boardDto) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		
 		// Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
         // 연산결과 -950400000. long type 으로 return 된다.
 		long tempDate = boardDto.getEndDate().getTime() - boardDto.getStartDate().getTime();
@@ -58,13 +57,15 @@ public class BoardServiceImpl implements BoardService {
 		return sqlSession.getMapper(BoardMapper.class).getList();
 	}
 	
-//	@Override
-//	public List<BoardDto> getBucketList() throws Exception {
-//	}
+	@Override
+	public List<BoardDto> getBucketList() throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).getBucketList();
+	}
 	
-//	@Override
-//	public List<BoardDto> getChallengeList() throws Exception {
-//	}
+	@Override
+	public List<BoardDto> getChallengeList() throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).getChallengeList();
+	}
 	
 	@Override
 	public void update(int pid, String content) throws Exception {

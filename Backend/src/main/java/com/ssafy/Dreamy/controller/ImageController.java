@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,7 @@ import com.ssafy.Dreamy.model.service.ImageServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
-@RequestMapping("/board")
+//@RequestMapping("/board")
 public class ImageController {
 
 	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
@@ -32,8 +31,8 @@ public class ImageController {
 	@Autowired
 	private ImageServiceImpl imageService;
 
-	@PostMapping("/imageupload")
-	public ResponseEntity<Map<String, Object>> boardImageUpload(MultipartFile files) throws IOException {
+	@PostMapping("/board/imageupload")
+	public ResponseEntity<Map<String, Object>> boardImageUpload(@RequestBody MultipartFile files) throws IOException {
 		System.out.println(files);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -42,6 +41,7 @@ public class ImageController {
 			String imgPath = "https://" + CloudFrontDomain + "/"
 					+ imageService.upload(files, typeString);
 			
+			System.out.println(imgPath);
 			resultMap.put("imgPath", imgPath);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
