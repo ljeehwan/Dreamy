@@ -14,8 +14,8 @@ public interface BoardMapper {
 	public Object insertBucket(Map<String, Object> map) throws SQLException;	// 등록
 	public Object insertChallenge(Map<String, Object> map) throws SQLException;	// 등록
 	public List<BoardDto> getList() throws SQLException;			// 조회
-//	public List<BoardDto> getBucketList() throws SQLException;		// 조회
-//	public List<BoardDto> getChallengeList() throws SQLException;	// 조회
+	public List<BoardDto> getBucketList() throws SQLException;		// 조회
+	public List<BoardDto> getChallengeList() throws SQLException;	// 조회
 	public void update(Map<String, Object> map) throws SQLException;
 	
 }
