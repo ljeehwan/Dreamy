@@ -40,8 +40,8 @@
         </v-layout>
         <v-row  class="mx-9">
             <v-spacer></v-spacer>
-            <v-btn text color="red" @click="dialog.value = false" class="mx-3">Close</v-btn>            
-              <v-btn text color="blue" class="mx-3" @click="login">
+            <v-btn text color="red" @click="dialog.value = false" class="mx-3" :ripple="{ class: 'red--text' }">Close</v-btn>            
+              <v-btn text color="blue" class="mx-3" @click="login"  :ripple="{ class: 'blue--text' }">
                 Login
               </v-btn>
         </v-row>
