@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.Dreamy.model.BoardDto;
 import com.ssafy.Dreamy.model.service.BoardService;
 
+
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 @RequestMapping("/board")	// 매핑주소 변경가능

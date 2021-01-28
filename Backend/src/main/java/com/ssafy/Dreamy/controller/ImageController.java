@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,6 +21,7 @@ import com.ssafy.Dreamy.model.service.ImageServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
+@RequestMapping("/board")
 public class ImageController {
 
 	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
@@ -30,11 +32,10 @@ public class ImageController {
 	@Autowired
 	private ImageServiceImpl imageService;
 
-	@PostMapping("/board/imageupload")
-	public ResponseEntity<Map<String, Object>> boardImageUpload(@RequestBody MultipartFile files) throws IOException {
+	@PostMapping("/imageupload")
+	public ResponseEntity<Map<String, Object>> boardImageUpload(MultipartFile files) throws IOException {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
 		try {
 			String typeString = "board";
 			String imgPath = "https://" + CloudFrontDomain + "/"
