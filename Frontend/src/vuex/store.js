@@ -255,7 +255,7 @@ export default new Vuex.Store({
                     context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다.', 'primary', 'top'))
                     context.commit('END_SPINNER')
                     context.commit('END_LOADING')
-                    router.push('/')
+                    router.push('/main')
                     return response                    
                 }, 2000)
             } catch (e) {

@@ -20,13 +20,13 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {
-            path: '/landing',
+            path: '/',   // <- '/landing'
             name: 'Landing',
             component: Landing
         },
     
         {
-            path : '/',
+            path : '/main',        // <- '/'
             name : 'Main',
             component : Main
         },
