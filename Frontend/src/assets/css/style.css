@@ -4,7 +4,7 @@ body{
   height: 100%;
   font-family:'Roboto';
 }
-.img-container{
+.img-container-l{
   background-image: url("../../assets/landing.jpg");
   background-size: cover;
   background-position: 50% 65%;
@@ -58,7 +58,9 @@ body{
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:700');
 
-#container {
+/* 수정 해야 됌!!!!!!!!!!!!!!!!111 */
+
+#container-l {
   color:rgb(241, 245, 255);
   text-transform: uppercase;
   font-size: 34px; 
@@ -72,12 +74,12 @@ body{
   opacity: 1;
 }
 
-#flip {
+#flip-l {
   height: 59px;
   overflow:hidden;
 }
 
-#flip > div > div {
+#flip-l > div > div {
   color:#fff;
   padding:1px 12px;
   height:45px;
@@ -85,17 +87,17 @@ body{
   display:inline-block;
 }
 
-#flip div:first-child {
+#flip-l div:first-child {
   animation: show 10s linear infinite;
 }
 
-#flip div div {
+#flip-l div div {
   background:#42c58a;
 }
-#flip div:first-child div {
+#flip-l div:first-child div {
   background:#4ec7f3;
 }
-#flip div:last-child div {
+#flip-l div:last-child div {
   background:#DC143C;
 }
 
@@ -110,7 +112,7 @@ body{
   100% {margin-top:-270px;}
 }
 
-p {
+.p-l {
   position:fixed;
   width:100%;
   bottom:150px;
@@ -118,6 +120,9 @@ p {
   color:rgb(255, 255, 255);
   margin-top:200px;
 }
+
+
+/* 수정해댜 되는 부분 끝! */
 
 /* 반응형 */
 @media ( max-width: 1428px ) {
