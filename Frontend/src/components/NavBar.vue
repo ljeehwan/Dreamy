@@ -8,12 +8,22 @@
           transition="scale-transition"
         />
 
-        <v-img
+        <!-- <v-img
           alt="Dreamy Name"
           class="shrink"
           contain
          src="http://placehold.it/150x50"
-        />
+        /> -->
+
+        <div class="logo" transition="scale-transition">
+            <div class="header-container" transition="scale-transition">
+                <div class="content" transition="scale-transition">
+                <h2>DREAMY</h2>
+                <h2>DREAMY</h2>
+                </div>
+            </div>
+        </div>
+
         <v-spacer>
         </v-spacer>
         <v-btn icon class="mx-2 my-auto">
@@ -23,7 +33,7 @@
         </v-btn>
 
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
-        <span><router-link to="/" style="text-decoration:none;">
+        <span><router-link to="/main" style="text-decoration:none;">
          <v-btn target="_blank" text style="width:120px;">HOME
          </v-btn></router-link></span>
     <hr role="separator" aria-orientation="vertical" class="mx-2 my-auto v-divider v-divider--inset v-divider--vertical theme--light" style="height: 20px;">
