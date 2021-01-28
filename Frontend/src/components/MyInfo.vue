@@ -17,77 +17,47 @@
           </div>
           <v-bottom-sheet v-model="sheet">
             <v-sheet
+            rounded
             class="text-center"
-            height="300px" >
+            height="340px" >
               <v-btn class="mt-6" text color="red"
               @click="sheet = !sheet" >
                 취소
               </v-btn>
               <div class="py-3">
-                <p>한번 탈퇴하시면 드리미에서 계정 정보가 모두 삭제됩니다.</p>
+                <v-container class="exit-modal">
+
+
+                <v-alert
+                  dense 
+                  outlined
+                  type="warning"
+                 
+                >
+                한번 탈퇴하시면 드리미에서 계정 정보가 모두 삭제됩니다.
+                </v-alert>
+
+                <!-- <p>
+                  한번 탈퇴하시면 드리미에서 계정 정보가 모두 삭제됩니다.</p> -->
+
                 <p>탈퇴하시려면 <b>"탈퇴하겠습니다"</b> 라고 치셔야합니다.</p>
-<!-- 
-  <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-text-field
-      v-model="name"
-      :counter="10"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
 
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
-    ></v-text-field>
+                
 
-    <v-select
-      v-model="select"
-      :items="items"
-      :rules="[v => !!v || 'Item is required']"
-      label="Item"
-      required
-    ></v-select>
+                    <v-text-field
+                      :rules="exitRules"
+                      color="orange" background-color="#fbceb1"
+                      solo v-model="exitMsg"
+                      placeholder="탈퇴하겠습니다"
+                      required rounded
+                      @input="onExit"
+                    ></v-text-field>
 
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox>
 
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="validate"
-    >
-      Validate
-    </v-btn>
-
-    <v-btn
-      color="error"
-      class="mr-4"
-      @click="reset"
-    >
-      Reset Form
-    </v-btn>
-
-    <v-btn
-      color="warning"
-      @click="resetValidation"
-    >
-      Reset Validation
-    </v-btn>
-  </v-form> -->
-
-                <v-btn color="red white--text" :disabled="!completeExit">
+                </v-container>
+                <v-btn color="red white--text" :disabled="!exitPass"
+                @click="onDelete"
+                >
                   회원 탈퇴
                 </v-btn>
               </div>
@@ -141,6 +111,8 @@
 
 <script>
 import UserInfoUpdate from "./UserInfoUpdate.vue"
+import {router} from "@/routes"
+
 export default {
   components: {
     UserInfoUpdate,
@@ -153,10 +125,11 @@ export default {
       email : '',
       name : '',
       phone: '',
-      exitText: '',
+      exitPass: false,
       exitRules: [
-        v => v === "탈퇴하겠습니다" || '정확히 입력하셔야합니다',
+        v => v === "탈퇴하겠습니다" || '탈퇴 문구를 정확히 입력하셔야합니다',
       ],
+      exitMsg: ''
     }
   },
   props:{
@@ -164,19 +137,31 @@ export default {
       type: Object,
     }
   },
+  updated: function () {
+    if (this.sheet === false) {
+      this.exitMsg = ""
+    } 
+  },
   methods: {
+    onExit () {
+      if (this.exitMsg === "탈퇴하겠습니다") {
+        this.exitPass = true
+      } else {
+        this.exitPass = false
+      }
+    },
+
+    onDelete () {
+      this.$store.dispatch('DELETE_MEMBER')
+      this.sheet = false
+      router.push('/')
+    },
   },
   watch: {
     isMyself() {
       return this.$store.getters.getMyself
     },
-    completeExit() {
-      if (this.exitText === "탈퇴하겠습니다") {
-        return true
-
-      }
-    },
-
+    
   },
   computed: {
     isMyself() {
@@ -225,6 +210,9 @@ export default {
     height: 200px;
     max-height: 200px;
     max-width: 200px;
+}
+.exit-modal {
+  max-width: 510px;
 }
 
 
