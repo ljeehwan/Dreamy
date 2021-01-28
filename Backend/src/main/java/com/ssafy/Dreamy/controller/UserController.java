@@ -104,18 +104,20 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		String email=memberDto.getEmail();
+		String name=memberDto.getName();
 		String type=memberDto.getLoginType();
 		System.out.println("1. socail 로그인 db 유저 정보 확인"); 
 
 		try {
 			//이메일 중복 검사
-			int user=userService.getEmail(email);
-			if(user==0) {		// db에 유저 정보가 없음 => 자동가입 시키기
+			int userEmail=userService.getEmail(email);
+			int userName=userService.getName(name);
+			if(userEmail==0&&userName==0) {		// db에 유저 정보가 없음 => 자동가입 시키기
 				resultMap.put("message", "needSignup");
 				status = HttpStatus.ACCEPTED;
 				System.out.println("2-1 소셜 계정 자동 가입"); 
 			}
-			else if(user==1){	// db에 유저정보가 있음 => 로그인
+			else if(userName==1){	// db에 유저정보가 있음 => 로그인
 				if(!(type.equals(userService.getLoginType(email)))) {	// db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
 					resultMap.put("message", "otherSocialLogin");					
 					status = HttpStatus.CONFLICT;
