@@ -1,5 +1,5 @@
 <template>
-  <div class="img-container">
+  <div class="img-container-l">
     <!-- <div class="logo">
       <div class="header-container">
         <div class="content">
@@ -9,16 +9,17 @@
       </div>
     </div> -->
     <router-link to="/user/join">
-      <div id=container>
+      <div id=container-l>
       make 
-      <div id=flip>
+      <div id=flip-l>
         <div><div>friends</div></div>
         <div><div>bucket list</div></div>
         <div><div>challenge</div></div>
       </div>
       now !
       </div>
-      <p>|| DREAMY ||</p>
+      <p class="p-l">|| DREAMY ||</p>
+    
   </router-link>
   </div>
 </template>
