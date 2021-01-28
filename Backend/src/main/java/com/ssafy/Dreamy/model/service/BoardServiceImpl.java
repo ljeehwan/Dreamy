@@ -27,7 +27,7 @@ public class BoardServiceImpl implements BoardService {
 		map.put("endDate", boardDto.getEndDate());
 		map.put("category", boardDto.getCategory());
 		map.put("imageUrl", boardDto.getImageUrl());
-		return (int)sqlSession.getMapper(BoardMapper.class).insertBucket(map);
+		return sqlSession.getMapper(BoardMapper.class).insertBucket(map);
 	}
 	
 	@Override
@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
 		map.put("category", boardDto.getCategory());
 		map.put("imageUrl", boardDto.getImageUrl());
 		map.put("totalDate", totalDate);
-		return (int)sqlSession.getMapper(BoardMapper.class).insertChallenge(map);
+		return sqlSession.getMapper(BoardMapper.class).insertChallenge(map);
 	}
 	
 	@Override
