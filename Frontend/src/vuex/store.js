@@ -1,74 +1,27 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from "axios"
+
+import userStore from '@/vuex/modules/userStore.js'
+import boardStore from '@/vuex/modules/boardStore.js'
 
 Vue.use(Vuex)
 
-const SERVER_URL="http://localhost:8080";
-
-export default new Vuex.Store({
-    state:{
-        accessToken:null,
-        isLogined:false,
-        isSign:false,
-        user:{
-            uid:"",
-            email:"",
-            name:"",
-            phone:""
-        }
-    },
-    mutations:{
-        setUser(state,payload){
-            state.isLogined=true;
-            state.accessToken=payload["access-token"];
-            state.user.uid=payload["user"].uid;
-            state.user.email=payload["user"].email;
-            state.user.name=payload["user"].name;
-            state.user.phone=payload["user"].phone;
-        },
-        setIsSign(state,payload){
-            state.isSign=payload;
-        }
-
-    },
-    getters:{
-        getIsuser(state){
-            return state.isUser;
-        },
-    },
-    actions:{
-        login(context,user){
-            axios({
-                method: "post",
-                url: `${SERVER_URL}/account/login`,
-                data: {
-                   email: user.email,
-                   password: user.password,
-                },
-           })
-          .then((response) => {
-            localStorage.setItem("access_token", response.data["access-token"])
-            localStorage.setItem("access_id", response.data["user"].uid)
-            localStorage.setItem("access_name", response.data["user"].name)
-            context.commit("setUser",response.data);
-            axios.defaults.headers.common["auth-token"]=`${response.data["access-token"]}`;
-            console.log(response.data["user"]);
-          }).catch((error) => {
-            alert("로그인 실패");
-            console.log(error);
-          })
-        },
-
-        SIGNUP(context, credentials){
-            axios.post(`${SERVER_URL}/user/signup`, credentials)
-              .then((response)=>{
-                console.log(response.data.message);
-                context.commit("setIsSign",response.data.message);
-              })
-              .catch((err) => {
-                console.log(err)
-              })
-        }
-    }
+const store = new Vuex.Store({
+    modules: {
+        userStore: userStore,
+        boardStore: boardStore
+      }
 })
+
+export default store
+
+// 컴포넌트에서 스토어에 접근할 경우
+/*  원래 컴포넌트에서는 스토어의 state와 mutation에 직접적으로 접근하지 않는것이 원칙 (getters와 actions로직 내부에서 해당 동작 명령)
+1. state : this.$store.state.모듈명.state명    ex) this.$store.state.userStore.targetName
+2. getters : this.$store.getters["모듈명/함수명"]    ex) this.$store.getters["userStore/getUserId"]
+3. actions : this.$store.dispatch('모듈명/함수명')   ex) this.$store.dispatch('userStore/login')
+4. mutations : this.$store.commit('모듈명/함수명')
+
+
+
+*/

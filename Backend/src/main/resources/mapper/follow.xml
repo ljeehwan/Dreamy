@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.Dreamy.model.mapper.FollowMapper">
+	<insert id="setFollow" parameterType="FollowDto">
+		insert into Follow
+		(following,follower) values
+		(#{followingUid},#{followUid})
+	</insert>
+
+	<delete id="revokeFollow" parameterType="Integer">
+		delete from Follow where
+		following=#{followed} and follower=#{follow}
+	</delete>
+
+	<select id="countFollowing" parameterType="Integer"
+		resultType="Integer">
+		select count(*) from Follow
+		where following = #{userid}
+	</select>
+
+	<select id="countFollower" parameterType="Integer"
+		resultType="Integer">
+		select count(*) from Follow
+		where follower = #{userid}
+	</select>
+
+	<select id="checkFollow" parameterType="FollowDto">
+		select count(*) from
+		Follow
+		where following=#{userid} and follower =
+		#{targetid}
+	</select>
+	<select id="listFollowing" parameterType="Integer"
+		resultType="UserDto">
+		select name,profileUrl from User where uid IN (select
+		follower from Follow where following=#{userid})
+	</select>
+
+	<select id="listFollower" parameterType="Integer"
+		resultType="UserDto">
+		select name,profileUrl from User where uid IN (select
+		following from Follow where follower=#{userid})
+	</select>
+</mapper>

@@ -15,6 +15,8 @@
     "password-validator": "^5.1.1",
     "sass-loader": "^10.1.1",
     "vue": "^2.6.11",
+    "vue-google-login": "^2.0.5",
+    "vue-infinite-loading": "^2.4.5",
     "vue-router": "^3.4.9",
     "vuetify": "^2.2.11",
     "vuex": "^3.6.0"

@@ -2,8 +2,13 @@
   <div id="app">
     <v-app>
       <NavBar/>
+      
       <div class="body-component">
         <router-view></router-view>
+        <Modal/>
+        <SnackBar/>
+        <Spinner/>
+
       </div>
     </v-app>
   </div>
@@ -13,11 +18,19 @@
 <script>
 import "./assets/css/style.css"
 import NavBar from '@/components/NavBar.vue'
+import Modal from '@/components/Modal.vue'
+import SnackBar from '@/components/SnackBar.vue'
+import Spinner from '@/components/Spinner.vue'
+
 export default {
   name: "app",
   components:{
-    NavBar
-  }
+    NavBar,
+    Modal,
+    SnackBar,
+    Spinner,
+  },
+ 
 };
 </script>
 
@@ -25,7 +38,6 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
