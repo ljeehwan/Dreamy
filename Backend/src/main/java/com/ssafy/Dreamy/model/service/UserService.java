@@ -16,5 +16,5 @@ public interface UserService {
 	public int certification(String email, String phone) throws Exception;		// for find password
 	public void updatePassword(String email, String password)throws Exception;	// for find password
 	public UserDto userInfo(int uid) throws Exception;
-	
+	public void profileUpload(int uid, String imageUrl) throws Exception; // for upload profile image
 }

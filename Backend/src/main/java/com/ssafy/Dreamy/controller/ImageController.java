@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.Dreamy.model.service.ImageServiceImpl;
+import com.ssafy.Dreamy.model.service.UserServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
@@ -31,6 +33,9 @@ public class ImageController {
 	@Autowired
 	private ImageServiceImpl imageService;
 
+	@Autowired
+	private UserServiceImpl userService;
+	
 	@PostMapping("/board/imageupload")
 	public ResponseEntity<Map<String, Object>> boardImageUpload(@RequestBody MultipartFile files) throws IOException {
 		System.out.println(files);
@@ -54,14 +59,30 @@ public class ImageController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	/*
-	 * @PostMapping("/user/imageupload")// account/imageupload?? user/profile ??
-	 * public ResponseEntity<Map<String, Object>> profileImageUpload(MultipartFile
-	 * files) throws IOException { System.out.println(files); // for (int i = 0; i <
-	 * files.length; i++) { String imgPath =
-	 * imageService.upload(galleryDto.getFilePath(), files);
-	 * galleryDto.setFilePath("https://" + "d2dmrocw1z3urn.cloudfront.net" + "/" +
-	 * imgPath); // } return galleryService.upload(galleryDto) > 0 ? "OK" : "FAIL";
-	 * }
-	 */
+	@PostMapping("/user/imageupload/{uid}")
+	public ResponseEntity<Map<String, Object>> profileImageUpload(@PathVariable("uid") int uid, @RequestBody MultipartFile files) throws IOException { 
+		System.out.println(files); 
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		try {
+			String typeString = "profile";
+			String imgPath = "https://" + CloudFrontDomain + "/" + imageService.upload(files, typeString);
+
+			System.out.println(imgPath);
+			
+			userService.profileUpload(uid, imgPath);
+			
+			resultMap.put("imgPath", imgPath);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("이미지 업로드 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+		
+	}
 }
