@@ -26,24 +26,14 @@
               </v-btn>
               <div class="py-3">
                 <v-container class="exit-modal">
-
-
                 <v-alert
                   dense 
                   outlined
                   type="warning"
-                 
                 >
                 한번 탈퇴하시면 드리미에서 계정 정보가 모두 삭제됩니다.
                 </v-alert>
-
-                <!-- <p>
-                  한번 탈퇴하시면 드리미에서 계정 정보가 모두 삭제됩니다.</p> -->
-
                 <p>탈퇴하시려면 <b>"탈퇴하겠습니다"</b> 라고 치셔야합니다.</p>
-
-                
-
                     <v-text-field
                       :rules="exitRules"
                       color="orange" background-color="#fbceb1"
@@ -52,8 +42,6 @@
                       required rounded
                       @input="onExit"
                     ></v-text-field>
-
-
                 </v-container>
                 <v-btn color="red white--text" :disabled="!exitPass"
                 @click="onDelete"
@@ -89,7 +77,7 @@
               <p>
                 <v-icon left>mdi-account</v-icon>
                 닉네임 : {{info.name}}
-                </p>
+              </p>
             </div>
           </div>
           <!-- 핸드폰 번호 -->
@@ -97,6 +85,24 @@
             <p>
               <v-icon left>mdi-phone</v-icon>
               핸드폰 번호 : {{info.phone}}
+            </p>
+          </div>
+          <div class="d-flex justify-start font-weight-bold">
+            <p>
+               <span class="follow-m">
+                 <v-icon left>mdi-account-supervisor-circle</v-icon>
+                 팔로잉 :  {{targetInfo.following}}
+              </span>
+              <span class="follower-m">
+                 <v-icon left>mdi-account-group-outline</v-icon>
+                 팔로워 :  {{targetInfo.follower}}
+              </span>
+              <span v-if="!isMyself">
+                <v-btn @click="requestFollow">
+                  <v-icon left>mdi-account-multiple-plus</v-icon>
+                  팔로우하기
+                </v-btn>
+              </span>
             </p>
           </div>
         </v-card>
@@ -156,10 +162,16 @@ export default {
       this.sheet = false;
       router.push('/')
     },
+    requestFollow() {
+      this.$store.dispatch('userStore/REQUEST_FOLLOW')
+    },
   },
   watch: {
     isMyself() {
       return this.$store.getters["userStore/getMyself"];
+    },
+    targetInfo() {
+      return this.$store.getters["userStore/getTargetInfo"];
     },
     
   },
@@ -170,38 +182,7 @@ export default {
     targetInfo() {
       return this.$store.getters["userStore/getTargetInfo"];
     },
-
-    
   },
-  // created: function () {
-  //   // 뷰엑스로 받은 이름을 타겟에 넣어서
-  //   const targetName = this.$store.state.targetName
-  //   //1. 스토어에 있는 GET_MEMBER dispatch한다. (네브 바의 마이 페이지 버튼은 어차피 
-  //   // 자기 자신이기 때문에 이름을 내이름을 내려보내줌)
-  //   // 응답을 변수에 담아서 저장
-  //   this.$store.dispatch('GET_MEMBER', targetName)
-  //   //vuex에서 정보 가져오기
-  //   // const isMyself = this.$store.getters.getMyself
-  //   const targetInfo = this.$store.getters.getTargetInfo
-  //   // 저장한 변수에서 data의 email, username, phone으로 이름을 할당해주고 브라우저에 출력해준다
-  //   // this.email = targetInfo.email
-  //   // this.name = targetInfo.name
-  //   // this.phone = targetInfo.phone
-  //   // this.uid = targetInfo.uid
-  //   console.log(this.name)
-  //   // 2. 응답받은(위에서 출력한) 유저의 name과 로그인한 유저의 이름이 같으면 수정 버튼 활성화
-  //   // 타겟과 로그인한 이름이 일치하면 수정 버튼을 보여준다.
-  //     // console.log(this.name)
-  //     // console.log(this.$store.getters.getUsername)
-  //   if (this.name === this.$store.getters.getUsername) {
-  //     console.log('이름이 일치합니당')
-  //     // this.isMyself = true
-  //     this.$store.commit('MYSELF')
-  //     console.log(`뷰엑스의 불린값 ${this.$store.getters.getMyself}`)
-  //     // console.log(`컴포넌트 안의 불린 값 : ${this.isMyself}`)
-  //   } 
-
-  // } 
 }
 </script>
 
@@ -213,6 +194,12 @@ export default {
 }
 .exit-modal {
   max-width: 510px;
+}
+.follow-m {
+  margin-right: 40px;
+}
+.follower-m {
+  margin-right: 100px;
 }
 
 

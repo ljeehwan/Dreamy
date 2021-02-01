@@ -34,6 +34,7 @@
             append-icon="mdi-lock"
             type="password"
             v-model="user.password"
+            @keypress.enter="login"
           >
           </v-text-field>
         </v-form>
