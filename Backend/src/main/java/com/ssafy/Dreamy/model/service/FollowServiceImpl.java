@@ -57,16 +57,12 @@ public class FollowServiceImpl implements FollowService {
 
 	@Override
 	public List<UserDto> listfollowing(int userid) {// 팔로우 리스트 넘겨줌
-		List<UserDto> list = new LinkedList<UserDto>();
-		list = sqlSession.getMapper(FollowMapper.class).listFollowing(userid);
-		return list;
+		return sqlSession.getMapper(FollowMapper.class).listFollowing(userid);
 	}
 
 	@Override
 	public List<UserDto> listfollower(int userid) {// 팔로워 리스트 넘겨줌
-		List<UserDto> list = new LinkedList<UserDto>();
-		list = sqlSession.getMapper(FollowMapper.class).listFollower(userid);
-		return list;
+		return sqlSession.getMapper(FollowMapper.class).listFollower(userid);
 	}
 
 }
