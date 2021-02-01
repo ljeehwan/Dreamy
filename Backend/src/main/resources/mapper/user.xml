@@ -22,13 +22,13 @@
 		from User
 		where email=#{email}
 	</select>
-	<!-- 소셜 로그인 관련 -->
 	
+	<!-- 소셜 로그인 관련 -->
 	<insert id="signup" parameterType="Map">
-		insert into User (email, name, password, phone, login_type)
-		values (#{email}, #{name}, #{password}, #{phone}, #{loginType})
+		insert into User (email, name, password, phone, profile_url, login_type)
+		values (#{email}, #{name}, #{password}, #{phone}, #{profileUrl}, #{loginType})
 	</insert>
-
+	
 	<!-- 회원가입 관련 -->
 	<select id="getEmail" parameterType="String" resultType="Integer">
 		select count(*) from User
