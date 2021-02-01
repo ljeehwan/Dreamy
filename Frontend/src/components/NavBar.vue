@@ -162,7 +162,7 @@ export default {
   },
   computed: {
     getIsLogined() {
-      return this.$store.getters.getIsLogined;
+      return this.$store.getters["userStore/getIsLogined"];
     },
   },
 };

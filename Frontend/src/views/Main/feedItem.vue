@@ -1,9 +1,9 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="ma-auto" color="grey lighten-4" width="450">
+    <v-card class="my-15 mx-10" color="grey lighten-4" width="450" >
       <v-img
         :aspect-ratio="16 / 9"
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        :src=item.imageUrl
       >
         <v-expand-transition>
           <div
@@ -11,22 +11,22 @@
             class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-1"
             style="height: 50%;"
           >
-            내용
+            {{item.content}}
           </div>
         </v-expand-transition>
       </v-img>
-      <v-card-title class="my-2">서와니 100대 때리기</v-card-title>
+      <v-card-title class="my-2 ">{{item.title}}</v-card-title>
       <v-card-text>
         <v-row class="my-2">
           <v-btn color="black" text>
-            지허니
+            {{item.uid}} uid=>이름
           </v-btn>
           <v-spacer></v-spacer>
           <v-icon left="left">
             mdi-label
           </v-icon>
           <span class="mt-2 mr-2">
-            요리
+            {{item.category}}
           </span></v-row
         >
         <v-divider></v-divider>
@@ -56,7 +56,17 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data(){
+    return{
+
+    }
+  },
+  props:{
+    item:Object
+  }
+
+};
 </script>
 
 <style>

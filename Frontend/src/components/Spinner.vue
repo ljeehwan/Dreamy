@@ -14,7 +14,7 @@
   export default {
       computed: {
           spinnerLoading() {
-              return this.$store.state.spinnerLoading;
+              return this.$store.state.userStore.spinnerLoading;
           }
       }
   }

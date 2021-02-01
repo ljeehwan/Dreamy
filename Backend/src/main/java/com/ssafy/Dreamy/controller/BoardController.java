@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -67,17 +68,18 @@ public class BoardController {
 	}
 
 	// 게시물 전체목록(뉴스피드)
-	@GetMapping("/list")
-	public ResponseEntity<Map<String, Object>> getInfo(HttpServletRequest request) {
+	@GetMapping("/list/{limit}")
+	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		logger.info("전체목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
-			list = boardService.getList();
-			if (list.size() > 0) {	// 리스트가 있을 때
-				System.out.println("전체목록 size : " + list.size());
+			list = boardService.getList(limit);
+			int totalSize=boardService.getListTotalSize();	// 리스트 전체 사이즈 조회
+			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
+				resultMap.put("totalSize",totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {				// 리스트가 없을 때
@@ -92,6 +94,9 @@ public class BoardController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	
+	
 	
 	/*
 	// 버킷리스트 목록.

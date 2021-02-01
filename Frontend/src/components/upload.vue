@@ -278,7 +278,7 @@ export default {
   },
   computed: {
     getUserId() {
-      return this.$store.getters.getUserId;
+      return this.$store.getters["userStore/getUserId"];
     },
   },
   methods: {
@@ -287,7 +287,8 @@ export default {
         this.card.startDate = this.dateRange[0];
         this.card.endDate = this.dateRange[1];
       }
-
+      this.card.uid = this.getUserId;
+      
       let formData = new FormData();
       formData.append("files", this.image);
       axios
@@ -299,7 +300,7 @@ export default {
         .then((res) => {
           this.card.imageUrl = res.data["imgPath"];
           // console.log(this.card);
-          this.$store.dispatch('insertBoard',this.card);
+          this.$store.dispatch('boardStore/insertBoard',this.card);
         })
         .catch((error) => {
           console.log(error);
@@ -308,7 +309,6 @@ export default {
     open() {
       this.dialog = true;
       this.upload = 1;
-      this.card.uid = this.getUserId;
       this.card.boardType = "";
       this.card.category = "";
       this.card.startDate = new Date().toISOString().substr(0, 10);

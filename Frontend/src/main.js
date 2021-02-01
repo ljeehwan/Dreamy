@@ -22,7 +22,7 @@ new Vue({
   vuetify,
   beforeCreate(){
     if(localStorage.getItem("isLogin")=="true")
-      this.$store.dispatch("getUserinfo")
+      this.$store.dispatch("userStore/getUserinfo")
   },
   render: h => h(App)
 }).$mount('#app')

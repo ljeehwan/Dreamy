@@ -14,10 +14,11 @@
 		values (#{uid}, #{boardType}, #{title}, #{content}, #{startDate}, #{endDate}, #{category}, #{imageUrl}, #{totalDate})
 	</insert>
 	
-	<select id="getList" resultType="com.ssafy.Dreamy.model.BoardListDto">
+	<select id="getList" parameterType="map" resultType="com.ssafy.Dreamy.model.BoardDto">
 		select pid, uid, board_type as boardType, title, content, written_date as writtenDate,
 		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from Board
 		order by written_date DESC
+		limit #{limit},3
 	</select>
 	
 	<select id="getBucketList" resultType="com.ssafy.Dreamy.model.BoardListDto">
@@ -39,5 +40,9 @@
 		set content=#{content}
 		where pid=#{pid}
 	</update>
+	
+	<select id="getListTotalSize" resultType="int">
+		SELECT count(*) FROM Board;
+	</select>
 	
 </mapper>

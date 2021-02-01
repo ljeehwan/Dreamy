@@ -16,6 +16,13 @@ import Ranking from './views/Community/Ranking'
 
 Vue.use(VueRouter)
 
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+	return originalPush.call(this, location).catch(err => {
+		if (err.name !== 'NavigationDuplicated') throw err;
+	});
+};
+
 const router = new VueRouter({
     mode: 'history',
     routes: [
@@ -35,11 +42,6 @@ const router = new VueRouter({
             name : 'Join',
             component : Join
         },
-        // {
-        //     path : '/user/login',
-        //     name : 'Login',
-        //     component : Login
-        // },
         {
             path: '/user/mypage/',
             name: 'myPage',
