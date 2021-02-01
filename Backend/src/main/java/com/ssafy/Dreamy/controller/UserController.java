@@ -324,14 +324,14 @@ public class UserController {
 	}
 	
 	// 유저 정보 받아오기
-	@GetMapping("/user/{name}")
+	@GetMapping("/user/{uid}")
 //	@GetMapping("/{name}") // @RequestMapping("/user")으로 변경 시
-	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("name") String name, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("uid") int uid, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		logger.info("사용 가능한 토큰!!!");
 		try {
-			UserDto userDto = userService.userInfo(name);
+			UserDto userDto = userService.userInfo(uid);
 			resultMap.put("userInfo", userDto);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;

@@ -11,7 +11,8 @@ public interface BoardService {
 	public List<BoardDto> getList(int uid, int limit) throws Exception;	// 조회
 //	public List<BoardDto> getBucketList() throws Exception;				// 조회
 //	public List<BoardDto> getChallengeList() throws Exception;			// 조회
-	public int getListTotalSize(int uid, int boardType) throws Exception;	// 리스트 개수 조회 0:전체, 1:버킷, 2:챌린지
+	public int getListTotalSize(int uid) throws Exception;						// 전체리스트 개수 조회
+//	public int getBucketOrChallengeTotalSize(int boardType) throws Exception;	// 버킷 or 챌린지 개수 조회 (1:버킷, 2:챌린지)
 	public void update(int pid, String content) throws Exception;
 	
 	

@@ -70,15 +70,10 @@ public class BoardServiceImpl implements BoardService {
 //		return sqlSession.getMapper(BoardMapper.class).getChallengeList();
 //	}
 	
-	public int getListTotalSize(int uid, int boardType) throws Exception{
+	public int getListTotalSize(int uid) throws Exception{
 		Map<String, Object> map = new HashMap<>();
-		if (boardType == 0) {
-			map.put("uid", uid);
-			return sqlSession.getMapper(BoardMapper.class).getListTotalSize(map);
-		} else {
-			map.put("boardType", boardType);
-			return sqlSession.getMapper(BoardMapper.class).getBucketOrChallengeTotalSize(map);
-		}
+		map.put("uid", uid);
+		return sqlSession.getMapper(BoardMapper.class).getListTotalSize(map);
 	}
 	
 	@Override

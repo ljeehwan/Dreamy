@@ -109,8 +109,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDto userInfo(String name) throws Exception {
-		return sqlSession.getMapper(UserMapper.class).userInfo(name);
+	public UserDto userInfo(int uid) throws Exception {
+		return sqlSession.getMapper(UserMapper.class).userInfo(uid);
 	}
 	
 }
