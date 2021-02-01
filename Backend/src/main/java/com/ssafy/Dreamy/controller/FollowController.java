@@ -1,5 +1,6 @@
 package com.ssafy.Dreamy.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,15 +85,12 @@ public class FollowController {
 
 	////////// 팔로우 관계 검증 ///////////
 	@GetMapping("/checkfollow")
-	public ResponseEntity<Map<String, Object>> relationcheck(HttpServletRequest request, Model model) throws Exception {
+	public ResponseEntity<Map<String, Object>> relationcheck(@RequestBody FollowDto followDto) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		String clickUser = request.getParameter("login_id");
-		String followedUser = request.getParameter("target_id");
-
-		int user_id = Integer.parseInt(clickUser);
-		int target_id = Integer.parseInt(followedUser);
+		int user_id = followDto.getFollowingUid();
+		int target_id = followDto.getFollowUid();
 
 		if (followservice.followcheck(user_id, target_id)) {
 			System.out.println("--친구관계성립");
@@ -108,17 +106,58 @@ public class FollowController {
 	}
 
 	////////// following 목록 ///////////
-	@GetMapping("/listfollowing")
-	public List<UserDto> followinglist(HttpServletRequest request, Model model) throws Exception {
+	@GetMapping("/listfollowing/{uid}")
+	public ResponseEntity<Map<String, Object>> followinglist(@PathVariable("uid") int uid, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("팔로잉 목록 출력");
+		try {
+			List<UserDto> list = new ArrayList<>();
+			list = followservice.listfollowing(uid);
+			if (list.size() != 0) {
+				resultMap.put("list", list);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("list", null);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.NO_CONTENT;
+			}
 
-		return followservice.listfollowing(Integer.parseInt(request.getParameter("login_id")));
+		} catch (Exception e) {
+			logger.error("팔로잉 리스트 출력 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	////////// follower 목록 ///////////
-	@GetMapping("/listfollower")
-	public List<UserDto> followerlist(HttpServletRequest request, Model model) throws Exception {
-
-		return followservice.listfollower(Integer.parseInt(request.getParameter("login_id")));
+	@GetMapping("/listfollower/{uid}")
+	public ResponseEntity<Map<String, Object>> followerlist(@PathVariable("uid") int uid, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("팔로워 목록 출력");
+		try {
+			List<UserDto> list = new ArrayList<>();
+			list = followservice.listfollower(uid);
+			if (list.size() != 0) {
+				resultMap.put("list", list);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("list", null);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("팔로워 리스트 출력 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	////////// following 수 카운트 ///////////
