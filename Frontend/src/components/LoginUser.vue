@@ -93,6 +93,10 @@ export default {
             // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
             const name = this.$store.getters["userStore/getUsername"];
             this.$store.dispatch('userStore/GET_TARGET', name)
+
+            //uid 받아서 팔로우 요청(이것도 내꺼 그냥 준다)
+            const targetUid = this.$store.getters["userStore/getUserId"]
+            this.$store.dispatch('userStore/GET_TARGET_BY_ID', targetUid)
             router.push('/user/mypage/')
             
         },
