@@ -97,7 +97,7 @@ public class BoardController {
 	}
 	
 	/*
-	// 버킷리스트 목록.
+	// 버킷리스트 목록
 	@GetMapping("/bucketList")
 	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -105,7 +105,7 @@ public class BoardController {
 		logger.info("전체목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
-			int totalSize = boardService.getListTotalSize(1);	// 전체목록 게시물 개수
+			int totalSize = boardService.getBucketOrChallengeTotalSize(1);	// 버킷리스트 게시물 개수
 			list = boardService.getList(uid, limit);
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);

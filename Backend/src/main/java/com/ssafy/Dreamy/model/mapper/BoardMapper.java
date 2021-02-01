@@ -18,7 +18,7 @@ public interface BoardMapper {
 //	public List<BoardDto> getBucketList(@Param("limit") int limit) throws SQLException;		// 조회
 //	public List<BoardDto> getChallengeList(@Param("limit") int limit) throws SQLException;	// 조회
 	public int getListTotalSize(Map<String, Object> map) throws SQLException;				// 리스트 개수 조회
-	public int getBucketOrChallengeTotalSize(Map<String, Object> map) throws SQLException;	// 버킷 or 챌린지 개수 조회
+//	public int getBucketOrChallengeTotalSize(Map<String, Object> map) throws SQLException;	// 버킷 or 챌린지 개수 조회
 	public void update(Map<String, Object> map) throws SQLException;
 	
 }
