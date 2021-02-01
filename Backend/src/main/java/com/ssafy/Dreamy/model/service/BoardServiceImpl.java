@@ -53,18 +53,27 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDto> getList(int limit) throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getList(limit);
+	public List<BoardDto> getList(int uid, int limit) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("limit", limit);
+		return sqlSession.getMapper(BoardMapper.class).getList(map);
 	}
 	
-	@Override
-	public List<BoardDto> getBucketList() throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getBucketList();
-	}
+//	@Override
+//	public List<BoardDto> getBucketList() throws Exception {
+//		return sqlSession.getMapper(BoardMapper.class).getBucketList();
+//	}
+//	
+//	@Override
+//	public List<BoardDto> getChallengeList() throws Exception {
+//		return sqlSession.getMapper(BoardMapper.class).getChallengeList();
+//	}
 	
-	@Override
-	public List<BoardDto> getChallengeList() throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getChallengeList();
+	public int getListTotalSize(int uid) throws Exception{
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		return sqlSession.getMapper(BoardMapper.class).getListTotalSize(map);
 	}
 	
 	@Override
@@ -73,10 +82,6 @@ public class BoardServiceImpl implements BoardService {
 		map.put("pid", pid);
 		map.put("content", content);
 		sqlSession.getMapper(BoardMapper.class).update(map);
-	}
-	
-	public int getListTotalSize() throws Exception{
-		return sqlSession.getMapper(BoardMapper.class).getListTotalSize();
 	}
 }
 

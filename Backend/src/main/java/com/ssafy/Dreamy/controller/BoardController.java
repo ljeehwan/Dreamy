@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.Dreamy.model.BoardDto;
@@ -29,7 +30,7 @@ import com.ssafy.Dreamy.model.service.BoardService;
 @RestController
 @RequestMapping("/board")	// 매핑주소 변경가능
 public class BoardController {
-
+	
 	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -69,17 +70,17 @@ public class BoardController {
 
 	// 게시물 전체목록(뉴스피드)
 	@GetMapping("/list/{limit}")
-	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("limit") int limit, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		logger.info("전체목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
-			list = boardService.getList(limit);
-			int totalSize=boardService.getListTotalSize();	// 리스트 전체 사이즈 조회
+			int totalSize = boardService.getListTotalSize(uid);	// 전체목록 게시물 개수
+			list = boardService.getList(uid, limit);
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
-				resultMap.put("totalSize",totalSize);
+				resultMap.put("totalSize", totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {				// 리스트가 없을 때
@@ -95,16 +96,32 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	
-	
-	
 	/*
 	// 버킷리스트 목록.
 	@GetMapping("/bucketList")
 	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+		logger.info("전체목록");
+		try {
+			List<BoardDto> list = new ArrayList<>();
+			int totalSize = boardService.getListTotalSize(1);	// 전체목록 게시물 개수
+			list = boardService.getList(uid, limit);
+			if (totalSize > limit) {	// 리스트가 있을 때
+				resultMap.put("list", list);
+				resultMap.put("totalSize", totalSize);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {				// 리스트가 없을 때
+				resultMap.put("list", null);
+				resultMap.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("정보조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 

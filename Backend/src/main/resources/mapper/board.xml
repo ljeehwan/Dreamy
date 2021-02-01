@@ -14,35 +14,45 @@
 		values (#{uid}, #{boardType}, #{title}, #{content}, #{startDate}, #{endDate}, #{category}, #{imageUrl}, #{totalDate})
 	</insert>
 	
-	<select id="getList" parameterType="map" resultType="com.ssafy.Dreamy.model.BoardDto">
-		select pid, uid, board_type as boardType, title, content, written_date as writtenDate,
-		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from Board
+	<select id="getList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
+		select distinct pid, uid, name, board_type as boardType, title, content, written_date as writtenDate,
+		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate
+		from User, Board, Follow
+		where Board.uid = #{uid} or Board.uid IN (select follower from Follow where following = #{uid})
 		order by written_date DESC
-		limit #{limit},3
+		limit #{limit}, 3
 	</select>
 	
-	<select id="getBucketList" resultType="com.ssafy.Dreamy.model.BoardListDto">
-		select pid, uid, board_type as boardType, title, content, written_date as writtenDate,
-		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from Board
-		where board_type = 1
+	<select id="getBucketList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
+		select pid, uid, name, board_type as boardType, title, content, written_date as writtenDate,
+		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from User, Board
+		where User.uid = Board.uid and board_type = 1
 		order by written_date DESC
+		limit #{limit}, 3
 	</select>
 	
-	<select id="getChallengeList" resultType="com.ssafy.Dreamy.model.BoardListDto">
-		select pid, uid, board_type as boardType, title, content, written_date as writtenDate,
-		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from Board
-		where board_type = 2
+	<select id="getChallengeList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
+		select pid, uid, name, board_type as boardType, title, content, written_date as writtenDate,
+		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from User, Board
+		where User.uid = Board.uid and board_type = 2
 		order by written_date DESC
+		limit #{limit}, 3
 	</select>
-	 
+	
+	<select id="getListTotalSize" parameterType="Map" resultType="Integer">
+		SELECT count(distinct pid) FROM User, Board, Follow
+		where Board.uid = #{uid} or Board.uid IN (select follower from Follow where following = #{uid})
+	</select>
+	
+	<select id="getBucketOrChallengeTotalSize" parameterType="Map" resultType="Integer">
+		SELECT count(*) FROM Board
+		where board_type = #{boardType}
+	</select>
+	
 	<update id="update" parameterType="Map">
 		update Board
 		set content=#{content}
 		where pid=#{pid}
 	</update>
-	
-	<select id="getListTotalSize" resultType="int">
-		SELECT count(*) FROM Board;
-	</select>
 	
 </mapper>

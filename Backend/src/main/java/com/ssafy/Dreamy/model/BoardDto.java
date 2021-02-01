@@ -6,6 +6,7 @@ public class BoardDto {
 	
 	private int pid;			// AI
 	private int uid;			// FK
+	private String name;		// user NAME
 	private int boardType;
 	private String title;
 	private String content;
@@ -30,6 +31,14 @@ public class BoardDto {
 
 	public final void setUid(int uid) {
 		this.uid = uid;
+	}
+
+	public final String getName() {
+		return name;
+	}
+
+	public final void setName(String name) {
+		this.name = name;
 	}
 
 	public final int getBoardType() {
