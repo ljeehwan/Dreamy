@@ -7,7 +7,7 @@ import Join from './views/user/Join.vue'
 import myPage from './views/user/Mypage.vue'
 //Main
 import Landing from './views/Main/Landing.vue'
-import Main from './views/Main/Main.vue'
+import MainFeed from './views/Main/MainFeed.vue'
 // Community
 import Bucket from './views/Community/Bucket'
 import Challenge from './views/Community/Challenge'
@@ -33,9 +33,9 @@ const router = new VueRouter({
         },
     
         {
-            path : '/main',        // <- '/'
-            name : 'Main',
-            component : Main
+            path : '/mainfeed',        // <- '/'
+            name : 'MainFeed',
+            component : MainFeed
         },
         {
             path : '/user/join',

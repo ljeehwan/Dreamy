@@ -54,7 +54,7 @@
 
     <div v-if="getIsLogined">
       <span
-        ><router-link to="/main" style="text-decoration:none;">
+        ><router-link to="/mainfeed" style="text-decoration:none;">
           <v-btn target="_blank" text style="width:120px;"
             >feed
           </v-btn></router-link

@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="my-15 mx-10" color="grey lighten-4" width="450" >
+    <v-card class="ma-10" color="grey lighten-4" width="350" >
       <v-img
         :aspect-ratio="16 / 9"
         :src=item.imageUrl
