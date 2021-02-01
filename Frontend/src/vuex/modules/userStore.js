@@ -111,6 +111,12 @@ const userStore={
             state.targetUser.name = targetInfo.name
             state.targetUser.phone = targetInfo.phone
         },
+        PUT_TARGET_FOLLOWER(state, targetFollower) {
+            state.targetUser.follower = targetFollower
+        },
+        PUT_TARGET_FOLLOWING(state, targetFollowing) {
+            state.targetUser.following = targetFollowing
+        },
     },
 
     getters:{
@@ -140,6 +146,9 @@ const userStore={
         },
         getMyself(state) {
             return state.isMyself;
+        },
+        getTargetFollower(state) {
+            return state.targetUser.follower;
         },
         
     },
@@ -337,13 +346,13 @@ const userStore={
             }
             
         },
-        GET_FOLLOWER(context) {
+        GET_FOLLOWER_NUM(context) {
             const targetUid = this.state.userStore.requestUid
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/follow/countfollowing/${targetUid}`)
+            axios.get(`${SERVER_URL}/follow/countfollower/${targetUid}`)
             .then(res => {
-                console.log(res)
+                context.commit('PUT_TARGET_FOLLOWER', res.data.count)
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
                 // 정보 받아와서 state에 저장하고 Mypage.vue의 computed에서
@@ -355,6 +364,62 @@ const userStore={
                 context.commit('END_LOADING')
             })
         },
+        GET_FOLLOWING_NUM(context) {
+            const targetUid = this.state.userStore.requestUid
+            context.commit('START_LOADING')
+            context.commit('START_SPINNER')
+            axios.get(`${SERVER_URL}/follow/countfollowing/${targetUid}`)
+              .then(res => {
+                  context.commit('PUT_TARGET_FOLLOWING', res.data.count)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+              .catch(err => {
+                  console.log(err)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+        },
+        REQUEST_FOLLOW(context) {
+            const requestUid = this.state.userStore.requestUid
+            context.commit('START_LOADING')
+            context.commit('START_SPINNER')
+            const followingData = {
+                followingUid: this.state.userStore.user.uid,
+                followUid: requestUid
+            }
+            axios.post(`${SERVER_URL}/follow/requestfollow`, followingData)
+              .then(res => {
+                  console.log(res)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+              .catch(err => {
+                  console.log(err)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+        },
+        // CHECK_FOLLOW(context) {
+        //     const requestUid = this.state.userStore.requestUid
+        //     context.commit('START_LOADING')
+        //     context.commit('START_SPINNER')
+        //     const followingData = {
+        //         followingUid: this.state.userStore.user.uid,
+        //         followUid: requestUid
+        //     }
+        //     axios.post(`${SERVER_URL}/follow/requestfollow`, followingData)
+        //       .then(res => {
+        //           console.log(res)
+        //           context.commit('END_SPINNER')
+        //           context.commit('END_LOADING')
+        //       })
+        //       .catch(err => {
+        //           console.log(err)
+        //           context.commit('END_SPINNER')
+        //           context.commit('END_LOADING')
+        //       })
+        // },
 
     }
 }

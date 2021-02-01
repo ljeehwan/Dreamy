@@ -91,14 +91,14 @@
             <p>
                <span class="follow-m">
                  <v-icon left>mdi-account-supervisor-circle</v-icon>
-                 팔로잉 :  
+                 팔로잉 :  {{targetInfo.following}}
               </span>
               <span class="follower-m">
                  <v-icon left>mdi-account-group-outline</v-icon>
-                 팔로워 :  
+                 팔로워 :  {{targetInfo.follower}}
               </span>
-              <span v-if="isMyself">
-                <v-btn>
+              <span v-if="!isMyself">
+                <v-btn @click="requestFollow">
                   <v-icon left>mdi-account-multiple-plus</v-icon>
                   팔로우하기
                 </v-btn>
@@ -162,10 +162,16 @@ export default {
       this.sheet = false;
       router.push('/')
     },
+    requestFollow() {
+      this.$store.dispatch('userStore/REQUEST_FOLLOW')
+    },
   },
   watch: {
     isMyself() {
       return this.$store.getters["userStore/getMyself"];
+    },
+    targetInfo() {
+      return this.$store.getters["userStore/getTargetInfo"];
     },
     
   },
@@ -176,7 +182,6 @@ export default {
     targetInfo() {
       return this.$store.getters["userStore/getTargetInfo"];
     },
-    
   },
 }
 </script>
