@@ -34,6 +34,7 @@ public class BoardController {
 	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
+	private static final String DEFAULTIMAGEURL = "https://d2dmrocw1z3urn.cloudfront.net/board/default";
 
 	@Autowired
 	private BoardService boardService;
@@ -45,6 +46,30 @@ public class BoardController {
 		HttpStatus status = null;
 		int boardType = boardDto.getBoardType();
 		int ret = 0;
+		
+		if(boardDto.getImageUrl().equals(null)) {
+			System.out.println("image is null");
+			switch(boardDto.getCategory()) {
+			case 1:
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/exercise.jpg");
+				break;
+			case 2:
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/food.jpg");
+				break;
+			case 3:
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/travle.jpg");
+				break;
+			case 4:
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/study.jpg");
+				break;
+			case 5:
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/culture&life.jpg");
+				break;
+			case 6:
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/etc.jpg");
+				break;
+			}
+		}
 		
 		try {
 			if (boardType == 1)			// 버킷리스트

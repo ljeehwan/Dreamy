@@ -113,4 +113,12 @@ public class UserServiceImpl implements UserService {
 		return sqlSession.getMapper(UserMapper.class).userInfo(uid);
 	}
 	
+	@Override
+	public void profileUpload(int uid, String imageUrl) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("profileUrl", imageUrl);
+		sqlSession.getMapper(UserMapper.class).profileUpload(map);
+	}
+	
 }
