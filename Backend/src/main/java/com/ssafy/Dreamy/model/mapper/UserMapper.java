@@ -21,6 +21,6 @@ public interface UserMapper {
 	public int delete(int uid) throws SQLException;
 	public int certification(Map<String, String> map)throws SQLException;	// for find password
 	public void updatePassword(Map<String, String> map)throws SQLException;	// for find password
-	public UserDto userInfo(String name) throws SQLException;
+	public UserDto userInfo(int uid) throws SQLException;
 	
 }

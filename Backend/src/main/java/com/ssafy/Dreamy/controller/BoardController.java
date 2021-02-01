@@ -76,7 +76,7 @@ public class BoardController {
 		logger.info("전체목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
-			int totalSize = boardService.getListTotalSize(uid, 0);	// 전체목록 게시물 개수
+			int totalSize = boardService.getListTotalSize(uid);	// 전체목록 게시물 개수
 			list = boardService.getList(uid, limit);
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
@@ -102,7 +102,26 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+		logger.info("전체목록");
+		try {
+			List<BoardDto> list = new ArrayList<>();
+			int totalSize = boardService.getListTotalSize(1);	// 전체목록 게시물 개수
+			list = boardService.getList(uid, limit);
+			if (totalSize > limit) {	// 리스트가 있을 때
+				resultMap.put("list", list);
+				resultMap.put("totalSize", totalSize);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {				// 리스트가 없을 때
+				resultMap.put("list", null);
+				resultMap.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("정보조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
