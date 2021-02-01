@@ -124,7 +124,9 @@ public class BoardController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	*/
 
+	/*
 	// 챌린지 목록
 	@GetMapping("/challengeList")
 	public ResponseEntity<Map<String, Object>> challengeList(HttpServletRequest request) {
