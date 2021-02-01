@@ -70,10 +70,10 @@
 	</update>
 	<!-- 비밀번호 변경 관련 -->
 	
-	<select id="userInfo" parameterType="String" resultType="userDto">
+	<select id="userInfo" parameterType="Integer" resultType="userDto">
 		select uid, email, name, phone, login_type as loginType
 		from User
-		where name=#{name}
+		where uid=#{uid}
 	</select>
 	
 </mapper>
