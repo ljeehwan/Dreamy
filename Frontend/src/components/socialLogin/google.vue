@@ -40,7 +40,7 @@ export default {
           name: profile.getName(),
           logintype: "google",
         };
-        this.$store.dispatch("getSocialUserinfo", user);
+        this.$store.dispatch("userStore/getSocialUserinfo", user);
       }
     },
     onFailure() {

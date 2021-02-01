@@ -25,7 +25,7 @@ export default {
                         name:response.kakao_account.profile.nickname,
                         logintype:"kakao"
                     }
-                    this.$store.dispatch("getSocialUserinfo",user)
+                    this.$store.dispatch("userStore/getSocialUserinfo",user)
                 }),
                   fail: function(error) {
                   console.log(error.message);

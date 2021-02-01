@@ -152,23 +152,23 @@ export default {
     },
 
     onDelete () {
-      this.$store.dispatch('DELETE_MEMBER')
-      this.sheet = false
+      this.$store.dispatch('userStore/DELETE_MEMBER');
+      this.sheet = false;
       router.push('/')
     },
   },
   watch: {
     isMyself() {
-      return this.$store.getters.getMyself
+      return this.$store.getters["userStore/getMyself"];
     },
     
   },
   computed: {
     isMyself() {
-      return this.$store.getters.getMyself
+      return this.$store.getters["userStore/getMyself"];
     },
     targetInfo() {
-      return this.$store.getters.getTargetInfo
+      return this.$store.getters["userStore/getTargetInfo"];
     },
 
     

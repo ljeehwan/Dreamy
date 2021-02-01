@@ -33,13 +33,13 @@
 		#{targetid}
 	</select>
 	<select id="listFollowing" parameterType="Integer"
-		resultType="UserDto">
+		resultType="com.ssafy.Dreamy.model.UserDto">
 		select name,profileUrl from User where uid IN (select
 		follower from Follow where following=#{userid})
 	</select>
 
 	<select id="listFollower" parameterType="Integer"
-		resultType="UserDto">
+		resultType="com.ssafy.Dreamy.model.UserDto">
 		select name,profileUrl from User where uid IN (select
 		following from Follow where follower=#{userid})
 	</select>

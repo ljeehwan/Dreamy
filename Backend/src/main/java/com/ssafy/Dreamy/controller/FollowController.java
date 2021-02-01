@@ -1,11 +1,14 @@
 package com.ssafy.Dreamy.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +16,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.Dreamy.model.FollowDto;
 import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.FollowService;
 
@@ -25,6 +31,7 @@ import com.ssafy.Dreamy.model.service.FollowService;
 @RequestMapping("/follow")
 public class FollowController {
 
+	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
@@ -32,26 +39,23 @@ public class FollowController {
 	FollowService followservice;
 
 	////////// 팔로우 요청 ///////////
-	@PostMapping("/follow")
-	public ResponseEntity<Map<String, Object>> follow(HttpServletRequest request, Model model) throws Exception {
+	@PostMapping("/requestfollow")
+	public ResponseEntity<Map<String, Object>> follow(@RequestBody FollowDto followDto) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		String clickUser = request.getParameter("login_id");
-		String followedUser = request.getParameter("target_id");
-
-		int user_id = Integer.parseInt(clickUser);
-		int target_id = Integer.parseInt(followedUser);
+		int user_id = followDto.getFollowingUid();
+		int target_id = followDto.getFollowUid();
 
 		try {
-			System.out.println("--팔로우 요청");
+			System.out.println("팔로우 요청함수 시작");
 			followservice.followService(user_id, target_id);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--팔로우 실패"); //
+			System.out.println("팔로우 요청 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
@@ -59,65 +63,147 @@ public class FollowController {
 
 	////////// 팔로우 취소 ///////////
 	@DeleteMapping("/unfollow")
-	public ResponseEntity<Map<String, Object>> unfollow(HttpServletRequest request, Model model) throws Exception {
+	public ResponseEntity<Map<String, Object>> unfollow(@RequestBody FollowDto followDto) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		String clickUser = request.getParameter("login_id");
-		String followedUser = request.getParameter("target_id");
-
-		int user_id = Integer.parseInt(clickUser);
-		int target_id = Integer.parseInt(followedUser);
+		int user_id = followDto.getFollowingUid();
+		int target_id = followDto.getFollowUid();
 
 		try {
-			System.out.println("--팔로우 취소요청");
+			System.out.println("언팔로우 요청함수 시작");
 			followservice.unfollowService(user_id, target_id);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--팔로우 취소실패"); //
+			System.out.println("언팔로우 요청 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	////////// 팔로우 관계 검증 ///////////
 	@GetMapping("/checkfollow")
-	public ResponseEntity<Map<String, Object>> relationcheck(HttpServletRequest request, Model model) throws Exception {
+	public ResponseEntity<Map<String, Object>> relationcheck(@RequestBody FollowDto followDto) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		String clickUser = request.getParameter("login_id");
-		String followedUser = request.getParameter("target_id");
+		int user_id = followDto.getFollowingUid();
+		int target_id = followDto.getFollowUid();
+		try {
+			System.out.println("친구관계 검증 함수 시작");
+			if (followservice.followcheck(user_id, target_id)) {
+				System.out.println("--친구관계성립");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				System.out.println("--친구관계아니다");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
 
-		int user_id = Integer.parseInt(clickUser);
-		int target_id = Integer.parseInt(followedUser);
-
-		if (followservice.followcheck(user_id, target_id)) {
-			System.out.println("--친구관계성립");
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-		} else {
-			System.out.println("--친구관계아니다");
-			resultMap.put("mwssage", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
-
+			}
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("친구관계 체크 실패");
 		}
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	////////// following 목록 ///////////
-	@GetMapping("/listfollowing")
-	public List<UserDto> followinglist(HttpServletRequest request, Model model) throws Exception {
+	@GetMapping("/listfollowing/{uid}")
+	public ResponseEntity<Map<String, Object>> followinglist(@PathVariable("uid") int uid, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("팔로잉 목록 출력");
+		try {
+			List<UserDto> list = new ArrayList<>();
+			list = followservice.listfollowing(uid);
+			if (list.size() != 0) {
+				resultMap.put("list", list);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("list", null);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.NO_CONTENT;
+			}
 
-		return followservice.listfollowing(Integer.parseInt(request.getParameter("login_id")));
+		} catch (Exception e) {
+			logger.error("팔로잉 리스트 출력 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	////////// follower 목록 ///////////
-	@GetMapping("/listfollower")
-	public List<UserDto> followerlist(HttpServletRequest request, Model model) throws Exception {
+	@GetMapping("/listfollower/{uid}")
+	public ResponseEntity<Map<String, Object>> followerlist(@PathVariable("uid") int uid, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("팔로워 목록 출력");
+		try {
+			List<UserDto> list = new ArrayList<>();
+			list = followservice.listfollower(uid);
+			if (list.size() != 0) {
+				resultMap.put("list", list);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("list", null);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("팔로워 리스트 출력 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
-		return followservice.listfollower(Integer.parseInt(request.getParameter("login_id")));
+	////////// following 수 카운트 ///////////
+	@GetMapping("/countfollowing/{uid}")
+	public ResponseEntity<Map<String, Object>> followingcount(@PathVariable("uid") int uid, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("팔로잉 수 카운트");
+		try {
+			int count = followservice.countfollowing(uid);
+			resultMap.put("count", count);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("팔로잉 수 카운트 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
+	////////// follower 수 카운트 ///////////
+	@GetMapping("/countfollower/{uid}")
+	public ResponseEntity<Map<String, Object>> followercount(@PathVariable("uid") int uid, HttpServletRequest request)
+			throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("팔로워 수 카운트");
+		try {
+			int count = followservice.countfollower(uid);
+			resultMap.put("count", count);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("팔로우 수 카운트 실패");
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 }
