@@ -91,17 +91,24 @@ public class FollowController {
 
 		int user_id = followDto.getFollowingUid();
 		int target_id = followDto.getFollowUid();
+		try {
+			System.out.println("친구관계 검증 함수 시작");
+			if (followservice.followcheck(user_id, target_id)) {
+				System.out.println("--친구관계성립");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				System.out.println("--친구관계아니다");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
 
-		if (followservice.followcheck(user_id, target_id)) {
-			System.out.println("--친구관계성립");
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-		} else {
-			System.out.println("--친구관계아니다");
-			resultMap.put("mwssage", FAIL);
-			status = HttpStatus.UNAUTHORIZED;
-
+			}
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("친구관계 체크 실패");
 		}
+
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
