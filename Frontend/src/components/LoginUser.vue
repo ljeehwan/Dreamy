@@ -57,13 +57,13 @@ export default {
   computed: {
     getEmail() {
       // 렌더링 시점때문에 mapgetters 사용시 오류가 나므로 이렇게 쓰기
-      return this.$store.getters.getEmail;
+      return this.$store.getters["userStore/getEmail"];
     },
     getUsername() {
-      return this.$store.getters.getUsername;
+      return this.$store.getters["userStore/getUsername"];
     },
     getLogintype() {
-      return this.$store.getters.getLogintype;
+      return this.$store.getters["userStore/getLogintype"];
     },
   },
 
@@ -87,12 +87,12 @@ export default {
           auth2.disconnect();
           });
       }
-    this.$store.dispatch("logout");
+    this.$store.dispatch("userStore/logout");
     },
     moveToMyPage () {
             // 원래는 다른사람 이름을 받아오겠지만, 마이페이지니까 그냥 이름 준다
-            const name = this.$store.getters.getUsername
-            this.$store.dispatch('GET_TARGET', name)
+            const name = this.$store.getters["userStore/getUsername"];
+            this.$store.dispatch('userStore/GET_TARGET', name)
             router.push('/user/mypage/')
             
         },

@@ -23,7 +23,7 @@
         },
         computed: {
             snackbar() {
-                return this.$store.state.snackbar;
+                return this.$store.state.userStore.snackbar;
             }
         },
     }

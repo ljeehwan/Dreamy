@@ -113,7 +113,7 @@ export default {
   },
   methods:{
     login:function(){
-      this.$store.dispatch('login',this.user);
+      this.$store.dispatch('userStore/login',this.user);
     }, 
   },
 };

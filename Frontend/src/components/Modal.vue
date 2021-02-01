@@ -24,13 +24,13 @@
         name: "Modal",
         computed: {
             modal() {
-                return this.$store.state.modal;
+                return this.$store.state.userStore.modal;
             }
         },
         methods: {
             modalOption() {
                 if (this.modal.option1 === '닫기') {
-                    this.$store.commit('CLOSE_MODAL');
+                    this.$store.commit('userStore/CLOSE_MODAL');
                 } else {
                     this.$emit('pass');
                 }
@@ -40,7 +40,7 @@
             }
         },
         destroyed() {
-            this.$store.commit('CLOSE_MODAL');
+            this.$store.commit('userStore/CLOSE_MODAL');
         }
     }
 </script>

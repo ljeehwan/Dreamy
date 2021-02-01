@@ -53,8 +53,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDto> getList() throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getList();
+	public List<BoardDto> getList(int limit) throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).getList(limit);
 	}
 	
 	@Override
@@ -75,5 +75,8 @@ public class BoardServiceImpl implements BoardService {
 		sqlSession.getMapper(BoardMapper.class).update(map);
 	}
 	
+	public int getListTotalSize() throws Exception{
+		return sqlSession.getMapper(BoardMapper.class).getListTotalSize();
+	}
 }
 
