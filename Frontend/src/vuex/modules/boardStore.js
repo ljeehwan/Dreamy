@@ -6,6 +6,15 @@ const SERVER_URL="http://localhost:8080";
 const boardStore={
     namespaced:true,
 
+    state:{
+
+    },
+    getters:{
+
+      
+    },
+    mutation:{
+    },
     actions:{
         insertBoard(context,card){
             axios({

@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-layout row wrap class="ma-15 align-center justify-center">
+  <div class="mb-10">
+    <v-layout row wrap class="ma-10 align-center justify-center">
     <feed-item v-for="(item,index) in list" v-bind:key="item.pid" v-bind:item="list[index]" />
     </v-layout>
     <infinite-loading
@@ -11,8 +11,8 @@
   </div>
 </template>
 <script>
-import FeedItem from "./feedItem.vue";
-import Upload from "@/components/upload.vue";
+import FeedItem from "@/components/FeedItem.vue";
+import Upload from "@/components/uploadItem.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import { mapGetters } from "vuex";
@@ -36,6 +36,9 @@ export default {
       axios({
         method: "get",
         url: `${SERVER_URL}/board/list/${this.limit}`,
+        params:{
+          uid:this.getUserId
+        }
       })
         .then((res) => {
           console.log(this.list);
@@ -60,6 +63,7 @@ export default {
   computed: {
     ...mapGetters({
       getIsLogined: "userStore/getIsLogined",
+      getUserId:"userStore/getUserId"
     }),
   },
 
