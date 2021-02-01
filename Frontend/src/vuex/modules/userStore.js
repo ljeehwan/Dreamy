@@ -10,12 +10,15 @@ const userStore={
     namespaced:true,
 
     state:{
+        requestUid: '',
         targetName: '',
         targetUser: {
             uid: '',
             name: '',
             email: '',
             phone: '',
+            follower: '',
+            following: '',
         },
         isMyself: false,
         isLogined:false,
@@ -26,6 +29,8 @@ const userStore={
             name:"",
             phone:"",
             logintype:"",
+            follower: '',
+            following: '',
         },
         // 로딩 관련~~~~~~
         loadingState: false,
@@ -91,6 +96,9 @@ const userStore={
         TARGET_NAME(state, name) {
             state.targetName = name
         },
+        REQUEST_UID(state, uid) {
+            state.requestUid = uid
+        },
         MYSELF(state) {
             state.isMyself = true
         },
@@ -133,6 +141,7 @@ const userStore={
         getMyself(state) {
             return state.isMyself;
         },
+        
     },
 
     actions:{
@@ -276,8 +285,6 @@ const userStore={
         // 회원 상세 정보 요청 
         GET_MEMBER(context, targetName) {
             // 일단 요청하는 방식 uid 말고 name으로 바꿔달라고 해서 요청보내서 응답을 받아온다.
-            console.log(targetName);
-            console.log(`${SERVER_URL}/account/user/${targetName}`)
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.get(`${SERVER_URL}/account/user/${targetName}`)
@@ -295,6 +302,10 @@ const userStore={
                 context.commit('END_LOADING')
                 context.commit('OPEN_MODAL', {title: '회원 정보 요청 실패', content: err, option1: '닫기',})
             })
+        },
+        // id로 상대 uid 지정하기
+        GET_TARGET_BY_ID(context, targetUid) {
+            context.commit('REQUEST_UID', targetUid)
         },
         // 회원 상세 정보 요청
         GET_TARGET(context, name) {
@@ -325,7 +336,26 @@ const userStore={
                 context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data, option1: '닫기',})
             }
             
-        },  
+        },
+        GET_FOLLOWER(context) {
+            const targetUid = this.state.userStore.requestUid
+            context.commit('START_LOADING')
+            context.commit('START_SPINNER')
+            axios.get(`${SERVER_URL}/follow/countfollowing/${targetUid}`)
+            .then(res => {
+                console.log(res)
+                context.commit('END_SPINNER')
+                context.commit('END_LOADING')
+                // 정보 받아와서 state에 저장하고 Mypage.vue의 computed에서
+                // 보내준다
+            })
+            .catch(err => {
+                console.log(err)
+                context.commit('END_SPINNER')
+                context.commit('END_LOADING')
+            })
+        },
+
     }
 }
 export default userStore

@@ -40,6 +40,10 @@ export default {
     } else {
       this.$store.commit('userStore/NOT_ME')
     }
+    // 팔로우 정보 요청
+    this.$store.dispatch('userStore/GET_FOLLOWER')
+    // 뷰엑스에서 컴퓨티드로 보여줌
+    
   },
   
 
