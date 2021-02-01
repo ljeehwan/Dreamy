@@ -18,7 +18,7 @@
 		select distinct pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
 		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate
 		from User, Board, Follow
-		where Board.uid = #{uid} or Board.uid IN (select follower from Follow where following = #{uid})
+		where Board.uid = User.uid and (Board.uid = #{uid} or Board.uid IN (select follower from Follow where following = #{uid}))
 		order by written_date DESC
 		limit #{limit}, 3
 	</select>
