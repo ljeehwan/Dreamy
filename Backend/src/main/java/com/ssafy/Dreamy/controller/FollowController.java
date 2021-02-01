@@ -120,4 +120,17 @@ public class FollowController {
 
 		return followservice.listfollower(Integer.parseInt(request.getParameter("login_id")));
 	}
+	
+	
+	////////// following 수 카운트 ///////////
+	@GetMapping("/countfollowing")
+	public int followingcount(HttpServletRequest request, Model model) throws Exception {
+		return followservice.countfollowing(Integer.parseInt(request.getParameter("uid")));
+	}
+	
+	////////// follower 수 카운트 ///////////
+	@GetMapping("countfollower")
+	public int followercount(HttpServletRequest request, Model model) throws Exception {
+		return followservice.countfollower(Integer.parseInt(request.getParameter("uid")));
+	}
 }
