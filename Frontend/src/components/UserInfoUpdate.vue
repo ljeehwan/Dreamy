@@ -14,7 +14,7 @@
             </v-alert>
 
             <!-- 이메일 -->
-            <v-text-field class="pl-3 pr-3" v-model="credentials.email" :label="info.email"
+            <v-text-field class="pl-3 pr-3" v-model="credentials.email" :label="targetInfo.email"
             prepend-icon="mdi-email" required type="email"
             placeholder="ssafy@example.com" disabled  
             ></v-text-field>
@@ -22,7 +22,7 @@
             <!-- 닉네임 -->
             <v-text-field class="pl-3 pr-3" v-model="credentials.name" 
             disabled
-            :label="info.name" required prepend-icon="mdi-account"
+            :label="targetInfo.name" required prepend-icon="mdi-account"
             ></v-text-field>
 
             <!-- 비밀번호 -->
@@ -70,7 +70,6 @@
     },
     data:() => {
       return {
-       
         complete : false,
         credentials: {
           uid: '',
@@ -78,6 +77,7 @@
           email: '',
           password: '',
           phone: '',
+          passingPhone: '',
         },
         passwordRules: [
           v => !!v || '비밀번호를 작성해주세요',
@@ -97,7 +97,7 @@
       }
     },
     props: {
-        info: {
+        targetInfo: {
             type: Object
         }
     },
@@ -105,8 +105,8 @@
       onUpdate() {
           const uid = this.$store.state.userStore.user.uid
           this.credentials.uid = uid
-          this.credentials.email = this.info.email
-          this.credentials.name = this.info.name
+          this.credentials.email = this.targetInfo.email
+          this.credentials.name = this.targetInfo.name
           this.isCorrect = true
           if (this.$refs.form.validate()) {
               if (this.validatePassword === this.credentials.password) {
@@ -114,12 +114,16 @@
                 // console.log(this.credentials)
                 // 내정보를 바꿨을 때, 다시 emit해서 이벤트 주고 폰 바뀐거 다시 얻어야함
                 this.$emit('complete')
+                this.credentials.password = ''
+                this.validatePassword = ''
+                this.credentials.phone = ''
               } else {
                   this.isCorrect = false
               }
           }
       },
     },
+
   }
 </script>
 
