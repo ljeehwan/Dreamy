@@ -39,7 +39,8 @@ public class UserController {
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
-
+	private static final String DEFAULTIMAGEURL = "https://d2dmrocw1z3urn.cloudfront.net/profile/default";
+	
 	@Autowired
 	private JwtServiceImpl jwtService;
 
@@ -174,6 +175,10 @@ public class UserController {
 				status = HttpStatus.CONFLICT;
 				System.out.println("2-2 닉네임 중복");
 			} else {
+				// 초기 프로필 설정
+				String defaultImage = DEFAULTIMAGEURL + "/profile.png";
+				userDto.setProfileUrl(defaultImage);
+				
 				// 회원가입 시도 시 return 값으로 회원가입 여부 확인
 				int ret = userService.signup(userDto);
 				if (ret > 0) {	// 회원가입 성공
