@@ -252,6 +252,28 @@ const userStore={
             window.location.reload();
         },
 
+        //비밀번호 찾기
+        findpassword(context,user){
+            axios({
+                method: "get",
+                url: `${SERVER_URL}/account/updatePassword`,
+                data: {
+                   email: user.email,
+                   phone: user.phone,
+                },
+           })
+          .then((response) => {
+            if(response.data["message"]=="success"){
+                alert("임시 비밀번호가 이메일로 발송되었습니다!")
+              }
+              else if(response.data["message"]=='fail'){
+                alert("입력하신 정보를 다시 확인해주세요!");
+              }
+          }).catch((error)=>{
+              console.log(error.message)
+          })
+    },
+
         async SIGNUP(context, credentials){
             try {
                 context.commit('START_LOADING')

@@ -1,0 +1,44 @@
+<template>
+    <v-main>
+        <v-container class="back" fill-height="fill-height" fluid="fluid">
+            <v-row align="center" justify="center">
+         
+                <v-col cols="5">
+                    <v-card class="card-login mx-a">
+                        <v-card-title>비밀번호 찾기</v-card-title>
+                        <v-divider></v-divider>
+                        <v-card-text class="pa-5">
+                            <v-form v-on:submit="sub" action="#" method="post">
+
+                                <v-text-field color="green darken-1" v-model="login" label="Email"></v-text-field>
+                                <v-text-field color="green darken-1" v-model="senha" label="Phone"></v-text-field>
+                                <v-btn class="green darken-1" large="large" dark="dark" @click="find">확인</v-btn>
+
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-col>
+            </v-row>
+        </v-container>
+    </v-main>
+</template>
+
+<script>
+    export default {
+      data:()=>{
+        return{
+          user:{
+            email:"",
+            phone:"",
+          },
+        };
+      },
+      methods:{
+        find:function(){
+          this.$store.dispatch('userStore/findpassword',this.user);
+        }
+      }
+    }
+</script>
+
+<style></style>
