@@ -57,7 +57,7 @@
             <div class="d-flex justify-start font-weight-bold">
               <p>
                 <v-icon left>mdi-email</v-icon>
-                E-mail : {{info.email}}
+                E-mail : {{targetInfo.email}}
                   <v-dialog v-model="dialog" width="400" height="800">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn class="pa-0 ma-0" rounded fab d-inline-block v-if="isMyself"
@@ -66,7 +66,7 @@
                       </v-btn>
                     </template>
                     <v-card>
-                      <UserInfoUpdate v-bind="{info: info}"
+                      <UserInfoUpdate v-bind="{targetInfo: targetInfo}"
                       @complete="dialog = false"/>
                     </v-card>
                   </v-dialog>
@@ -76,7 +76,7 @@
             <div class="d-flex justify-start font-weight-bold">
               <p>
                 <v-icon left>mdi-account</v-icon>
-                닉네임 : {{info.name}}
+                닉네임 : {{targetInfo.name}}
               </p>
             </div>
           </div>
@@ -84,7 +84,7 @@
           <div class="d-flex justify-start font-weight-bold">
             <p>
               <v-icon left>mdi-phone</v-icon>
-              핸드폰 번호 : {{info.phone}}
+              핸드폰 번호 : {{targetInfo.phone}}
             </p>
           </div>
           <div class="d-flex justify-start font-weight-bold">
@@ -97,11 +97,25 @@
                  <v-icon left>mdi-account-group-outline</v-icon>
                  팔로워 :  {{targetInfo.follower}}
               </span>
-              <span v-if="!isMyself">
+
+              <span v-if="isMyself">
+                <!-- 버튼도 두개를 -->
                 <v-btn @click="requestFollow">
-                  <v-icon left>mdi-account-multiple-plus</v-icon>
-                  팔로우하기
+                  <!-- 컴퓨티드로 하자 (뷰엑스에서 state값까지 바꿔서)  -->
+                  <span>
+                    <v-icon left>mdi-account-multiple-plus</v-icon>
+                    팔로우
+                  </span>
                 </v-btn>
+
+                <v-btn @click="requestUnfollow">
+                  <!-- 컴퓨티드로 하자 (뷰엑스에서 state값까지 바꿔서)  -->
+                  <span>
+                    <v-icon left>mdi-account-multiple-minus</v-icon>
+                    팔로우 취소
+                  </span>
+                </v-btn>
+                
               </span>
             </p>
           </div>
@@ -135,18 +149,15 @@ export default {
       exitRules: [
         v => v === "탈퇴하겠습니다" || '탈퇴 문구를 정확히 입력하셔야합니다',
       ],
-      exitMsg: ''
+      exitMsg: '',
     }
   },
-  props:{
-    info: {
-      type: Object,
-    }
-  },
+
   updated: function () {
     if (this.sheet === false) {
       this.exitMsg = ""
-    } 
+    }
+    
   },
   methods: {
     onExit () {
@@ -165,14 +176,18 @@ export default {
     requestFollow() {
       this.$store.dispatch('userStore/REQUEST_FOLLOW')
     },
+    // unfollow 하는 메소드
+    requestUnfollow() {
+      this.$store.dispatch('userStore/REQUEST_UNFOLLOW')
+    },
   },
   watch: {
     isMyself() {
       return this.$store.getters["userStore/getMyself"];
     },
-    targetInfo() {
-      return this.$store.getters["userStore/getTargetInfo"];
-    },
+    // targetInfo() {
+    //   return this.$store.getters["userStore/getTargetInfo"];
+    // },
     
   },
   computed: {
