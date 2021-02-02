@@ -22,5 +22,5 @@ public interface UserMapper {
 	public int certification(Map<String, String> map)throws SQLException;	// for find password
 	public int updatePassword(Map<String, String> map)throws SQLException;	// for find password
 	public UserDto userInfo(int uid) throws SQLException;
-	public void profileUpload(Map<String, Object> map) throws Exception; // for upload profile image
+	public int profileUpload(Map<String, Object> map) throws Exception; // for upload profile image
 }
