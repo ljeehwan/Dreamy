@@ -83,7 +83,7 @@
                     </v-layout>
                     <v-row>
                         <v-spacer></v-spacer>
-                        <v-btn class="mx-2 my-2" color="blue" text>비밀번호를 잊으셨나요?</v-btn>
+                        <v-btn class="mx-2 my-2" color="blue" text href="/user/findpassword">비밀번호를 잊으셨나요?</v-btn>
                         <v-btn class="mx-2 my-2" color="blue" text href="/user/join">아직 회원이 아니신가요?</v-btn>
                     </v-row>
               </v-container>
