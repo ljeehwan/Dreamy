@@ -8,7 +8,7 @@ body{
   background-image: url("../../assets/landing.jpg");
   background-size: cover;
   background-position: 50% 65%;
-  margin-top: 5px;
+ /* margin-top: 5px;*/
   padding: 0px;
   height: 49rem;
   width: 100%;

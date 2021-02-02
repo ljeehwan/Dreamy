@@ -8,25 +8,31 @@
         <v-expand-transition>
           <div
             v-if="hover"
-            class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal display-1"
+            class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal"
             style="height: 50%;"
           >
             {{item.content}}
           </div>
         </v-expand-transition>
       </v-img>
-      <v-card-title class="my-2 ">{{item.title}}</v-card-title>
+      <v-row class="mt-3 px-5">
+      <v-card-title>{{item.title}}</v-card-title>
+      <v-spacer></v-spacer>
+      <span>
+        <small>{{item.writtenDate|dateFilter}}</small>
+      </span>
+      </v-row>
       <v-card-text>
         <v-row class="my-2">
           <v-btn color="black" text>
-            {{item.uid}} uid=>이름
+            {{item.name}}
           </v-btn>
           <v-spacer></v-spacer>
           <v-icon left="left">
             mdi-label
           </v-icon>
           <span class="mt-2 mr-2">
-            {{item.category}}
+            {{item.category|category}}
           </span></v-row
         >
         <v-divider></v-divider>
@@ -56,6 +62,9 @@
 </template>
 
 <script>
+import moment from 'moment';
+import 'moment/locale/ko';
+
 export default {
   data(){
     return{
@@ -64,8 +73,29 @@ export default {
   },
   props:{
     item:Object
+  },
+  filters:{
+    category:function(value){
+      if(!value) return "";
+      else if(value===1){
+        return "운동";
+      }else if(value===2){
+        return "음식"
+      }else if(value===3){
+        return "여행"
+      }else if(value===4){
+        return "학습"
+      }else if(value===5){
+        return "문화/생활"
+      }else{
+        return "기타"
+      }
+    },
+    dateFilter:function(date){
+      // var form=moment(date).format('lll');// 연월일 오전/오후 시간
+      return moment(date).fromNow();
+    }
   }
-
 };
 </script>
 

@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 // import Login from './views/user/Login.vue'
 import Join from './views/user/Join.vue'
 import myPage from './views/user/Mypage.vue'
+import FindPassword from './views/user/FindPassword.vue'
 //Main
 import Landing from './views/Main/Landing.vue'
 import MainFeed from './views/Main/MainFeed.vue'
@@ -47,6 +48,11 @@ const router = new VueRouter({
             name: 'myPage',
             component: myPage,
             props: true
+        },
+        {
+            path : '/user/findpassword',
+            name : 'FindPassword',
+            component : FindPassword
         },
     
         {
