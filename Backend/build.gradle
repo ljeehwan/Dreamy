@@ -48,6 +48,29 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
 	compile group: 'com.amazonaws', name: 'aws-java-sdk-s3', version: '1.11.942'
+	
+	// https://mvnrepository.com/artifact/javax.mail/javax.mail-api
+	compile group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+	
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	//compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.7.RELEASE'
+	
+	/*// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-mail
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.7.RELEASE'
+	
+		// https://mvnrepository.com/artifact/de.vinado.boot/spring-boot-dkim-javamail
+compile group: 'de.vinado.boot', name: 'spring-boot-dkim-javamail', version: '1.1.0', ext: 'pom'
+
+	// https://mvnrepository.com/artifact/de.vinado.spring/dkim-javamail
+compile group: 'de.vinado.spring', name: 'dkim-javamail', version: '1.1.0'
+	
+	
+	// https://mvnrepository.com/artifact/de.vinado.boot/spring-boot-starter-dkim-javamail
+compile group: 'de.vinado.boot', name: 'spring-boot-starter-dkim-javamail', version: '1.1.0'
+	
+	// https://mvnrepository.com/artifact/de.vinado.boot/spring-boot-starter-dkim-javamail
+compile group: 'de.vinado.boot', name: 'spring-boot-starter-dkim-javamail', version: '1.1.0'*/
+
 }
 
 test {

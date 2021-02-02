@@ -16,10 +16,25 @@ public class BoardServiceImpl implements BoardService {
 
 	@Autowired
 	private SqlSession sqlSession;
+	private Map<String, Object> map;
+
+	@Override
+	public List<BoardDto> searchList(String word, int limit) throws Exception {
+		map = new HashMap<>();
+		map.put("word", "%" + word + "%");
+		map.put("limit", limit);
+		return sqlSession.getMapper(BoardMapper.class).searchList(map);
+	}
+	
+	@Override
+	public int searchTotalSize(String word) throws Exception {
+		String searchWord = "%" + word + "%";
+		return sqlSession.getMapper(BoardMapper.class).searchTotalSize(searchWord);
+	}
 	
 	@Override
 	public int insertBucket(BoardDto boardDto) throws Exception {
-		Map<String, Object> map = new HashMap<>();
+		map = new HashMap<>();
 		map.put("uid", boardDto.getUid());
 		map.put("boardType", 1);
 		map.put("title", boardDto.getTitle());
@@ -32,7 +47,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public int insertChallenge(BoardDto boardDto) throws Exception {
-		Map<String, Object> map = new HashMap<>();
+		map = new HashMap<>();
 		// Date로 변환된 두 날짜를 계산한 뒤 그 리턴값으로 long type 변수를 초기화 하고 있다.
         // 연산결과 -950400000. long type 으로 return 된다.
 		long tempDate = boardDto.getEndDate().getTime() - boardDto.getStartDate().getTime();
@@ -54,34 +69,42 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public List<BoardDto> getList(int uid, int limit) throws Exception {
-		Map<String, Object> map = new HashMap<>();
+		map = new HashMap<>();
 		map.put("uid", uid);
 		map.put("limit", limit);
 		return sqlSession.getMapper(BoardMapper.class).getList(map);
 	}
 	
-//	@Override
-//	public List<BoardDto> getBucketList() throws Exception {
-//		return sqlSession.getMapper(BoardMapper.class).getBucketList();
-//	}
-//	
-//	@Override
-//	public List<BoardDto> getChallengeList() throws Exception {
-//		return sqlSession.getMapper(BoardMapper.class).getChallengeList();
-//	}
-	
-	public int getListTotalSize(int uid) throws Exception{
-		Map<String, Object> map = new HashMap<>();
-		map.put("uid", uid);
-		return sqlSession.getMapper(BoardMapper.class).getListTotalSize(map);
+	@Override
+	public List<BoardDto> getBucketOrChallengeList(int boardType, int limit) throws Exception {
+		map = new HashMap<>();
+		map.put("boardType", boardType);
+		map.put("limit", limit);
+		return sqlSession.getMapper(BoardMapper.class).getBucketOrChallengeList(map);
 	}
 	
 	@Override
-	public void update(int pid, String content) throws Exception {
-		Map<String, Object> map = new HashMap<>();
+	public int getListTotalSize(int uid) throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).getListTotalSize(uid);
+	}
+	
+	@Override
+	public int getBucketOrChallengeTotalSize(int boardType) throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).getBucketOrChallengeTotalSize(boardType);
+	}
+	
+	@Override
+	public int update(int pid, String content) throws Exception {
+		map = new HashMap<>();
 		map.put("pid", pid);
 		map.put("content", content);
-		sqlSession.getMapper(BoardMapper.class).update(map);
+		return sqlSession.getMapper(BoardMapper.class).update(map);
 	}
+	
+	@Override
+	public int delete(int pid) throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).delete(pid);
+	}
+	
 }
 
