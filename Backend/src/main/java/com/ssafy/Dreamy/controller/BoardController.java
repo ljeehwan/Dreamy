@@ -40,6 +40,34 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	// 게시물 검색
+	@GetMapping("/search/{word}")
+	public ResponseEntity<Map<String, Object>> searchList(@PathVariable("word") String word, @RequestParam("limit") int limit, HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		logger.info("게시물 검색 : {}", word);
+		try {
+			List<BoardDto> list = new ArrayList<>();
+			int totalSize = boardService.searchTotalSize(word);	// 검색목록 게시물 개수
+			list = boardService.searchList(word, limit);
+			if (totalSize > limit) {	// 리스트가 있을 때
+				resultMap.put("list", list);
+				resultMap.put("totalSize", totalSize);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {					// 리스트가 없을 때
+				resultMap.put("list", null);
+				resultMap.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("정보조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	// 게시물 등록
 	@PostMapping("/insert")	// 매핑주소 변경가능
 	public ResponseEntity<Map<String, Object>> insert(@RequestBody BoardDto boardDto) {
@@ -95,8 +123,8 @@ public class BoardController {
 	}
 
 	// 게시물 전체목록(뉴스피드)
-	@GetMapping("/list/{limit}")
-	public ResponseEntity<Map<String, Object>> getList(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
+	@GetMapping("/list")
+	public ResponseEntity<Map<String, Object>> getList(@RequestParam("uid") int uid, @RequestParam("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		logger.info("전체 목록");
@@ -123,8 +151,8 @@ public class BoardController {
 	}
 	
 	// 버킷리스트 목록
-	@GetMapping("/bucketList/{limit}")
-	public ResponseEntity<Map<String, Object>> bucketList(@PathVariable("limit") int limit, HttpServletRequest request) {
+	@GetMapping("/bucketList")
+	public ResponseEntity<Map<String, Object>> bucketList(@RequestParam("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		logger.info("버킷리스트 목록");
@@ -151,8 +179,8 @@ public class BoardController {
 	}
 	
 	// 챌린지 목록
-	@GetMapping("/challengeList/{limit}")
-	public ResponseEntity<Map<String, Object>> challengeList(@PathVariable("limit") int limit, HttpServletRequest request) {
+	@GetMapping("/challengeList")
+	public ResponseEntity<Map<String, Object>> challengeList(@RequestParam("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		logger.info("챌린지리스트 목록");
@@ -180,7 +208,7 @@ public class BoardController {
 		
 	// 게시물 수정(내용만)
 	@PutMapping("/update/{pid}")
-	public ResponseEntity<Map<String, Object>> update(@RequestParam int pid, @RequestBody BoardDto boardDto) {
+	public ResponseEntity<Map<String, Object>> update(@PathVariable int pid, @RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		String content = boardDto.getContent();
@@ -204,7 +232,7 @@ public class BoardController {
 	
 	// 게시물 삭제
 	@DeleteMapping("/delete/{pid}") 
-	public ResponseEntity<Map<String, Object>> delete(@RequestParam int pid) {
+	public ResponseEntity<Map<String, Object>> delete(@PathVariable int pid) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
