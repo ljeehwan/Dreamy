@@ -80,7 +80,7 @@
               <v-row
                 ><v-spacer></v-spacer>
                 <span>
-                  <small>작성일 : {{ card.writtenDate }}</small>
+                  <small>작성일 : {{ this.writtenDate }}</small>
                 </span></v-row
               >
               <v-row justify="space-around">
@@ -141,7 +141,7 @@
               <v-row
                 ><v-spacer></v-spacer>
                 <span>
-                  <small>작성일 : {{ card.writtenDate }}</small>
+                  <small>작성일 : {{this.writtenDate}}</small>
                 </span></v-row
               >
 
@@ -245,6 +245,8 @@
 
 <script>
 import axios from "axios";
+import moment from 'moment';
+import 'moment/locale/ko';
 const SERVER_URL = "http://localhost:8080";
 //카테고리 1: 운동, 2:음식 3: 여행, 4:학슴, 5:문화/생활, 6:기타
 export default {
@@ -254,13 +256,13 @@ export default {
       upload: 1,
       defaultfile: false,
       image: [],
+      writtenDate: moment().format("YYYY-MM-DD"),
       card: {
         uid: "",
         boardType: "",
         title: "",
         content: "",
         category: "",
-        writtenDate: new Date().toISOString().substr(0, 10),
         startDate: "",
         endDate: "",
         imageUrl: "",
@@ -311,7 +313,7 @@ export default {
       this.upload = 1;
       this.card.boardType = "";
       this.card.category = "";
-      this.card.startDate = new Date().toISOString().substr(0, 10);
+      this.card.startDate = moment().format("YYYY-MM-DD");
       this.card.endDate = "";
       this.dateRange[0] = "";
       this.dateRange[1] = "";
