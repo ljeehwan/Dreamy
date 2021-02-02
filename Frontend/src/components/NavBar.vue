@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="white" rounded single-line elevation="1">
+  <v-app-bar app color="transparent" rounded single-line elevation="0">
     <v-img
       alt="Dreamy Logo"
       class="shrink"
