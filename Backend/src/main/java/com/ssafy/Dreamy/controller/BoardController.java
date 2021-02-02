@@ -98,7 +98,7 @@ public class BoardController {
 	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("전체목록");
+		logger.info("전체 목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
 			int totalSize = boardService.getListTotalSize(uid);	// 전체목록 게시물 개수
@@ -108,7 +108,7 @@ public class BoardController {
 				resultMap.put("totalSize", totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} else {				// 리스트가 없을 때
+			} else {					// 리스트가 없을 때
 				resultMap.put("list", null);
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NO_CONTENT;
@@ -121,23 +121,22 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	/*
 	// 버킷리스트 목록
-	@GetMapping("/bucketList")
-	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
+	@GetMapping("/bucketList/{limit}")
+	public ResponseEntity<Map<String, Object>> bucketList(@PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("전체목록");
+		logger.info("버킷리스트 목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
 			int totalSize = boardService.getBucketOrChallengeTotalSize(1);	// 버킷리스트 게시물 개수
-			list = boardService.getList(uid, limit);
+			list = boardService.getBucketOrChallengeList(1, limit);			// 버킷리스트 가져오기
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
 				resultMap.put("totalSize", totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} else {				// 리스트가 없을 때
+			} else {					// 리스트가 없을 때
 				resultMap.put("list", null);
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NO_CONTENT;
@@ -149,19 +148,35 @@ public class BoardController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	*/
-
-	/*
+	
 	// 챌린지 목록
-	@GetMapping("/challengeList")
-	public ResponseEntity<Map<String, Object>> challengeList(HttpServletRequest request) {
+	@GetMapping("/challengeList/{limit}")
+	public ResponseEntity<Map<String, Object>> challengeList(@PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
+		logger.info("챌린지리스트 목록");
+		try {
+			List<BoardDto> list = new ArrayList<>();
+			int totalSize = boardService.getBucketOrChallengeTotalSize(2);	// 챌린지리스트 게시물 개수
+			list = boardService.getBucketOrChallengeList(2, limit);			// 챌린지리스트 가져오기
+			if (totalSize > limit) {	// 리스트가 있을 때
+				resultMap.put("list", list);
+				resultMap.put("totalSize", totalSize);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {					// 리스트가 없을 때
+				resultMap.put("list", null);
+				resultMap.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("정보조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	*/
-	
+		
 	// 게시물 수정(내용만)
 	@PutMapping("/update") 
 	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto) {
