@@ -62,17 +62,15 @@ public class FollowController {
 	}
 
 	////////// 팔로우 취소 ///////////
-	@DeleteMapping("/unfollow")
-	public ResponseEntity<Map<String, Object>> unfollow(@RequestBody FollowDto followDto) throws Exception {
+	@DeleteMapping("/unfollow/{uid1}/{uid2}")
+	public ResponseEntity<Map<String, Object>> unfollow(@PathVariable("uid1") int userid,
+			@PathVariable("uid2") int targetid, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		int user_id = followDto.getFollowingUid();
-		int target_id = followDto.getFollowUid();
-
 		try {
 			System.out.println("언팔로우 요청함수 시작");
-			followservice.unfollowService(user_id, target_id);
+			followservice.unfollowService(userid, targetid);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -84,16 +82,15 @@ public class FollowController {
 	}
 
 	////////// 팔로우 관계 검증 ///////////
-	@GetMapping("/checkfollow")
-	public ResponseEntity<Map<String, Object>> relationcheck(@RequestBody FollowDto followDto) throws Exception {
+	@GetMapping("/checkfollow/{uid1}/{uid2}")
+	public ResponseEntity<Map<String, Object>> relationcheck(@PathVariable("uid1") int userid,
+			@PathVariable("uid2") int targetid, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		int user_id = followDto.getFollowingUid();
-		int target_id = followDto.getFollowUid();
 		try {
 			System.out.println("친구관계 검증 함수 시작");
-			if (followservice.followcheck(user_id, target_id)) {
+			if (followservice.followcheck(userid, targetid)) {
 				System.out.println("--친구관계성립");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
