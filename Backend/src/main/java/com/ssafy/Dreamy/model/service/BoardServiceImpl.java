@@ -81,11 +81,17 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public void update(int pid, String content) throws Exception {
+	public int update(int pid, String content) throws Exception {
 		map = new HashMap<>();
 		map.put("pid", pid);
 		map.put("content", content);
-		sqlSession.getMapper(BoardMapper.class).update(map);
+		return sqlSession.getMapper(BoardMapper.class).update(map);
 	}
+	
+	@Override
+	public int delete(int pid) throws Exception {
+		return sqlSession.getMapper(BoardMapper.class).delete(pid);
+	}
+	
 }
 

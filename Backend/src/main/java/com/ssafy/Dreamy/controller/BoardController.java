@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,7 +42,7 @@ public class BoardController {
 
 	// 게시물 등록
 	@PostMapping("/insert")	// 매핑주소 변경가능
-	public ResponseEntity<Map<String, Object>> create(@RequestBody BoardDto boardDto) {
+	public ResponseEntity<Map<String, Object>> insert(@RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		int boardType = boardDto.getBoardType();
@@ -95,7 +96,7 @@ public class BoardController {
 
 	// 게시물 전체목록(뉴스피드)
 	@GetMapping("/list/{limit}")
-	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getList(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		logger.info("전체 목록");
@@ -178,25 +179,50 @@ public class BoardController {
 	}
 		
 	// 게시물 수정(내용만)
-	@PutMapping("/update") 
-	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto) {
+	@PutMapping("/update/{pid}")
+	public ResponseEntity<Map<String, Object>> update(@RequestParam int pid, @RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+		String content = boardDto.getContent();
 		try {
 			System.out.println("-- 게시물 수정 시도");
-			int pid = boardDto.getPid();
-			String content = boardDto.getContent();
-			boardService.update(pid, content);
-			status = HttpStatus.ACCEPTED;
-			System.out.println("-- 게시물 수정 성공");
+			int ret = boardService.update(pid, content);
+			if (ret > 0) {	// 게시물 수정 성공
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {		// 게시물 수정 실패
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+			}
 		}catch(Exception e) {
 			logger.error("게시물 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("-- 게시물 수정 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	// 게시물 삭제
+	@DeleteMapping("/delete/{pid}") 
+	public ResponseEntity<Map<String, Object>> delete(@RequestParam int pid) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		try {
+			System.out.println("-- 게시물 삭제 시도");
+			int ret = boardService.delete(pid);
+			if (ret > 0) {	// 게시물 삭제 성공
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {		// 게시물 삭제 실패
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+			}
+		}catch(Exception e) {
+			logger.error("게시물 삭제 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	
 }

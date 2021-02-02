@@ -18,7 +18,7 @@
 		select distinct pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
 		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate
 		from User, Board, Follow
-		where Board.uid = User.uid and (Board.uid = #{uid} or Board.uid IN (select follower from Follow where following = #{uid}))
+		where Board.uid=User.uid and (Board.uid=#{uid} or Board.uid IN (select follower from Follow where following=#{uid}))
 		order by written_date DESC
 		limit #{limit}, 3
 	</select>
@@ -26,25 +26,29 @@
 	<select id="getBucketOrChallengeList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
 		select pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
 		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from User, Board
-		where User.uid = Board.uid and board_type = #{boardType}
+		where User.uid=Board.uid and board_type=#{boardType}
 		order by written_date DESC
 		limit #{limit}, 3
 	</select>
 	
 	<select id="getListTotalSize" parameterType="Integer" resultType="Integer">
 		SELECT count(distinct pid) FROM User, Board, Follow
-		where Board.uid = #{uid} or Board.uid IN (select follower from Follow where following = #{uid})
+		where Board.uid=#{uid} or Board.uid IN (select follower from Follow where following=#{uid})
 	</select>
 	
 	<select id="getBucketOrChallengeTotalSize" parameterType="Integer" resultType="Integer">
 		SELECT count(*) FROM Board
-		where board_type = #{boardType}
+		where board_type=#{boardType}
 	</select>
 	
 	<update id="update" parameterType="Map">
-		update Board
-		set content=#{content}
+		update Board set content=#{content}
 		where pid=#{pid}
 	</update>
+	
+	<delete id="delete">
+		delete from Board
+		where pid=#{pid}
+	</delete>
 	
 </mapper>
