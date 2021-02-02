@@ -255,7 +255,7 @@ const userStore={
         //비밀번호 찾기
         findpassword(context,user){
             axios({
-                method: "get",
+                method: "post",
                 url: `${SERVER_URL}/account/updatePassword`,
                 data: {
                    email: user.email,
