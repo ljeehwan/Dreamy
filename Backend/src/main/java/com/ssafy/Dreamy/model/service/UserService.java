@@ -13,8 +13,10 @@ public interface UserService {
 	public int confirm(int uid, String password) throws Exception;	// for update, delete
 	public int update(UserDto userDto) throws Exception;
 	public int delete(int uid) throws Exception;
+	public String createPassword() throws Exception;
 	public int certification(String email, String phone) throws Exception;		// for find password
-	public void updatePassword(String email, String password)throws Exception;	// for find password
+	public int updatePassword(String email, String password)throws Exception;	// for find password
+	public int sendEmail(String email, String newPassword) throws Exception;
 	public UserDto userInfo(int uid) throws Exception;
 	public void profileUpload(int uid, String imageUrl) throws Exception; // for upload profile image
 }
