@@ -71,7 +71,10 @@ public class ImageController {
 
 			System.out.println(imgPath);
 			
-			userService.profileUpload(uid, imgPath);
+			if(userService.profileUpload(uid, imgPath) < 1) {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.INTERNAL_SERVER_ERROR;
+			}
 			
 			resultMap.put("imgPath", imgPath);
 			resultMap.put("message", SUCCESS);
