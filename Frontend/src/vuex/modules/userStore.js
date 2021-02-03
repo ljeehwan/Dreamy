@@ -10,8 +10,9 @@ const userStore={
     namespaced:true,
 
     state:{
+        followStatus: false,
+        newRequest: false,
         requestUid: '',
-        targetName: '',
         targetUser: {
             uid: '',
             name: '',
@@ -96,7 +97,7 @@ const userStore={
         TARGET_NAME(state, name) {
             state.targetName = name
         },
-        REQUEST_UID(state, uid) {
+        PUT_REQUEST_UID(state, uid) {
             state.requestUid = uid
         },
         MYSELF(state) {
@@ -110,12 +111,17 @@ const userStore={
             state.targetUser.email = targetInfo.email
             state.targetUser.name = targetInfo.name
             state.targetUser.phone = targetInfo.phone
+            console.log(state.targetUser)
         },
         PUT_TARGET_FOLLOWER(state, targetFollower) {
             state.targetUser.follower = targetFollower
         },
         PUT_TARGET_FOLLOWING(state, targetFollowing) {
             state.targetUser.following = targetFollowing
+        },
+        NEW_REQUEST(state) {
+            console.log(state.newRequest)
+            state.newRequest = !state.newRequest
         },
     },
 
@@ -138,8 +144,8 @@ const userStore={
         getLogintype(state){
             return state.user.logintype;
         },
-        getTargetName(state){
-            return state.targetName;
+        getTargetUid(state){
+            return state.requestUid;
         },
         getTargetInfo(state){
             return state.targetUser;
@@ -149,6 +155,9 @@ const userStore={
         },
         getTargetFollower(state) {
             return state.targetUser.follower;
+        },
+        getNewRequest(state) {
+            return state.newRequest;
         },
         
     },
@@ -252,6 +261,28 @@ const userStore={
             window.location.reload();
         },
 
+        //비밀번호 찾기
+        findpassword(context,user){
+            axios({
+                method: "post",
+                url: `${SERVER_URL}/account/updatePassword`,
+                data: {
+                   email: user.email,
+                   phone: user.phone,
+                },
+           })
+          .then((response) => {
+            if(response.data["message"]=="success"){
+                alert("임시 비밀번호가 이메일로 발송되었습니다!")
+              }
+              else if(response.data["message"]=='fail'){
+                alert("입력하신 정보를 다시 확인해주세요!");
+              }
+          }).catch((error)=>{
+              console.log(error.message)
+          })
+    },
+
         async SIGNUP(context, credentials){
             try {
                 context.commit('START_LOADING')
@@ -281,6 +312,8 @@ const userStore={
                     console.log('셋 타임아웃 시작')
                     context.commit('END_LOADING')
                     context.commit('END_SPINNER')
+                    // 타겟 정보가 바꼈다는 표시
+                    context.commit('NEW_REQUEST')
                     context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'primary', 'top'))
                     // 어디로 보낼지 다시 정해야함
                     
@@ -292,11 +325,11 @@ const userStore={
             }
         },
         // 회원 상세 정보 요청 
-        GET_MEMBER(context, targetName) {
+        GET_MEMBER(context, targetUid) {
             // 일단 요청하는 방식 uid 말고 name으로 바꿔달라고 해서 요청보내서 응답을 받아온다.
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/account/user/${targetName}`)
+            axios.get(`${SERVER_URL}/account/user/${targetUid}`)
             .then(res => {
                 console.log(res)
                 context.commit('END_SPINNER')
@@ -304,8 +337,7 @@ const userStore={
                 context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'primary', 'top'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone}
-                context.commit('PUT_TARGET_INFO', targetInfo)
-            })
+                context.commit('PUT_TARGET_INFO', targetInfo)            })
             .catch(err => {
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
@@ -313,13 +345,9 @@ const userStore={
             })
         },
         // id로 상대 uid 지정하기
-        GET_TARGET_BY_ID(context, targetUid) {
-            context.commit('REQUEST_UID', targetUid)
-        },
-        // 회원 상세 정보 요청
-        GET_TARGET(context, name) {
-            context.commit('TARGET_NAME', name)
-        },
+        // GET_TARGET_BY_ID(context, targetUid) {
+        //     context.commit('REQUEST_UID', targetUid)
+        // },
 
 
         async DELETE_MEMBER(context) {
@@ -400,6 +428,27 @@ const userStore={
                   context.commit('END_LOADING')
               })
         },
+        REQUEST_UNFOLLOW(context) {
+            const requestUid = this.state.userStore.requestUid
+            context.commit('START_LOADING')
+            context.commit('START_SPINNER')
+            const followingData = {
+                followingUid: this.state.userStore.user.uid,
+                followUid: requestUid
+            }
+            axios.delete(`${SERVER_URL}/follow/unfollow`, followingData)
+              .then(res => {
+                  console.log(res)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+              .catch(err => {
+                  console.log(err)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+        },
+        // api 수정중...
         // CHECK_FOLLOW(context) {
         //     const requestUid = this.state.userStore.requestUid
         //     context.commit('START_LOADING')
@@ -408,7 +457,7 @@ const userStore={
         //         followingUid: this.state.userStore.user.uid,
         //         followUid: requestUid
         //     }
-        //     axios.post(`${SERVER_URL}/follow/requestfollow`, followingData)
+        //     axios.get(`${SERVER_URL}/follow/checkfollow`, followingData)
         //       .then(res => {
         //           console.log(res)
         //           context.commit('END_SPINNER')
