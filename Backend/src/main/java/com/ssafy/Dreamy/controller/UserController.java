@@ -274,13 +274,17 @@ public class UserController {
 
 	// 비로그인 시 DB에서 이메일, 핸드폰 번호 확인
 	// 확인 후 임시비밀번호 이메일 전송
-	@GetMapping("/updatePassword") ///////////////// 파라미터 확인!!
-	public ResponseEntity<Map<String, Object>> updatePassword(
+	//@GetMapping("/updatePassword") ///////////////// 파라미터 확인!!
+	
+	/*public ResponseEntity<Map<String, Object>> updatePassword(
 			@RequestParam(value = "email", required = false, defaultValue = "none") String email,
 			@RequestParam(value = "phone", required = false, defaultValue = "none") String phone,
-			HttpServletRequest request) {
-		
+			HttpServletRequest request) {*/
+	@PostMapping("/updatePassword")	
+	public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody UserDto memberDto){
 		System.out.println("비밀번호 변경");
+		String email = memberDto.getEmail();
+		String phone = memberDto.getPhone();
 		System.out.println("email : " + email);
 		System.out.println("phone : " + phone);
 		Map<String, Object> resultMap = new HashMap<>();
