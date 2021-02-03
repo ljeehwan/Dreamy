@@ -82,7 +82,7 @@
             <!-- 가입 버튼 -->
             <div>
               <v-btn  color="error" class="mr-4 mt-3 mr-9" depressed
-              @click="onSignup">
+              @click="onCancel">
               취소
               </v-btn>
               <v-btn  color="success" class="mt-3 ml-9" depressed
@@ -100,6 +100,7 @@
 
 <script>
   import Modal from "@/components/Modal.vue"
+  import {router} from "@/routes.js"
 
   export default {
     components: {
@@ -154,6 +155,9 @@
             this.isCorrect = false
           }
         } 
+      },
+      onCancel () {
+        router.push('/')
       },
     },
   }
