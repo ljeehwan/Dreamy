@@ -1,6 +1,7 @@
 package com.ssafy.Dreamy.model;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class BoardDto {
 	
@@ -10,7 +11,7 @@ public class BoardDto {
 	private int boardType;
 	private String title;
 	private String content;
-	private Date writtenDate;	// DATETIME, DEFAULT CURRENT_TIMESTAMP
+	private LocalDateTime writtenDate;	// DATETIME, DEFAULT CURRENT_TIMESTAMP
 	private Date startDate;		// DATE
 	private Date endDate;		// DATE
 	private int category;		// DEFAULT 6
@@ -65,11 +66,11 @@ public class BoardDto {
 		this.content = content;
 	}
 	
-	public final Date getWrittenDate() {
+	public final LocalDateTime getWrittenDate() {
 		return writtenDate;
 	}
 	
-	public final void setWrittenDate(Date writtenDate) {
+	public final void setWrittenDate(LocalDateTime writtenDate) {
 		this.writtenDate = writtenDate;
 	}
 	
