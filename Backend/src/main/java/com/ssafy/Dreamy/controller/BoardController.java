@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,37 +39,9 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
-	// 게시물 검색
-	@GetMapping("/search/{word}")
-	public ResponseEntity<Map<String, Object>> searchList(@PathVariable("word") String word, @RequestParam("limit") int limit, HttpServletRequest request) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		logger.info("게시물 검색 : {}", word);
-		try {
-			List<BoardDto> list = new ArrayList<>();
-			int totalSize = boardService.searchTotalSize(word);	// 검색목록 게시물 개수
-			list = boardService.searchList(word, limit);
-			if (totalSize > limit) {	// 리스트가 있을 때
-				resultMap.put("list", list);
-				resultMap.put("totalSize", totalSize);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {					// 리스트가 없을 때
-				resultMap.put("list", null);
-				resultMap.put("message", FAIL);
-				status = HttpStatus.NO_CONTENT;
-			}
-		} catch (Exception e) {
-			logger.error("정보조회 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	
 	// 게시물 등록
 	@PostMapping("/insert")	// 매핑주소 변경가능
-	public ResponseEntity<Map<String, Object>> insert(@RequestBody BoardDto boardDto) {
+	public ResponseEntity<Map<String, Object>> create(@RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		int boardType = boardDto.getBoardType();
@@ -122,11 +93,11 @@ public class BoardController {
 	}
 
 	// 게시물 전체목록(뉴스피드)
-	@GetMapping("/list")
-	public ResponseEntity<Map<String, Object>> getList(@RequestParam("uid") int uid, @RequestParam("limit") int limit, HttpServletRequest request) {
+	@GetMapping("/list/{limit}")
+	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("전체 목록");
+		logger.info("전체목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
 			int totalSize = boardService.getListTotalSize(uid);	// 전체목록 게시물 개수
@@ -136,7 +107,7 @@ public class BoardController {
 				resultMap.put("totalSize", totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} else {					// 리스트가 없을 때
+			} else {				// 리스트가 없을 때
 				resultMap.put("list", null);
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NO_CONTENT;
@@ -149,22 +120,23 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	/*
 	// 버킷리스트 목록
 	@GetMapping("/bucketList")
-	public ResponseEntity<Map<String, Object>> bucketList(@RequestParam("limit") int limit, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("버킷리스트 목록");
+		logger.info("전체목록");
 		try {
 			List<BoardDto> list = new ArrayList<>();
 			int totalSize = boardService.getBucketOrChallengeTotalSize(1);	// 버킷리스트 게시물 개수
-			list = boardService.getBucketOrChallengeList(1, limit);			// 버킷리스트 가져오기
+			list = boardService.getList(uid, limit);
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
 				resultMap.put("totalSize", totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} else {					// 리스트가 없을 때
+			} else {				// 리스트가 없을 때
 				resultMap.put("list", null);
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NO_CONTENT;
@@ -176,80 +148,39 @@ public class BoardController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
+	*/
+
+	/*
 	// 챌린지 목록
 	@GetMapping("/challengeList")
-	public ResponseEntity<Map<String, Object>> challengeList(@RequestParam("limit") int limit, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> challengeList(HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("챌린지리스트 목록");
-		try {
-			List<BoardDto> list = new ArrayList<>();
-			int totalSize = boardService.getBucketOrChallengeTotalSize(2);	// 챌린지리스트 게시물 개수
-			list = boardService.getBucketOrChallengeList(2, limit);			// 챌린지리스트 가져오기
-			if (totalSize > limit) {	// 리스트가 있을 때
-				resultMap.put("list", list);
-				resultMap.put("totalSize", totalSize);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {					// 리스트가 없을 때
-				resultMap.put("list", null);
-				resultMap.put("message", FAIL);
-				status = HttpStatus.NO_CONTENT;
-			}
-		} catch (Exception e) {
-			logger.error("정보조회 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
+		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-		
+	*/
+	
 	// 게시물 수정(내용만)
-	@PutMapping("/update/{pid}")
-	public ResponseEntity<Map<String, Object>> update(@PathVariable int pid, @RequestBody BoardDto boardDto) {
+	@PutMapping("/update") 
+	public ResponseEntity<Map<String, Object>> update(@RequestBody BoardDto boardDto) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		String content = boardDto.getContent();
 		try {
 			System.out.println("-- 게시물 수정 시도");
-			int ret = boardService.update(pid, content);
-			if (ret > 0) {	// 게시물 수정 성공
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {		// 게시물 수정 실패
-				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
-			}
+			int pid = boardDto.getPid();
+			String content = boardDto.getContent();
+			boardService.update(pid, content);
+			status = HttpStatus.ACCEPTED;
+			System.out.println("-- 게시물 수정 성공");
 		}catch(Exception e) {
 			logger.error("게시물 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("-- 게시물 수정 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	// 게시물 삭제
-	@DeleteMapping("/delete/{pid}") 
-	public ResponseEntity<Map<String, Object>> delete(@PathVariable int pid) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		try {
-			System.out.println("-- 게시물 삭제 시도");
-			int ret = boardService.delete(pid);
-			if (ret > 0) {	// 게시물 삭제 성공
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {		// 게시물 삭제 실패
-				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
-			}
-		}catch(Exception e) {
-			logger.error("게시물 삭제 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
 	
 }
