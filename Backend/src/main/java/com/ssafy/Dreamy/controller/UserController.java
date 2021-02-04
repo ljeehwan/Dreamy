@@ -222,15 +222,16 @@ public class UserController {
 
 	// 회원정보 수정
 	@PutMapping("/update/{uid}")
-	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto memberDto,
+	public ResponseEntity<Map<String, Object>> userUpdate(@PathVariable("uid") int uid, @RequestBody UserDto userDto,
 			HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-
 		try {
 			System.out.println("--회원정보 수정 시도");
-			int ret = userService.update(memberDto);
+			int ret = userService.update(userDto);
 			if (ret > 0) { // 회원정보 수정 성공
+				UserDto updated = userService.userInfo(uid);
+				resultMap.put("userInfo", updated);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				System.out.println("--회원정보 수정 성공");
