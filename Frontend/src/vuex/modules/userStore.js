@@ -169,7 +169,15 @@ const userStore={
         getFollowStatus(state) {
             return state.followStatus
         },
-        
+        getFollower(state) {
+            return state.targetUser.follower
+        },
+        getFollowing(state) {
+            return state.targetUser.following
+        },
+        getTargetPhone(state) {
+            return state.targetUser.phone
+        },
     },
 
     actions:{
@@ -386,7 +394,7 @@ const userStore={
             
         },
         GET_FOLLOWER_NUM(context) {
-            const targetUid = this.state.userStore.requestUid
+            const targetUid = this.state.userStore.requestUid      
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.get(`${SERVER_URL}/follow/countfollower/${targetUid}`)
@@ -421,10 +429,13 @@ const userStore={
         },
         REQUEST_FOLLOW(context) {
             const requestUid = this.state.userStore.requestUid
-            const userId = this.state.userStore.user.uid
+            const credentials= {
+                'followingUid': this.state.userStore.user.uid,
+                'followUid' : requestUid
+            }
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/follow/requestfollow/${userId}/${requestUid}`)
+            axios.post(`${SERVER_URL}/follow/requestfollow`, credentials)
               .then(res => {
                   console.log(res)
                   context.commit('END_SPINNER')

@@ -84,18 +84,18 @@
           <div class="d-flex justify-start font-weight-bold">
             <p>
               <v-icon left>mdi-phone</v-icon>
-              핸드폰 번호 : {{targetInfo.phone}}
+              핸드폰 번호 : {{phone}}
             </p>
           </div>
           <div class="d-flex justify-start font-weight-bold">
             <p>
                <span class="follow-m">
                  <v-icon left>mdi-account-supervisor-circle</v-icon>
-                 팔로잉 :  {{targetInfo.following}}
+                 팔로잉 :  {{followings}}
               </span>
               <span class="follower-m">
                  <v-icon left>mdi-account-group-outline</v-icon>
-                 팔로워 :  {{targetInfo.follower}}
+                 팔로워 :  {{followers}}
               </span>
 
               <span v-if="isMyself">
@@ -144,7 +144,7 @@ export default {
       uid: '',
       email : '',
       name : '',
-      phone: '',
+      // phone: '',
       exitPass: false,
       exitRules: [
         v => v === "탈퇴하겠습니다" || '탈퇴 문구를 정확히 입력하셔야합니다',
@@ -157,6 +157,11 @@ export default {
     if (this.sheet === false) {
       this.exitMsg = ""
     }
+    const targetUid = this.$store.getters['userStore/getTargetUid']
+    this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+    console.log('updated')
+    this.$store.dispatch('userStore/GET_FOLLOWER_NUM')
+    this.$store.dispatch('userStore/GET_FOLLOWING_NUM')
     
   },
   methods: {
@@ -196,6 +201,15 @@ export default {
     },
     followStatus() {
       return this.$store.getters["userStore/getFollowStatus"];
+    },
+    followers() {
+      return this.$store.getters["userStore/getFollower"]
+    },
+    followings() {
+      return this.$store.getters['userStore/getFollowing']
+    },
+    phone () {
+      return this.$store.getters['userStore/getTargetPhone']
     },
   },
 }
