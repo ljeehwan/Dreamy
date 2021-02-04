@@ -35,9 +35,10 @@ export default {
     infiniteHandler($state) {
       axios({
         method: "get",
-        url: `${SERVER_URL}/board/list/${this.limit}`,
+        url: `${SERVER_URL}/board/list`,
         params:{
-          uid:this.getUserId
+          uid:this.getUserId,
+          limit:this.limit
         }
       })
         .then((res) => {

@@ -10,8 +10,8 @@
                         <v-card-text class="pa-5">
                             <v-form v-on:submit="sub" action="#" method="post">
 
-                                <v-text-field color="green darken-1" v-model="login" label="Email"></v-text-field>
-                                <v-text-field color="green darken-1" v-model="senha" label="Phone"></v-text-field>
+                                <v-text-field color="green darken-1" v-model="email" label="Email"></v-text-field>
+                                <v-text-field color="green darken-1" v-model="phone" label="Phone"></v-text-field>
                                 <v-btn class="green darken-1" large="large" dark="dark" @click="find">확인</v-btn>
 
                             </v-form>

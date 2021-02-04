@@ -337,7 +337,8 @@ const userStore={
                 context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'primary', 'top'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone}
-                context.commit('PUT_TARGET_INFO', targetInfo)            })
+                context.commit('PUT_TARGET_INFO', targetInfo)
+            })
             .catch(err => {
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
