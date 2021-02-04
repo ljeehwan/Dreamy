@@ -123,6 +123,13 @@ const userStore={
             console.log(state.newRequest)
             state.newRequest = !state.newRequest
         },
+        TRUE_FOLLOW(state) {
+            console.log(state.followStatus)
+            state.followStatus = true
+        },
+        FALSE_FOLLOW(state) {
+            state.followStatus = false
+        },
     },
 
     getters:{
@@ -158,6 +165,9 @@ const userStore={
         },
         getNewRequest(state) {
             return state.newRequest;
+        },
+        getFollowStatus(state) {
+            return state.followStatus
         },
         
     },
@@ -419,6 +429,7 @@ const userStore={
                   console.log(res)
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
+                  context.commit('TRUE_FOLLOW')
               })
               .catch(err => {
                   console.log(err)
@@ -431,11 +442,12 @@ const userStore={
             const userId = this.state.userStore.user.uid
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/follow/unfollow/${userId}/${requestUid}`)
+            axios.delete(`${SERVER_URL}/follow/unfollow/${userId}/${requestUid}`)
               .then(res => {
                   console.log(res)
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
+                  context.commit('FALSE_FOLLOW')
               })
               .catch(err => {
                   console.log(err)
@@ -452,7 +464,12 @@ const userStore={
             axios.get(`${SERVER_URL}/follow/checkfollow/${userId}/${requestUid}`)
               .then(res => {
                   console.log('관계 확인')
-                  console.log(res)
+                  console.log(res.data.message)
+                  if (res.data.message === 'success') {
+                      context.commit('TRUE_FOLLOW')
+                  } else {
+                      context.commit('FALSE_FOLLOW')
+                  }
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
               })

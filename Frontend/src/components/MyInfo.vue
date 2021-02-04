@@ -100,16 +100,16 @@
 
               <span v-if="isMyself">
                 <!-- 버튼도 두개를 -->
-                <v-btn @click="requestFollow">
-                  <!-- 컴퓨티드로 하자 (뷰엑스에서 state값까지 바꿔서)  -->
+                <v-btn @click="requestFollow"
+                v-if="!followStatus">
                   <span>
                     <v-icon left>mdi-account-multiple-plus</v-icon>
                     팔로우
                   </span>
                 </v-btn>
 
-                <v-btn @click="requestUnfollow">
-                  <!-- 컴퓨티드로 하자 (뷰엑스에서 state값까지 바꿔서)  -->
+                <v-btn @click="requestUnfollow"
+                v-if="followStatus">
                   <span>
                     <v-icon left>mdi-account-multiple-minus</v-icon>
                     팔로우 취소
@@ -193,6 +193,9 @@ export default {
     },
     targetInfo() {
       return this.$store.getters["userStore/getTargetInfo"];
+    },
+    followStatus() {
+      return this.$store.getters["userStore/getFollowStatus"];
     },
   },
 }
