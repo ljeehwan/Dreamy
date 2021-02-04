@@ -1,43 +1,40 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="ma-10" color="grey lighten-4" width="350" >
-      <v-img
-        :aspect-ratio="16 / 9"
-        :src=item.imageUrl
-      >
+    <v-card class="ma-10" color="grey lighten-4" width="350">
+      <v-img :aspect-ratio="16 / 9" :src="item.imageUrl">
         <v-expand-transition>
           <div
             v-if="hover"
             class="d-flex transition-fast-in-fast-out white darken-2 v-card--reveal"
             style="height: 50%;"
           >
-            {{item.content}}
+            {{ item.content }}
           </div>
         </v-expand-transition>
       </v-img>
       <v-row class="mt-3 px-5">
-      <v-card-title>{{item.title}}</v-card-title>
-      <v-spacer></v-spacer>
-      <span>
-        <small>{{item.writtenDate|dateFilter}}</small>
-      </span>
+        <v-card-title>{{ item.title }}</v-card-title>
+        <v-spacer></v-spacer>
+        <span>
+          <small>{{ item.writtenDate | dateFilter }}</small>
+        </span>
       </v-row>
       <v-card-text>
         <v-row class="my-2">
           <v-btn color="black" text>
-            {{item.name}}
+            {{ item.name }}
           </v-btn>
           <v-spacer></v-spacer>
           <v-icon left="left">
             mdi-label
           </v-icon>
           <span class="mt-2 mr-2">
-            {{item.category|category}}
+            {{ item.category | category }}
           </span></v-row
         >
         <v-divider></v-divider>
         <v-row class="mt-3">
-          <v-btn color="black" text>
+          <v-btn color="black" text @click="detail_view">
             자세히보기
           </v-btn>
           <v-spacer></v-spacer>
@@ -54,6 +51,14 @@
           </v-btn>
           <span class="ma-1">33</span>
         </v-row>
+        <v-dialog v-model="detail" max-width="1100">
+          <v-card>
+            <v-img class="ddd"
+              height="650"
+              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+            ></v-img>
+          </v-card>
+        </v-dialog>
         <!-- <h3 class="display-1 font-weight-light orange--text mb-2">QW cooking utensils</h3>
                     <div class="font-weight-light title mb-2"> Our Vintage kitchen utensils delight any chef.<br> Made of bamboo by hand </div> -->
       </v-card-text>
@@ -62,40 +67,45 @@
 </template>
 
 <script>
-import moment from 'moment';
-import 'moment/locale/ko';
+import moment from "moment";
+import "moment/locale/ko";
 
 export default {
-  data(){
-    return{
-
-    }
+  data() {
+    return {
+      detail: false,
+    };
   },
-  props:{
-    item:Object
+  methods: {
+    detail_view() {
+      this.detail = true;
+    },
   },
-  filters:{
-    category:function(value){
-      if(!value) return "";
-      else if(value===1){
+  props: {
+    item: Object,
+  },
+  filters: {
+    category: function(value) {
+      if (!value) return "";
+      else if (value === 1) {
         return "운동";
-      }else if(value===2){
-        return "음식"
-      }else if(value===3){
-        return "여행"
-      }else if(value===4){
-        return "학습"
-      }else if(value===5){
-        return "문화/생활"
-      }else{
-        return "기타"
+      } else if (value === 2) {
+        return "음식";
+      } else if (value === 3) {
+        return "여행";
+      } else if (value === 4) {
+        return "학습";
+      } else if (value === 5) {
+        return "문화/생활";
+      } else {
+        return "기타";
       }
     },
-    dateFilter:function(date){
+    dateFilter: function(date) {
       // var form=moment(date).format('lll');// 연월일 오전/오후 시간
       return moment(date).fromNow();
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -111,5 +121,9 @@ export default {
 
 .v-application--wrap {
   min-height: 100vh;
+}
+
+.ddd{
+  opacity:0.5
 }
 </style>
