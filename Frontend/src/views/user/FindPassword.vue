@@ -8,10 +8,10 @@
                         <v-card-title>비밀번호 찾기</v-card-title>
                         <v-divider></v-divider>
                         <v-card-text class="pa-5">
-                            <v-form v-on:submit="sub" action="#" method="post">
+                            <v-form v-on:submit="find" action="#" method="post">
 
-                                <v-text-field color="green darken-1" v-model="email" label="Email"></v-text-field>
-                                <v-text-field color="green darken-1" v-model="phone" label="Phone"></v-text-field>
+                                <v-text-field color="green darken-1" v-model="user.email" label="Email"></v-text-field>
+                                <v-text-field color="green darken-1" v-model="user.phone" label="Phone"></v-text-field>
                                 <v-btn class="green darken-1" large="large" dark="dark" @click="find">확인</v-btn>
 
                             </v-form>
