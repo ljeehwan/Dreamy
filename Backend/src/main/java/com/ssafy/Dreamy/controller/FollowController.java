@@ -171,7 +171,7 @@ public class FollowController {
 			throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("팔로잉 수 카운트");
+		logger.info("팔로잉 수 카운트 시작");
 		try {
 			int count = followservice.countfollowing(uid);
 			resultMap.put("count", count);
