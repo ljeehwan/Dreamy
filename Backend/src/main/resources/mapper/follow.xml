@@ -27,10 +27,8 @@
 	</select>
 
 	<select id="checkFollow" parameterType="FollowDto">
-		select count(*) from
-		Follow
-		where following=#{userid} and follower =
-		#{targetid}
+		select count(*) from Follow
+		where following=#{followingUid} and follower = #{followUid}
 	</select>
 	<select id="listFollowing" parameterType="Integer"
 		resultType="com.ssafy.Dreamy.model.UserDto">
