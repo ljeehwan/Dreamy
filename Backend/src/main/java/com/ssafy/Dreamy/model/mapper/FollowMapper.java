@@ -11,7 +11,7 @@ import com.ssafy.Dreamy.model.UserDto;
 public interface FollowMapper {
 	public void setFollow(FollowDto followdto);
 
-	public void revokeFollow(int followed, int follow);
+	public void revokeFollow(FollowDto followdto);
 
 	public int countFollowing(int userid);
 
