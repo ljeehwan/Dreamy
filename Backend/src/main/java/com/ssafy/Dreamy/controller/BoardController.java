@@ -57,13 +57,13 @@ public class BoardController {
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/food.jpg");
 				break;
 			case 3:
-				boardDto.setImageUrl(DEFAULTIMAGEURL + "/travle.jpg");
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/travel.jpg");
 				break;
 			case 4:
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/study.jpg");
 				break;
 			case 5:
-				boardDto.setImageUrl(DEFAULTIMAGEURL + "/culture&life.jpg");
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/cultureorlife.jpg");
 				break;
 			case 6:
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/etc.jpg");
