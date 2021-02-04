@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 		// 패스워드 
 		String password = "ssafyA306!";      
 		
-		// SMTP 서버 정보를 설정한다. 
+		// SMTP 서버 정보를 설정. 
 		Properties props = new Properties(); 
 		props.put("mail.smtp.host", host); 
 		props.put("mail.smtp.port", 465); 
