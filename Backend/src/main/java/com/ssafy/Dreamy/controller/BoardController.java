@@ -46,7 +46,8 @@ public class BoardController {
 		HttpStatus status = null;
 		int boardType = boardDto.getBoardType();
 		int ret = 0;
-		if(boardDto.getImageUrl().equals(null)) {
+		//if(boardDto.getImageUrl().equals(null)) {
+		if(boardDto.getImageUrl() == null) {
 			System.out.println("image is null");
 			switch(boardDto.getCategory()) {
 			case 1:
