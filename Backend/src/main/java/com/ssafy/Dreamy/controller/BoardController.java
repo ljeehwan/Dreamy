@@ -96,6 +96,7 @@ public class BoardController {
 	@GetMapping("/list/{limit}")
 	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
+		System.out.println(uid+" "+limit);
 		HttpStatus status = null;
 		logger.info("전체목록");
 		try {
