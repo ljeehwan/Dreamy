@@ -98,7 +98,7 @@ public class FollowController {
 			} else {
 				System.out.println("--친구관계아니다");
 				resultMap.put("message", FAIL);
-				status = HttpStatus.UNAUTHORIZED;
+				status = HttpStatus.ACCEPTED;
 
 			}
 		} catch (Exception e) {
