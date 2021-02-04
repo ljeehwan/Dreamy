@@ -51,7 +51,7 @@ export default {
     // 뷰엑스에서 컴퓨티드로 보여줌
     
     // follow 상태 확인 api 수정중..
-    // this.$store.dispatch('userStore/CHECK_FOLLOW')
+    this.$store.dispatch('userStore/CHECK_FOLLOW')
 
   },
 

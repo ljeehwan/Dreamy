@@ -185,9 +185,6 @@ export default {
     isMyself() {
       return this.$store.getters["userStore/getMyself"];
     },
-    // targetInfo() {
-    //   return this.$store.getters["userStore/getTargetInfo"];
-    // },
     
   },
   computed: {
