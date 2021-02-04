@@ -9,9 +9,9 @@
 		(#{followingUid},#{followUid})
 	</insert>
 
-	<delete id="revokeFollow" parameterType="Integer">
+	<delete id="revokeFollow" parameterType="FollowDto">
 		delete from Follow where
-		following=#{followed} and follower=#{follow}
+		following=#{followingUid} and follower=#{followUid}
 	</delete>
 
 	<select id="countFollowing" parameterType="Integer"
@@ -26,11 +26,9 @@
 		where follower = #{userid}
 	</select>
 
-	<select id="checkFollow" parameterType="FollowDto">
-		select count(*) from
-		Follow
-		where following=#{userid} and follower =
-		#{targetid}
+	<select id="checkFollow" parameterType="FollowDto" resultType="Integer">
+		select count(*) from Follow
+		where following=#{followingUid} and follower = #{followUid}
 	</select>
 	<select id="listFollowing" parameterType="Integer"
 		resultType="com.ssafy.Dreamy.model.UserDto">
