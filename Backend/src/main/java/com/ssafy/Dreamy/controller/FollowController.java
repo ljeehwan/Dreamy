@@ -98,8 +98,7 @@ public class FollowController {
 			} else {
 				System.out.println("--친구관계아니다");
 				resultMap.put("message", FAIL);
-				status = HttpStatus.UNAUTHORIZED;
-
+				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
@@ -171,7 +170,7 @@ public class FollowController {
 			throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		logger.info("팔로잉 수 카운트");
+		logger.info("팔로잉 수 카운트 시작");
 		try {
 			int count = followservice.countfollowing(uid);
 			resultMap.put("count", count);

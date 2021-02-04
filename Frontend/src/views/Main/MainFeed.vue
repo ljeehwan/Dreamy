@@ -29,15 +29,18 @@ export default {
     return {
       list: [],
       limit: 0,
+      uid:0,
     };
   },
+
   methods: {
     infiniteHandler($state) {
+      this.uid=this.getUserId;
       axios({
         method: "get",
         url: `${SERVER_URL}/board/list/${this.limit}`,
         params:{
-          uid:this.getUserId,
+          uid:this.uid,
         }
       })
         .then((res) => {
@@ -66,7 +69,6 @@ export default {
       getUserId:"userStore/getUserId"
     }),
   },
-
   watch:{
     list(){
       return this.list;

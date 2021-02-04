@@ -123,6 +123,13 @@ const userStore={
             console.log(state.newRequest)
             state.newRequest = !state.newRequest
         },
+        TRUE_FOLLOW(state) {
+            console.log(state.followStatus)
+            state.followStatus = true
+        },
+        FALSE_FOLLOW(state) {
+            state.followStatus = false
+        },
     },
 
     getters:{
@@ -159,7 +166,18 @@ const userStore={
         getNewRequest(state) {
             return state.newRequest;
         },
-        
+        getFollowStatus(state) {
+            return state.followStatus
+        },
+        getFollower(state) {
+            return state.targetUser.follower
+        },
+        getFollowing(state) {
+            return state.targetUser.following
+        },
+        getTargetPhone(state) {
+            return state.targetUser.phone
+        },
     },
 
     actions:{
@@ -376,7 +394,7 @@ const userStore={
             
         },
         GET_FOLLOWER_NUM(context) {
-            const targetUid = this.state.userStore.requestUid
+            const targetUid = this.state.userStore.requestUid      
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.get(`${SERVER_URL}/follow/countfollower/${targetUid}`)
@@ -411,17 +429,18 @@ const userStore={
         },
         REQUEST_FOLLOW(context) {
             const requestUid = this.state.userStore.requestUid
+            const credentials= {
+                'followingUid': this.state.userStore.user.uid,
+                'followUid' : requestUid
+            }
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            const followingData = {
-                followingUid: this.state.userStore.user.uid,
-                followUid: requestUid
-            }
-            axios.post(`${SERVER_URL}/follow/requestfollow`, followingData)
+            axios.post(`${SERVER_URL}/follow/requestfollow`, credentials)
               .then(res => {
                   console.log(res)
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
+                  context.commit('TRUE_FOLLOW')
               })
               .catch(err => {
                   console.log(err)
@@ -431,15 +450,37 @@ const userStore={
         },
         REQUEST_UNFOLLOW(context) {
             const requestUid = this.state.userStore.requestUid
+            const userId = this.state.userStore.user.uid
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            const followingData = {
-                followingUid: this.state.userStore.user.uid,
-                followUid: requestUid
-            }
-            axios.delete(`${SERVER_URL}/follow/unfollow`, followingData)
+            axios.delete(`${SERVER_URL}/follow/unfollow/${userId}/${requestUid}`)
               .then(res => {
                   console.log(res)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+                  context.commit('FALSE_FOLLOW')
+              })
+              .catch(err => {
+                  console.log(err)
+                  context.commit('END_SPINNER')
+                  context.commit('END_LOADING')
+              })
+        },
+        // api 수정중...
+        CHECK_FOLLOW(context) {
+            const requestUid = this.state.userStore.requestUid
+            const userId = this.state.userStore.user.uid
+            context.commit('START_LOADING')
+            context.commit('START_SPINNER')
+            axios.get(`${SERVER_URL}/follow/checkfollow/${userId}/${requestUid}`)
+              .then(res => {
+                  console.log('관계 확인')
+                  console.log(res.data.message)
+                  if (res.data.message === 'success') {
+                      context.commit('TRUE_FOLLOW')
+                  } else {
+                      context.commit('FALSE_FOLLOW')
+                  }
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
               })
@@ -449,27 +490,6 @@ const userStore={
                   context.commit('END_LOADING')
               })
         },
-        // api 수정중...
-        // CHECK_FOLLOW(context) {
-        //     const requestUid = this.state.userStore.requestUid
-        //     context.commit('START_LOADING')
-        //     context.commit('START_SPINNER')
-        //     const followingData = {
-        //         followingUid: this.state.userStore.user.uid,
-        //         followUid: requestUid
-        //     }
-        //     axios.get(`${SERVER_URL}/follow/checkfollow`, followingData)
-        //       .then(res => {
-        //           console.log(res)
-        //           context.commit('END_SPINNER')
-        //           context.commit('END_LOADING')
-        //       })
-        //       .catch(err => {
-        //           console.log(err)
-        //           context.commit('END_SPINNER')
-        //           context.commit('END_LOADING')
-        //       })
-        // },
 
     }
 }
