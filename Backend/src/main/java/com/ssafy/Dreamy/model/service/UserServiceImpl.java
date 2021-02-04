@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
 		// 패스워드 
 		String password = "ssafyA306!";      
 		
-		// SMTP 서버 정보를 설정한다. 
+		// SMTP 서버 정보를 설정. 
 		Properties props = new Properties(); 
 		props.put("mail.smtp.host", host); 
 		props.put("mail.smtp.port", 465); 
@@ -154,8 +154,8 @@ public class UserServiceImpl implements UserService {
 		props.put("mail.smtp.ssl.enable", "true");
 		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		
-		//Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() { 
-		Session session = Session.getInstance(props, new javax.mail.Authenticator() { 
+		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() { 
+		//Session session = Session.getInstance(props, new javax.mail.Authenticator() { 
 			protected PasswordAuthentication getPasswordAuthentication() { 
 				return new PasswordAuthentication(user, password); 
 			} 
