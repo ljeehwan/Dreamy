@@ -30,7 +30,12 @@ public class FollowServiceImpl implements FollowService {
 	@Override
 	public void unfollowService(int followed, int follow) {// 언팔로우버튼 누른사람, 언팔로우 당하는사람
 
-		sqlSession.getMapper(FollowMapper.class).revokeFollow(followed, follow);
+		FollowDto followdto = new FollowDto();
+
+		followdto.setFollowingUid(followed);
+		followdto.setFollowUid(follow);
+		
+		sqlSession.getMapper(FollowMapper.class).revokeFollow(followdto);
 	}
 
 	@Override
