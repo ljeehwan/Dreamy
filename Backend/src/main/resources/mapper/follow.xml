@@ -26,7 +26,7 @@
 		where follower = #{userid}
 	</select>
 
-	<select id="checkFollow" parameterType="FollowDto">
+	<select id="checkFollow" parameterType="FollowDto" resultType="Integer">
 		select count(*) from Follow
 		where following=#{followingUid} and follower = #{followUid}
 	</select>

@@ -57,13 +57,13 @@ public class BoardController {
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/food.jpg");
 				break;
 			case 3:
-				boardDto.setImageUrl(DEFAULTIMAGEURL + "/travle.jpg");
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/travel.jpg");
 				break;
 			case 4:
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/study.jpg");
 				break;
 			case 5:
-				boardDto.setImageUrl(DEFAULTIMAGEURL + "/culture&life.jpg");
+				boardDto.setImageUrl(DEFAULTIMAGEURL + "/cultureorlife.jpg");
 				break;
 			case 6:
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/etc.jpg");
@@ -97,6 +97,7 @@ public class BoardController {
 	@GetMapping("/list/{limit}")
 	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
+		System.out.println(uid+" "+limit);
 		HttpStatus status = null;
 		logger.info("전체목록");
 		try {
