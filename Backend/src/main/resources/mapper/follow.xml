@@ -9,9 +9,9 @@
 		(#{followingUid},#{followUid})
 	</insert>
 
-	<delete id="revokeFollow" parameterType="Integer">
+	<delete id="revokeFollow" parameterType="FollowDto">
 		delete from Follow where
-		following=#{followed} and follower=#{follow}
+		following=#{followingUid} and follower=#{followUid}
 	</delete>
 
 	<select id="countFollowing" parameterType="Integer"

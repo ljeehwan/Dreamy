@@ -60,6 +60,7 @@ public class FollowController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
 	}
+	
 
 	////////// 팔로우 취소 ///////////
 	@DeleteMapping("/unfollow/{uid1}/{uid2}")
