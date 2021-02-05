@@ -290,7 +290,7 @@ const userStore={
                 url: `${SERVER_URL}/account/updatePassword`,
                 data: {
                    email: user.email,
-                   phone: user.phone,
+                   name: user.name,
                 },
            })
           .then((response) => {
