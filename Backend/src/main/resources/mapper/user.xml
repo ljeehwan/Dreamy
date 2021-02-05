@@ -71,7 +71,7 @@
 	<!-- 비밀번호 변경 관련 -->
 	
 	<select id="userInfo" parameterType="Integer" resultType="userDto">
-		select uid, email, name, phone, login_type as loginType
+		select uid, email, name, phone, profile_url as profileUrl, login_type as loginType
 		from User
 		where uid=#{uid}
 	</select>
