@@ -1,5 +1,5 @@
 import axios from "axios"
-
+// import {router} from "@/routes.js"
 
 const SERVER_URL="http://localhost:8080";
 
@@ -25,7 +25,8 @@ const boardStore={
             .then((res)=>{
                console.log(res);
                alert("등록 성공");
-               window.location.reload();
+            //    router.go(router.currentRoute);
+               location.reload();
             }).catch((error)=>{
                 console.log(error);
             })

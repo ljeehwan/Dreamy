@@ -194,6 +194,7 @@ const userStore={
           .then((response) => {
             localStorage.setItem("access_token", response.data["access-token"])
             localStorage.setItem("isLogin", true)
+            localStorage.setItem("uid",response.data["uid"]);
             axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
             context.dispatch("getUserinfo");
           }).catch((error) => {
@@ -212,7 +213,6 @@ const userStore={
             }).then((response)=>{
                 console.log(response.data);
                 context.commit("setUserinfo",response.data);
-                
             }).catch(()=>{
                 alert("jwt 만료");
             })
@@ -233,7 +233,7 @@ const userStore={
                   }
                   else if(response.data["message"]=='needSignup'){
                     context.commit("setSocialUser",user);
-                    context.dispatch("socialSignup",user.logintype);
+                    context.dispatch("socialSignup",user);
                     alert("자동 회원가입 완료! 초기 비밀번호를 꼭 수정해주세요");
                   }
                   //자동 로그인
@@ -248,19 +248,14 @@ const userStore={
               })
         },
 
-        socialSignup(context,type){
-            let user={
-                email:this.state.user.email,
-                password:"",
-                name:this.state.user.name,
-            }
+        socialSignup(context,user){
             axios({
                 method:"post",
                 url:`${SERVER_URL}/account/signup`,
                 data:{
                     email:user.email,
                     name:user.name,
-                    loginType:type,
+                    loginType:user.logintype,
                 }
             }).then((res)=>{
                 user.password=res.data["userInfo"].password;

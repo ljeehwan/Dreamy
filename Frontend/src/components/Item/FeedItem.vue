@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="ma-10" color="grey lighten-4" width="350">
+    <v-card class="my-10 mx-2" color="grey lighten-4" width="350" max-height="500">
       <v-img :aspect-ratio="16 / 9" :src="item.imageUrl">
         <v-expand-transition>
           <div
@@ -13,7 +13,7 @@
         </v-expand-transition>
       </v-img>
       <v-row class="mt-3 px-5">
-        <v-card-title>{{ item.title }}</v-card-title>
+        <v-card-title id="title">{{ item.title }}</v-card-title>
         <v-spacer></v-spacer>
         <span>
           <small>{{ item.writtenDate | dateFilter }}</small>
@@ -21,42 +21,39 @@
       </v-row>
       <v-card-text>
         <v-row class="my-2">
-          <v-btn color="black" text>
+          <v-btn id="name" color="black" text>
             {{ item.name }}
           </v-btn>
           <v-spacer></v-spacer>
           <v-icon left="left">
             mdi-label
           </v-icon>
-          <span class="mt-2 mr-2">
+          <span id="category" class="mt-2 mr-2">
             {{ item.category | category }}
           </span></v-row
         >
         <v-divider></v-divider>
         <v-row class="mt-3">
-          <v-btn color="black" text @click="detail_view">
+          <v-btn id="detail" color="black" text @click="detail_view">
             자세히보기
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn class="mx-2" small text icon="icon">
+          <v-btn class="mx-2" small icon="icon" color="red">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           <span class="ma-1">10</span>
-          <v-btn class="mx-2" small text icon="icon">
+          <v-btn class="mx-2" small icon="icon" color="blue">
             <v-icon>mdi-comment-outline</v-icon>
           </v-btn>
           <span class="ma-1">22</span>
-          <v-btn class="mx-2" small="small" text icon="icon">
+          <v-btn class="mx-2" small="small" icon="icon" color="green">
             <v-icon>mdi-bookmark</v-icon>
           </v-btn>
           <span class="ma-1">33</span>
         </v-row>
         <v-dialog v-model="detail" max-width="1100">
           <v-card>
-            <v-img class="ddd"
-              height="650"
-              src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
-            ></v-img>
+           
           </v-card>
         </v-dialog>
         <!-- <h3 class="display-1 font-weight-light orange--text mb-2">QW cooking utensils</h3>
@@ -110,6 +107,7 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap');
 .v-card--reveal {
   align-items: center;
   bottom: 0;
@@ -123,7 +121,7 @@ export default {
   min-height: 100vh;
 }
 
-.ddd{
-  opacity:0.5
+#title, #name, #category, #detail{
+font-family:  'Nanum Gothic', sans-serif;
 }
 </style>
