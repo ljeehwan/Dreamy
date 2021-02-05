@@ -279,19 +279,18 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody UserDto memberDto){
 		System.out.println("비밀번호 변경");
 		String email = memberDto.getEmail();
-		String phone = memberDto.getPhone();
+		String name = memberDto.getName();
 		System.out.println("email : " + email);
-		System.out.println("phone : " + phone);
+		System.out.println("phone : " + name);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
 			System.out.println("--회원정보 인증 시도");
 
-			if (userService.certification(email, phone) == 0) {
+			if (userService.certification(email, name) == 0) {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
-				System.out.println("--회원정보 인증 실패");
-				
+				System.out.println("--회원정보 인증 실패");			
 			} 
 			else {
 				System.out.println("--회원정보 인증 성공 ");					
