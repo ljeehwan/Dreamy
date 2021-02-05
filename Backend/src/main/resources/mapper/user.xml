@@ -70,10 +70,18 @@
 	</update>
 	<!-- 비밀번호 변경 관련 -->
 	
+	<!-- 회원정보 조회 -->
 	<select id="userInfo" parameterType="Integer" resultType="userDto">
 		select uid, email, name, phone, profile_url as profileUrl, login_type as loginType
 		from User
 		where uid=#{uid}
 	</select>
+	
+	<!-- 이미지 업로드 -->
+	<update id="updateProfile" parameterType="Map">
+		update User
+		set profile_url=#{profileUrl}
+		where uid=#{uid}
+	</update>
 	
 </mapper>
