@@ -10,4 +10,6 @@ public interface LikesMapper {
 
 	public void unLikes(LikesDto likesdto);
 
+	public int countLikes(int pid);
+
 }

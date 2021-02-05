@@ -35,4 +35,9 @@ public class LikesServiceImpl implements LikesService {
 
 	}
 
+	@Override
+	public int countLikes(int pid) {
+		return sqlSession.getMapper(LikesMapper.class).countLikes(pid);
+	}
+
 }

@@ -11,6 +11,12 @@
 	</insert>
 
 	<delete id="unLikes" parameterType="LikesDto">
-		delete from Likes where uid=#{userid} and pid=#{postid}
+		delete from Likes where
+		uid=#{userid} and pid=#{postid}
 	</delete>
+
+	<select id="countLikes" parameterType="Integer">
+		select count(*) from Likes
+		where pid=#{pid}
+	</select>
 </mapper>
