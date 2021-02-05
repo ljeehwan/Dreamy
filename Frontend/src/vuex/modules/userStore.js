@@ -341,31 +341,23 @@ const userStore={
                 context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
-        // 내 프로필 사진 수정
+        // 프로필 사진을 클라우드에 등록 
         UPDATE_MEMBER_IMG(context, profileUrl) {
             const myUid = this.state.userStore.user.uid
             console.log(`${SERVER_URL}/user/imageupload/${myUid}`)
             //
             let formData = new FormData();
             formData.append("files", profileUrl);
-            console.log(profileUrl)
-            console.log(formData)
-            context.commit('START_LOADING')
-            context.commit('START_SPINNER')
             axios.post(`${SERVER_URL}/user/imageupload/${myUid}`, formData,
             {headers: {
                 "Content-Type" : "multipart/form-data"
             }})
               .then(res => {
-                  console.log(res)
-                  context.commit('END_LOADING')
-                  context.commit('END_SPINNER')
-                  context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'primary', 'top'))
+                  console.log(res.data.imgPath)
               })
               .catch(err => {
                   console.log(err)
-                  context.commit('END_LOADING')
-                  context.commit('END_SPINNER')
+                  console.log('클라우드 등록 실패')
               })
         },
 

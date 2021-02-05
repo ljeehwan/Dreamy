@@ -52,7 +52,6 @@ export default {
     
     // follow 상태 확인 api 수정중..
     this.$store.dispatch('userStore/CHECK_FOLLOW')
-
   },
 
 }

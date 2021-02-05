@@ -160,6 +160,7 @@ export default {
   data: function () {
     return {
       modal: false,
+
       sheet: false,
       dialog: false,
       exitPass: false,
@@ -175,11 +176,12 @@ export default {
       this.exitMsg = ""
     }
     const targetUid = this.$store.getters['userStore/getTargetUid']
-    this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+    
     console.log('updated')
     this.$store.dispatch('userStore/GET_FOLLOWER_NUM')
     this.$store.dispatch('userStore/GET_FOLLOWING_NUM')
-    
+    this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+    console.log('updated after img??')
   },
   methods: {
     onExit () {
