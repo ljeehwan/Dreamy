@@ -93,75 +93,33 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
-	// 게시물 전체목록(뉴스피드)
-	@GetMapping("/list/{limit}")
-	public ResponseEntity<Map<String, Object>> getInfo(@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
+	// 게시물 목록 불러오기
+	@GetMapping("/list/{category}")
+	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("category") int category,
+													@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
-		System.out.println(uid+" "+limit);
 		HttpStatus status = null;
-		logger.info("전체목록");
+		logger.info("게시물 목록, category : {}", category);
 		try {
-			List<BoardDto> list = new ArrayList<>();
-			int totalSize = boardService.getListTotalSize(uid);	// 전체목록 게시물 개수
-			list = boardService.getList(uid, limit);
+			int totalSize = boardService.getListTotalSize(category);	// 게시물 개수
+			List<BoardDto> list = boardService.getList(uid, category, limit);
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
 				resultMap.put("totalSize", totalSize);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-			} else {				// 리스트가 없을 때
+			} else {					// 리스트가 없을 때
 				resultMap.put("list", null);
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NO_CONTENT;
 			}
 		} catch (Exception e) {
-			logger.error("정보조회 실패 : {}", e);
+			logger.error("목록 불러오기 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
-	/*
-	// 버킷리스트 목록
-	@GetMapping("/bucketList")
-	public ResponseEntity<Map<String, Object>> bucketList(HttpServletRequest request) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		logger.info("전체목록");
-		try {
-			List<BoardDto> list = new ArrayList<>();
-			int totalSize = boardService.getBucketOrChallengeTotalSize(1);	// 버킷리스트 게시물 개수
-			list = boardService.getList(uid, limit);
-			if (totalSize > limit) {	// 리스트가 있을 때
-				resultMap.put("list", list);
-				resultMap.put("totalSize", totalSize);
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.ACCEPTED;
-			} else {				// 리스트가 없을 때
-				resultMap.put("list", null);
-				resultMap.put("message", FAIL);
-				status = HttpStatus.NO_CONTENT;
-			}
-		} catch (Exception e) {
-			logger.error("정보조회 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	*/
-
-	/*
-	// 챌린지 목록
-	@GetMapping("/challengeList")
-	public ResponseEntity<Map<String, Object>> challengeList(HttpServletRequest request) {
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	*/
 	
 	// 게시물 수정(내용만)
 	@PutMapping("/update") 

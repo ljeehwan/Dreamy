@@ -107,10 +107,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int certification(String email, String phone) throws Exception {
+	public int certification(String email, String name) throws Exception {
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
-		map.put("phone", phone);
+		map.put("name", name);
 		int result = sqlSession.getMapper(UserMapper.class).certification(map);
 		
 		return result;
@@ -130,11 +130,11 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public int profileUpload(int uid, String imageUrl) throws Exception {
+	public int updateProfile(int uid, String profileUrl) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		map.put("uid", uid);
-		map.put("profileUrl", imageUrl);
-		return sqlSession.getMapper(UserMapper.class).profileUpload(map);
+		map.put("profileUrl", profileUrl);
+		return sqlSession.getMapper(UserMapper.class).updateProfile(map);
 	}
 
 	@Override
