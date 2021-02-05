@@ -33,6 +33,7 @@ const userStore={
             logintype:"",
             follower: '',
             following: '',
+            profileUrl: '',
         },
         // 로딩 관련~~~~~~
         loadingState: false,
@@ -132,6 +133,10 @@ const userStore={
         },
         FALSE_FOLLOW(state) {
             state.followStatus = false
+        },
+        PUT_TARGET_IMG(state, imgUrl) {
+            state.targetUser.profileUrl = imgUrl
+           
         },
     },
 
@@ -354,6 +359,8 @@ const userStore={
             }})
               .then(res => {
                   console.log(res.data.imgPath)
+                //   context.commit('PUT_TARGET_IMG', res.data.imgPath)
+
               })
               .catch(err => {
                   console.log(err)
@@ -375,6 +382,7 @@ const userStore={
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone,
                 profileUrl: res.data.userInfo.profileUrl,}
+                console.log(targetInfo)
                 context.commit('PUT_TARGET_INFO', targetInfo)
             })
             .catch(err => {
