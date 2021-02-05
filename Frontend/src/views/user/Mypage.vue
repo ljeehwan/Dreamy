@@ -58,6 +58,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .user-info {
+    margin-top: 100px;
+  }
 
 </style>
