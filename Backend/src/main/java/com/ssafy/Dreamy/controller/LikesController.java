@@ -27,7 +27,7 @@ import com.ssafy.Dreamy.model.service.LikesService;
 @RequestMapping("/likes")
 public class LikesController {
 
-	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	public static final Logger logger = LoggerFactory.getLogger(LikesController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 
