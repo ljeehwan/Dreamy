@@ -194,6 +194,7 @@ const userStore={
           .then((response) => {
             localStorage.setItem("access_token", response.data["access-token"])
             localStorage.setItem("isLogin", true)
+            localStorage.setItem("uid",response.data["uid"]);
             axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
             context.dispatch("getUserinfo");
           }).catch((error) => {
@@ -212,7 +213,6 @@ const userStore={
             }).then((response)=>{
                 console.log(response.data);
                 context.commit("setUserinfo",response.data);
-                
             }).catch(()=>{
                 alert("jwt 만료");
             })

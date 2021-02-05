@@ -149,8 +149,8 @@
 </template>
 
 <script>
-import loginComponent from "./Login.vue";
-import LoginUser from "./LoginUser.vue";
+import loginComponent from "./Login/Login.vue";
+import LoginUser from "./Login/LoginUser.vue";
 
 export default {
   data: () => ({

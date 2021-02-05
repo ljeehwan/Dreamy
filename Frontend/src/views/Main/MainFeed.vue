@@ -11,8 +11,8 @@
   </div>
 </template>
 <script>
-import FeedItem from "@/components/FeedItem.vue";
-import Upload from "@/components/uploadItem.vue";
+import FeedItem from "@/components/Item/FeedItem.vue";
+import Upload from "@/components/Item/uploadItem.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import axios from "axios";
 import { mapGetters } from "vuex";
@@ -33,14 +33,17 @@ export default {
     };
   },
 
+// beforeCreate:function(){
+//   this.uid=this.getUserId;
+// },
   methods: {
     infiniteHandler($state) {
-      this.uid=this.getUserId;
+      let id=localStorage.getItem("uid");
       axios({
         method: "get",
         url: `${SERVER_URL}/board/list/${this.limit}`,
         params:{
-          uid:this.uid,
+          uid:id
         }
       })
         .then((res) => {
@@ -72,6 +75,9 @@ export default {
   watch:{
     list(){
       return this.list;
+    },
+    getUserId(){
+      return this.$store.getters["userStore/getUserId"];
     }
   }
 };
