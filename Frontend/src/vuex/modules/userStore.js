@@ -49,6 +49,7 @@ const userStore={
             state.user.name=payload["user"].name;
             state.user.phone=payload["user"].phone;
             state.user.logintype=payload["user"].loginType;
+            localStorage.setItem("uid",payload["user"].uid);
         },
         setSocialUser(state,payload){
             state.user.email=payload.email;
@@ -194,7 +195,6 @@ const userStore={
           .then((response) => {
             localStorage.setItem("access_token", response.data["access-token"])
             localStorage.setItem("isLogin", true)
-            localStorage.setItem("uid",response.data["uid"]);
             axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
             context.dispatch("getUserinfo");
           }).catch((error) => {
@@ -214,7 +214,6 @@ const userStore={
                 console.log(response.data);
                 context.commit("setUserinfo",response.data);
             }).catch(()=>{
-                alert("jwt 만료");
             })
         },
 
