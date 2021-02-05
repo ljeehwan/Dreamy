@@ -30,31 +30,31 @@
 	</insert>
 	
 	<!-- get -->
-	<select id="getList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
+	<select id="getAllListTotalSize" resultType="Integer">
+		SELECT count(*) FROM Board
+	</select>
+	
+	<select id="getCategoryListTotalSize" parameterType="Integer" resultType="Integer">
+		SELECT count(*) FROM Board
+		where category=#{category}
+	</select>
+	
+	<select id="getAllList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
 		select distinct pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
 		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate
 		from User, Board, Follow
-		where Board.uid=User.uid and (Board.uid=#{uid} or Board.uid IN (select follower from Follow where following=#{uid}))
-		order by written_date DESC
+		where Board.uid=User.uid
+		order by Board.uid=#{uid} or Board.uid IN (select follower from Follow where following=#{uid}) DESC, written_date DESC
 		limit #{limit}, 3
 	</select>
 	
-	<select id="getBucketOrChallengeList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
-		select pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
-		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from User, Board
-		where User.uid=Board.uid and board_type=#{boardType}
-		order by written_date DESC
+	<select id="getCategoryList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
+		select distinct pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
+		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate
+		from User, Board, Follow
+		where Board.uid=User.uid and category=#{category}
+		order by Board.uid=#{uid} or Board.uid IN (select follower from Follow where following=#{uid}) DESC, written_date DESC
 		limit #{limit}, 3
-	</select>
-	
-	<select id="getListTotalSize" parameterType="Integer" resultType="Integer">
-		SELECT count(distinct pid) FROM User, Board, Follow
-		where Board.uid=#{uid} or Board.uid IN (select follower from Follow where following=#{uid})
-	</select>
-	
-	<select id="getBucketOrChallengeTotalSize" parameterType="Integer" resultType="Integer">
-		SELECT count(*) FROM Board
-		where board_type=#{boardType}
 	</select>
 	
 	<!-- update -->

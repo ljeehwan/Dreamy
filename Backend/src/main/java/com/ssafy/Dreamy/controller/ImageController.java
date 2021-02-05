@@ -25,7 +25,7 @@ import com.ssafy.Dreamy.model.service.UserServiceImpl;
 //@RequestMapping("/board")
 public class ImageController {
 
-	public static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	public static final Logger logger = LoggerFactory.getLogger(ImageController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	private static final String CloudFrontDomain = "d2dmrocw1z3urn.cloudfront.net";
@@ -71,7 +71,7 @@ public class ImageController {
 
 			System.out.println(imgPath);
 			
-			if(userService.profileUpload(uid, imgPath) < 1) {
+			if(userService.updateProfile(uid, imgPath) < 1) {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.INTERNAL_SERVER_ERROR;
 			}
