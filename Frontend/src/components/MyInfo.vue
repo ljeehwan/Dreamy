@@ -3,12 +3,27 @@
   <v-container class="pa-6">
     <v-row>
       <v-col cols="6" sm="4" md="4" elevation="0">
-        <v-card class="pa-2 user-img rounded-circle" elevation="0" outlined >
-          <v-img :src="profileUrl">
 
-          </v-img>
-        </v-card>
+        <v-dialog
+          v-model="modal"
+          transition="dialog-top-transition"
+          max-width="600"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-card class="pa-2 user-img rounded-circle portrait" elevation="0" 
+            :img="profileUrl" v-bind="attrs"
+            v-on="on">
+            </v-card>
+          </template>
+          
+          <v-card>
+            <UpdateProfileImg @modal="modal = false" />
+          </v-card>
+          
+        </v-dialog>
+
       </v-col>
+
       <v-col cols="12" sm="8" md="8">
         <v-card class="pa-2" height="200" elevation="0">
           <!-- 회원 탈퇴 -->
@@ -135,19 +150,18 @@
 <script>
 import UserInfoUpdate from "./UserInfoUpdate.vue"
 import {router} from "@/routes"
+import UpdateProfileImg from "@/components/mypage/UpdateProfileImg.vue"
 
 export default {
   components: {
     UserInfoUpdate,
+    UpdateProfileImg,
   },
   data: function () {
     return {
+      modal: false,
       sheet: false,
       dialog: false,
-      uid: '',
-      email : '',
-      name : '',
-      // phone: '',
       exitPass: false,
       exitRules: [
         v => v === "탈퇴하겠습니다" || '탈퇴 문구를 정확히 입력하셔야합니다',
@@ -221,7 +235,7 @@ export default {
 }
 </script>
 
-<style>
+<style scope>
 .user-img {
     height: 200px;
     max-height: 200px;
@@ -236,6 +250,5 @@ export default {
 .follower-m {
   margin-right: 100px;
 }
-
 
 </style>
