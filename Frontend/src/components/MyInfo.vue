@@ -4,6 +4,9 @@
     <v-row>
       <v-col cols="6" sm="4" md="4" elevation="0">
         <v-card class="pa-2 user-img rounded-circle" elevation="0" outlined >
+          <v-img :src="profileUrl">
+
+          </v-img>
         </v-card>
       </v-col>
       <v-col cols="12" sm="8" md="8">
@@ -210,6 +213,9 @@ export default {
     },
     phone () {
       return this.$store.getters['userStore/getTargetPhone']
+    },
+    profileUrl () {
+      return this.$store.getters['userStore/getTargetImg']
     },
   },
 }

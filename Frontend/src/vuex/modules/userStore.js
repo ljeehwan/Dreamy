@@ -32,6 +32,7 @@ const userStore={
             logintype:"",
             follower: '',
             following: '',
+            profileUrl: '',
         },
         // 로딩 관련~~~~~~
         loadingState: false,
@@ -111,6 +112,7 @@ const userStore={
             state.targetUser.email = targetInfo.email
             state.targetUser.name = targetInfo.name
             state.targetUser.phone = targetInfo.phone
+            state.targetUser.profileUrl = targetInfo.profileUrl
             console.log(state.targetUser)
         },
         PUT_TARGET_FOLLOWER(state, targetFollower) {
@@ -177,6 +179,9 @@ const userStore={
         },
         getTargetPhone(state) {
             return state.targetUser.phone
+        },
+        getTargetImg (state) {
+            return state.targetUser.profileUrl
         },
     },
 
@@ -349,7 +354,8 @@ const userStore={
                 context.commit('END_LOADING')
                 context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'primary', 'top'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
-                name: res.data.userInfo.name, phone: res.data.userInfo.phone}
+                name: res.data.userInfo.name, phone: res.data.userInfo.phone,
+                profileUrl: res.data.userInfo.profileUrl,}
                 context.commit('PUT_TARGET_INFO', targetInfo)
             })
             .catch(err => {
