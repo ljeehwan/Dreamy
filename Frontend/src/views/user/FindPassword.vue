@@ -11,7 +11,7 @@
                             <v-form v-on:submit="find" action="#" method="post">
 
                                 <v-text-field color="green darken-1" v-model="user.email" label="Email"></v-text-field>
-                                <v-text-field color="green darken-1" v-model="user.phone" label="Phone"></v-text-field>
+                                <v-text-field color="green darken-1" v-model="user.name" label="Name"></v-text-field>
                                 <v-btn class="green darken-1" large="large" dark="dark" @click="find">확인</v-btn>
 
                             </v-form>
@@ -29,7 +29,7 @@
         return{
           user:{
             email:"",
-            phone:"",
+            name:"",
           },
         };
       },
