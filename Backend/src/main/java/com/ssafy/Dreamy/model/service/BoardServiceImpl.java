@@ -68,29 +68,26 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardDto> getList(int uid, int limit) throws Exception {
+	public int getListTotalSize(int category) throws Exception {
+		if (category == 0)
+			return sqlSession.getMapper(BoardMapper.class).getAllListTotalSize();
+		else
+			return sqlSession.getMapper(BoardMapper.class).getCategoryListTotalSize(category);
+	}
+	
+	@Override
+	public List<BoardDto> getList(int uid, int category, int limit) throws Exception {
 		map = new HashMap<>();
-		map.put("uid", uid);
-		map.put("limit", limit);
-		return sqlSession.getMapper(BoardMapper.class).getList(map);
-	}
-	
-	@Override
-	public List<BoardDto> getBucketOrChallengeList(int boardType, int limit) throws Exception {
-		map = new HashMap<>();
-		map.put("boardType", boardType);
-		map.put("limit", limit);
-		return sqlSession.getMapper(BoardMapper.class).getBucketOrChallengeList(map);
-	}
-	
-	@Override
-	public int getListTotalSize(int uid) throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getListTotalSize(uid);
-	}
-	
-	@Override
-	public int getBucketOrChallengeTotalSize(int boardType) throws Exception {
-		return sqlSession.getMapper(BoardMapper.class).getBucketOrChallengeTotalSize(boardType);
+		if (category == 0) {	// 전체 목록
+			map.put("uid", uid);
+			map.put("limit", limit);
+			return sqlSession.getMapper(BoardMapper.class).getAllList(map);
+		} else {				// 카테고리별 목록
+			map.put("uid", uid);
+			map.put("category", category);
+			map.put("limit", limit);
+			return sqlSession.getMapper(BoardMapper.class).getCategoryList(map);
+		}
 	}
 	
 	@Override

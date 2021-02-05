@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.Dreamy.model.mapper.LikesMapper">
+	<insert id="setLikes" parameterType="LikesDto">
+		insert into Likes
+		(uid,pid)
+		values
+		(#{userid},#{postid})
+	</insert>
+
+	<delete id="unLikes" parameterType="LikesDto">
+		delete from Likes where
+		uid=#{userid} and pid=#{postid}
+	</delete>
+
+	<select id="countLikes" parameterType="Integer">
+		select count(*) from Likes
+		where pid=#{pid}
+	</select>
+
+	<select id="checkLikes" parameterType="LikesDto">
+		select count(*) from Likes
+		where uid=#{userid} and pid = #{postid}
+	</select>
+</mapper>

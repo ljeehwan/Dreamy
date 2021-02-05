@@ -20,6 +20,7 @@ const userStore={
             phone: '',
             follower: '',
             following: '',
+            profileUrl: '',
         },
         isMyself: false,
         isLogined:false,
@@ -112,6 +113,7 @@ const userStore={
             state.targetUser.email = targetInfo.email
             state.targetUser.name = targetInfo.name
             state.targetUser.phone = targetInfo.phone
+            state.targetUser.profileUrl = targetInfo.profileUrl
             console.log(state.targetUser)
         },
         PUT_TARGET_FOLLOWER(state, targetFollower) {
@@ -178,6 +180,9 @@ const userStore={
         },
         getTargetPhone(state) {
             return state.targetUser.phone
+        },
+        getTargetImg (state) {
+            return state.targetUser.profileUrl
         },
     },
 
@@ -306,7 +311,7 @@ const userStore={
                     context.commit('END_LOADING')
                     router.push('/')
                     return response                    
-                }, 2000)
+                }, 1000)
             } catch (e) {
                 context.commit('END_LOADING')
                 context.commit('OPEN_MODAL', {title: '회원가입 실패', content: e.response.data.message, option1: '닫기',})
@@ -336,6 +341,26 @@ const userStore={
                 context.commit('OPEN_MODAL', {title: '회원 수정 실패', content: e.response.data.message, option1: '닫기',})
             }
         },
+        // 프로필 사진을 클라우드에 등록 
+        UPDATE_MEMBER_IMG(context, profileUrl) {
+            const myUid = this.state.userStore.user.uid
+            console.log(`${SERVER_URL}/user/imageupload/${myUid}`)
+            //
+            let formData = new FormData();
+            formData.append("files", profileUrl);
+            axios.post(`${SERVER_URL}/user/imageupload/${myUid}`, formData,
+            {headers: {
+                "Content-Type" : "multipart/form-data"
+            }})
+              .then(res => {
+                  console.log(res.data.imgPath)
+              })
+              .catch(err => {
+                  console.log(err)
+                  console.log('클라우드 등록 실패')
+              })
+        },
+
         // 회원 상세 정보 요청 
         GET_MEMBER(context, targetUid) {
             // 일단 요청하는 방식 uid 말고 name으로 바꿔달라고 해서 요청보내서 응답을 받아온다.
@@ -346,9 +371,10 @@ const userStore={
                 console.log(res)
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
-                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'primary', 'top'))
+                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'info', 'bottom'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
-                name: res.data.userInfo.name, phone: res.data.userInfo.phone}
+                name: res.data.userInfo.name, phone: res.data.userInfo.phone,
+                profileUrl: res.data.userInfo.profileUrl,}
                 context.commit('PUT_TARGET_INFO', targetInfo)
             })
             .catch(err => {
@@ -357,10 +383,7 @@ const userStore={
                 context.commit('OPEN_MODAL', {title: '회원 정보 요청 실패', content: err, option1: '닫기',})
             })
         },
-        // id로 상대 uid 지정하기
-        // GET_TARGET_BY_ID(context, targetUid) {
-        //     context.commit('REQUEST_UID', targetUid)
-        // },
+
 
 
         async DELETE_MEMBER(context) {
