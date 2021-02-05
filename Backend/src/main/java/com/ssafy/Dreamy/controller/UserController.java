@@ -275,12 +275,6 @@ public class UserController {
 
 	// 비로그인 시 DB에서 이메일, 핸드폰 번호 확인
 	// 확인 후 임시비밀번호 이메일 전송
-	//@GetMapping("/updatePassword") ///////////////// 파라미터 확인!!
-	
-	/*public ResponseEntity<Map<String, Object>> updatePassword(
-			@RequestParam(value = "email", required = false, defaultValue = "none") String email,
-			@RequestParam(value = "phone", required = false, defaultValue = "none") String phone,
-			HttpServletRequest request) {*/
 	@PostMapping("/updatePassword")	
 	public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody UserDto memberDto){
 		System.out.println("비밀번호 변경");
@@ -332,26 +326,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-
-	// 비로그인 시 비밀번호 변경
-	/*
-	 * @PutMapping("/changePassword") ///////////////// 파라미터 확인!! public
-	 * ResponseEntity<Map<String, Object>> changePassword(@PathVariable("email")
-	 * String email, @PathVariable("password") String password, HttpServletRequest
-	 * request) { Map<String, Object> resultMap = new HashMap<>(); HttpStatus status
-	 * = HttpStatus.ACCEPTED;
-	 * 
-	 * try { System.out.println("--비밀번호 변경 시도");
-	 * 
-	 * userService.updatePassword(email, password);
-	 * 
-	 * resultMap.put("message", SUCCESS); status = HttpStatus.ACCEPTED;
-	 * System.out.println("--비밀번호 변경 성공 "); } catch (Exception e) {
-	 * logger.error("비밀번호 변경 실패 : {}", e); resultMap.put("message", e.getMessage());
-	 * status = HttpStatus.INTERNAL_SERVER_ERROR;
-	 * System.out.println("--비밀번호 변경 실패"); // } return new
-	 * ResponseEntity<Map<String, Object>>(resultMap, status); }
-	 */
 
 	// 유저 정보 받아오기
 	@GetMapping("/user/{uid}")

@@ -60,7 +60,7 @@
 	<select id="certification" parameterType="Map" resultType="Integer">
 		select count(*)
 		from User
-		where email = #{email} and phone = #{phone}
+		where email = #{email} and name = #{name}
 	</select>
 	
 	<update id="updatePassword" parameterType="Map">
