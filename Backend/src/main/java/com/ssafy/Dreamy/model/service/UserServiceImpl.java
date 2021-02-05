@@ -107,10 +107,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int certification(String email, String phone) throws Exception {
+	public int certification(String email, String name) throws Exception {
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
-		map.put("phone", phone);
+		map.put("name", name);
 		int result = sqlSession.getMapper(UserMapper.class).certification(map);
 		
 		return result;
