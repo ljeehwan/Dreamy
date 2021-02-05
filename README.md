@@ -1,6 +1,7 @@
 # Sub Project 3 🤞
 
-[TOC]
+## 발표자료
+https://docs.google.com/presentation/d/1FqIpIvrmZmrvqBDAZ0215wNqT47crzIzNW5IklBbF5I/edit#slide=id.gb9495b43dd_1_719
 
 ## DREAMY  🌙
 
