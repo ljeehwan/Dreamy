@@ -7,4 +7,6 @@ public interface LikesService {
 	public void unLike(int uid, int pid);
 
 	public int countLikes(int pid);
+
+	public boolean checkLikes(int uid, int pid);
 }

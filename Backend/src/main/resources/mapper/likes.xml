@@ -19,4 +19,9 @@
 		select count(*) from Likes
 		where pid=#{pid}
 	</select>
+
+	<select id="checkLikes" parameterType="LikesDto">
+		select count(*) from Likes
+		where uid=#{userid} and pid = #{postid}
+	</select>
 </mapper>

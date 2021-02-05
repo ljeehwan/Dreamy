@@ -12,4 +12,6 @@ public interface LikesMapper {
 
 	public int countLikes(int pid);
 
+	public int checkLikes(LikesDto likesdto);
+
 }

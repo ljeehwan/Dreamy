@@ -99,4 +99,33 @@ public class LikesController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	////////// 좋아요 상태 체크 ///////////
+	@GetMapping("/checklikes")
+	public ResponseEntity<Map<String, Object>> likescheck(@RequestBody LikesDto likesdto) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		int user_id = likesdto.getUserid();
+		int post_id = likesdto.getPostid();
+
+		try {
+			System.out.println("좋아요 상태 체크 함수 시작");
+			if (likesservice.checkLikes(user_id, post_id)) {
+				System.out.println("좋아요 누른적이 있다");
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				System.out.println("좋아요 누른적이 없다");
+				resultMap.put("message", FAIL);
+				status = HttpStatus.ACCEPTED;
+			}
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("좋아요 상태 체크 실패");
+		}
+
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+
 }
