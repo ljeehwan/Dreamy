@@ -5,7 +5,12 @@
 <mapper namespace="com.ssafy.Dreamy.model.mapper.LikesMapper">
 	<insert id="setLikes" parameterType="LikesDto">
 		insert into Likes
-		(uid,pid) values
+		(uid,pid)
+		values
 		(#{userid},#{postid})
 	</insert>
+
+	<delete id="unLikes" parameterType="LikesDto">
+		delete from Likes where uid=#{userid} and pid=#{postid}
+	</delete>
 </mapper>

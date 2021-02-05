@@ -8,4 +8,6 @@ import com.ssafy.Dreamy.model.LikesDto;
 public interface LikesMapper {
 	public void setLikes(LikesDto likesdto);
 
+	public void unLikes(LikesDto likesdto);
+
 }

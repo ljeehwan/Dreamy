@@ -57,5 +57,27 @@ public class LikesController {
 
 	}
 	
+	////////// 좋아요 취소 ///////////
+	@DeleteMapping("/unlikes")
+	public ResponseEntity<Map<String, Object>> unlikes(@RequestBody LikesDto likesdto) throws Exception {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+
+		int user_id = likesdto.getUserid();
+		int post_id = likesdto.getPostid();
+		
+		try {
+			System.out.println("좋아요 취소함수 시작");
+			likesservice.unLike(user_id, post_id);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			System.out.println("좋아요 취소 실패"); //
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 
 }
