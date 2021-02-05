@@ -21,10 +21,10 @@ public interface BoardMapper {
 	public int insertChallenge(Map<String, Object> map) throws SQLException;	// 등록
 	
 	// get
-	public List<BoardDto> getList(Map<String, Object> map) throws SQLException;						// 조회
-	public List<BoardDto> getBucketOrChallengeList(Map<String, Object> map) throws SQLException;	// 조회
-	public int getListTotalSize(@Param("uid") int uid) throws SQLException;								// 리스트 개수
-	public int getBucketOrChallengeTotalSize(@Param("boardType") int boardType) throws SQLException;	// 버킷 or 챌린지 개수
+	public int getAllListTotalSize() throws SQLException;										// 전체 리스트 개수
+	public int getCategoryListTotalSize(@Param("category") int category) throws SQLException;	// 카테고리별 리스트 개수
+	public List<BoardDto> getAllList(Map<String, Object> map) throws SQLException;		// 전체 조회
+	public List<BoardDto> getCategoryList(Map<String, Object> map) throws SQLException;	// 카테고리별 조회
 	
 	// update
 	public int update(Map<String, Object> map) throws SQLException;
