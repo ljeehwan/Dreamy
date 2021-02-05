@@ -1,6 +1,7 @@
 # Sub Project 3 🤞
 
-[TOC]
+## 발표자료
+https://docs.google.com/presentation/d/1FqIpIvrmZmrvqBDAZ0215wNqT47crzIzNW5IklBbF5I/edit#slide=id.gb9495b43dd_1_719
 
 ## DREAMY  🌙
 
@@ -163,7 +164,7 @@
 
 > `Dream it with DREAMY`
 
-- 인구 : 새해 복 많이(백엔드) 받으시고, 만수무강 하시고, 무병 장수 하세요~ 🧡
+- 인구 : 새해 복 많이 받으시고, 만수무강 하시고, 무병 장수 하세요~ 🧡
 - 승엽 : 할건 많아지고, 프론트 개발 속도는 더뎌지고.. 💦
 - 지헌 : 햄버거 먹고싶다 🍔
 - 서완 : 해피 설날~ 
