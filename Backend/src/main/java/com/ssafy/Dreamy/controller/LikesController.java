@@ -42,6 +42,8 @@ public class LikesController {
 
 		int user_id = likesdto.getUserid();
 		int post_id = likesdto.getPostid();
+		System.out.println(user_id);
+		System.out.println(post_id);
 
 		try {
 			System.out.println("좋아요 추가함수 시작");
@@ -65,6 +67,9 @@ public class LikesController {
 
 		int user_id = likesdto.getUserid();
 		int post_id = likesdto.getPostid();
+		
+		System.out.println(user_id);
+		System.out.println(post_id);
 
 		try {
 			System.out.println("좋아요 취소함수 시작");

@@ -1,86 +1,101 @@
 <template>
-  <div class="mb-10">
-    <v-layout row wrap class="ma-10 align-center justify-center">
-    <feed-item v-for="(item,index) in list" v-bind:key="item.pid" v-bind:item="list[index]" />
+  <div class="mt-10">
+    <feed-menu id="menubar" @clickType="changeType"/>
+    <v-layout row wrap class="mb-10 mx-10 align-center justify-center">
+      <feed-item
+        v-for="(item, index) in list"
+        v-bind:key="item.pid"
+        v-bind:item="list[index]"
+      />
     </v-layout>
     <infinite-loading
       @infinite="infiniteHandler"
       spinner="circles"
+      ref="infiniteLoading"
     ></infinite-loading>
     <Upload v-if="getIsLogined" />
   </div>
 </template>
 <script>
-import FeedItem from "@/components/Item/FeedItem.vue";
-import Upload from "@/components/Item/uploadItem.vue";
-import InfiniteLoading from "vue-infinite-loading";
+import FeedMenu from "@/components/Item/FeedMenu.vue";
+import Upload from "@/components/Item/UploadItem.vue";
 import axios from "axios";
+import InfiniteLoading from "vue-infinite-loading";
+import FeedItem from "@/components/Item/FeedItem.vue";
+// import FeedList from "./feedList";
 import { mapGetters } from "vuex";
 
 const SERVER_URL = "http://localhost:8080";
-
 export default {
   components: {
-    FeedItem,
+    // FeedMenu,
     Upload,
+    // FeedList
     InfiniteLoading,
+    FeedItem,
+    FeedMenu,
   },
   data() {
     return {
       list: [],
       limit: 0,
-      uid:0,
+      uid: 0,
+      type: 0,
     };
   },
-
-// beforeCreate:function(){
-//   this.uid=this.getUserId;
-// },
   methods: {
     infiniteHandler($state) {
-      let id=localStorage.getItem("uid");
+      let id = localStorage.getItem("uid");
       axios({
         method: "get",
-        url: `${SERVER_URL}/board/list/${this.limit}`,
-        params:{
-          uid:id
-        }
+        url: `${SERVER_URL}/board/list/${this.type}/${this.limit}`,
+        params: {
+          uid: id,
+        },
       })
         .then((res) => {
           console.log(this.list);
-          setTimeout(()=>{
-            if (res.data.totalSize > this.limit) {
-              const data = res.data.list;
-              for (let key in data) {
+          setTimeout(() => {
+            if (res.data.totalSize>this.limit) {
+            let data=res.data.list
+            for (let key in data) {
                 this.list.push(data[key]);
-              }
-              this.limit += 3;
+            }
+            this.limit+=3;
               $state.loaded();
             } else {
               $state.complete();
             }
-          },1000)
+          }, 500);
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    changeType(val) {
+      this.type = val;
+    },
   },
   computed: {
     ...mapGetters({
       getIsLogined: "userStore/getIsLogined",
-      getUserId:"userStore/getUserId"
     }),
   },
-  watch:{
-    list(){
-      return this.list;
+  watch: {
+    type() {
+      this.list=[];
+      this.limit=0;
+      this.$refs.infiniteLoading.stateChanger.reset();
     },
-    getUserId(){
-      return this.$store.getters["userStore/getUserId"];
-    }
-  }
+  },
 };
 </script>
 
-<style></style>
+<style scoped>
+#menubar{
+  /* position: fixed; */
+  z-index: 1;
+  background-color: white;
+  width:100%;
+}
+</style>
