@@ -2,14 +2,14 @@
   <div id="app">
     <v-app>
       <NavBar/>
-      
-      <div class="body-component">
+    
+   <v-main>
         <router-view></router-view>
         <Modal/>
         <SnackBar/>
         <Spinner/>
-
-      </div>
+   </v-main>
+      <v-footer></v-footer>
     </v-app>
   </div>
 </template>
