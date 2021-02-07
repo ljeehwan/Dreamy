@@ -12,8 +12,7 @@
 
                                 <v-text-field color="green darken-1" v-model="user.email" label="Email"></v-text-field>
                                 <v-text-field color="green darken-1" v-model="user.name" label="Name"></v-text-field>
-                                <!-- <v-btn class="blue darken-1" large="large" dark="dark"
-                                @click="find">확인</v-btn>-->
+                                <!-- <v-btn class="blue darken-1" large="large" dark="dark" @click="find">확인</v-btn>-->
                                 <v-btn
                                     text="text"
                                     color="red"

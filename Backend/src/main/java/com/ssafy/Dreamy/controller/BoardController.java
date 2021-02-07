@@ -94,7 +94,7 @@ public class BoardController {
 	}
 
 	// 게시물 목록 불러오기
-	@GetMapping("/list/{category}")
+	@GetMapping("/list/{category}/{limit}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("category") int category,
 													@RequestParam("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
