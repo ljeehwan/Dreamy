@@ -115,7 +115,6 @@ const userStore={
             state.targetUser.name = targetInfo.name
             state.targetUser.phone = targetInfo.phone
             state.targetUser.profileUrl = targetInfo.profileUrl
-            console.log(state.targetUser)
         },
         PUT_TARGET_FOLLOWER(state, targetFollower) {
             state.targetUser.follower = targetFollower
@@ -290,7 +289,7 @@ const userStore={
                 url: `${SERVER_URL}/account/updatePassword`,
                 data: {
                    email: user.email,
-                   name: user.name,
+                   phone: user.phone,
                 },
            })
           .then((response) => {
@@ -349,7 +348,6 @@ const userStore={
         // 프로필 사진을 클라우드에 등록 
         UPDATE_MEMBER_IMG(context, profileUrl) {
             const myUid = this.state.userStore.user.uid
-            console.log(`${SERVER_URL}/user/imageupload/${myUid}`)
             //
             let formData = new FormData();
             formData.append("files", profileUrl);
@@ -359,7 +357,7 @@ const userStore={
             }})
               .then(res => {
                   console.log(res.data.imgPath)
-                //   context.commit('PUT_TARGET_IMG', res.data.imgPath)
+                  context.commit('PUT_TARGET_IMG', res.data.imgPath)
 
               })
               .catch(err => {
@@ -381,8 +379,7 @@ const userStore={
                 context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'info', 'bottom'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone,
-                profileUrl: res.data.userInfo.profileUrl,}
-                console.log(targetInfo)
+                profileUrl: res.data.userInfo.profileUrl}
                 context.commit('PUT_TARGET_INFO', targetInfo)
             })
             .catch(err => {
