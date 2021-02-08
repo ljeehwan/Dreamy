@@ -1,6 +1,12 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="my-10 mx-2" color="grey lighten-4" width="350" height="400">
+    <v-card
+      class="my-10 mx-2"
+      color="grey lighten-4"
+      width="350"
+      max-height="380"
+      @click="detail_view"
+    >
       <v-img :aspect-ratio="16 / 9" :src="item.imageUrl">
         <v-expand-transition>
           <div
@@ -19,8 +25,8 @@
           <small>{{ item.writtenDate | dateFilter }}</small>
         </span>
       </v-row>
-      <v-card-text>
-        <v-row class="my-2">
+      <v-card-text class="py-0">
+        <v-row class="my-1">
           <v-btn id="name" color="black" text>
             {{ item.name }}
           </v-btn>
@@ -33,31 +39,71 @@
           </span></v-row
         >
         <v-divider></v-divider>
-        <v-row class="mt-3">
-          <v-btn id="detail" color="black" text @click="detail_view">
-            자세히보기
-          </v-btn>
-          <v-spacer></v-spacer>
+        <v-row class="my-2 align-center justify-center">
           <v-btn class="mx-2" small icon="icon" color="red">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
-          <span class="ma-1">10</span>
+          <span class="mx-1">{{ likes }}</span>
           <v-btn class="mx-2" small icon="icon" color="blue">
             <v-icon>mdi-comment-outline</v-icon>
           </v-btn>
-          <span class="ma-1">22</span>
+          <span class="mx-1">22</span>
           <v-btn class="mx-2" small="small" icon="icon" color="green">
             <v-icon>mdi-bookmark</v-icon>
           </v-btn>
-          <span class="ma-1">33</span>
+          <span class="mx-1">33</span>
         </v-row>
-        <v-dialog v-model="detail" max-width="1100">
-          <v-card>
-           
-          </v-card>
+        <v-dialog v-model="detail" width="1000">
+          <v-layout style="background-color:black">
+            <v-row class="align-center justify-center">
+              <v-col class="pr-0">
+                <v-card>
+                  <v-img
+                    :aspect-ratio="16 / 9"
+                    max-height="650"
+                    :src="item.imageUrl"
+                  ></v-img>
+                </v-card>
+              </v-col>
+              <v-col class="pl-0">
+                <v-flex>
+                  <v-card class="pa-5">
+                    <v-row>
+                      <v-card-title>{{ item.title }}</v-card-title>
+                      <v-spacer></v-spacer>
+                      <v-card-title>참가하기</v-card-title>
+                    </v-row>
+                    <v-row>
+                      <v-spacer></v-spacer>
+                      <v-card-subtitle>{{ item.name }}</v-card-subtitle>
+                    </v-row>
+                    <v-card-text>{{ item.content }}</v-card-text>
+                    <v-row class="mr-3">
+                      <v-spacer></v-spacer>
+                      <v-btn small icon="icon" color="red" @click="addLike">
+                        <v-icon>mdi-heart-outline</v-icon>
+                      </v-btn>
+                      <p>{{ likes }}<small>명</small></p>
+                    </v-row>
+                    <v-divider></v-divider>
+                    <v-card-text>
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Nisl tincidunt eget nullam non. Quis hendrerit
+                      dolor magna eget est lorem ipsum dolor sit. Volutpat odio
+                      facilisis mauris sit amet massa. Commodo odio aenean sed
+                      adipiscing diam donec adipiscing tristique. Mi eget mauris
+                      pharetra et. Non tellus orci ac auctor augue. Elit at
+                      imperdiet dui accumsan sit. Ornare arcu dui vivamus arcu
+                      felis. Egestas integer eget aliquet nibh praesent. In hac
+                      habitasse plat
+                    </v-card-text>
+                  </v-card>
+                </v-flex>
+              </v-col>
+            </v-row>
+          </v-layout>
         </v-dialog>
-        <!-- <h3 class="display-1 font-weight-light orange--text mb-2">QW cooking utensils</h3>
-                    <div class="font-weight-light title mb-2"> Our Vintage kitchen utensils delight any chef.<br> Made of bamboo by hand </div> -->
       </v-card-text>
     </v-card>
   </v-hover>
@@ -65,41 +111,71 @@
 
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
+import axios from "axios";
 import "moment/locale/ko";
+const SERVER_URL = "http://localhost:8080";
 
 export default {
   data() {
     return {
       detail: false,
+      likes: 0,
     };
   },
   methods: {
     detail_view() {
       this.detail = true;
     },
+    addLike() {
+
+    },
+    checkLike(){
+
+    },
+    countLike(){
+      axios({
+      method: "get",
+      url: `${SERVER_URL}/likes/countlikes/${this.item.pid}`,
+    })
+      .then((res) => {
+        this.likes = res.data.count;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
   },
   props: {
     item: Object,
+  },
+  created() {
+    this.countLike();
+  },
+
+  computed: {
+    ...mapGetters({
+      getIsLogined: "userStore/getIsLogined",
+    }),
   },
   filters: {
     category: function(value) {
       if (!value) return "";
       else if (value === 1) {
-        return "운동";
+        return "Sport";
       } else if (value === 2) {
-        return "음식";
+        return "Cook";
       } else if (value === 3) {
-        return "여행";
+        return "Travel";
       } else if (value === 4) {
-        return "학습";
+        return "New Skill";
       } else if (value === 5) {
-        return "문화/생활";
+        return "Culture";
       } else {
-        return "기타";
+        return "Etc";
       }
     },
     dateFilter: function(date) {
-      // var form=moment(date).format('lll');// 연월일 오전/오후 시간
       return moment(date).fromNow();
     },
   },
@@ -107,7 +183,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap");
 .v-card--reveal {
   align-items: center;
   bottom: 0;
@@ -121,7 +197,14 @@ export default {
   min-height: 100vh;
 }
 
-#title, #name, #category, #detail{
-font-family:  'Nanum Gothic', sans-serif;
+#title,
+#name,
+#category,
+#detail {
+  font-family: "Nanum Gothic", sans-serif;
+}
+
+.v-dialog::-webkit-scrollbar {
+  display: none;
 }
 </style>

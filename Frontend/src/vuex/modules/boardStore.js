@@ -7,11 +7,13 @@ const boardStore={
     namespaced:true,
 
     state:{
+        
     },
     getters:{
-      
+       
     },
-    mutation:{
+    mutations:{
+        
     },
     actions:{
         insertBoard(context,card){
@@ -29,6 +31,7 @@ const boardStore={
                 console.log(error);
             })
         },
+        
 
     }
 }
