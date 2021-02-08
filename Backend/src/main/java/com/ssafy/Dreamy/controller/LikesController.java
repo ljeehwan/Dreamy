@@ -85,6 +85,7 @@ public class LikesController {
 			throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+		System.out.println(pid);
 		logger.info("좋아요 수 카운트 시작");
 		try {
 			int count = likesservice.countLikes(pid);
