@@ -27,6 +27,7 @@ import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.FollowService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/follow")
 public class FollowController {
