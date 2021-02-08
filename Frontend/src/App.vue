@@ -3,12 +3,11 @@
     <v-app>
       <NavBar/>
     
-   <v-main>
         <router-view></router-view>
         <Modal/>
         <SnackBar/>
         <Spinner/>
-   </v-main>
+
       <v-footer></v-footer>
     </v-app>
   </div>

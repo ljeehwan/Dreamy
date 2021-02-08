@@ -73,9 +73,9 @@
           <div>
             <!-- email -->
             <div class="d-flex justify-start font-weight-bold">
-              <p>
+              <p v-show="isMyself">
                 <v-icon left>mdi-email</v-icon>
-                E-mail : {{targetInfo.email}}
+                <span >E-mail : {{targetInfo.email}}</span>
                   <v-dialog v-model="dialog" width="400" height="800">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn class="pa-0 ma-0" rounded fab d-inline-block v-if="isMyself"
@@ -100,9 +100,9 @@
           </div>
           <!-- 핸드폰 번호 -->
           <div class="d-flex justify-start font-weight-bold">
-            <p>
+            <p v-show="isMyself">
               <v-icon left>mdi-phone</v-icon>
-              핸드폰 번호 : {{phone}}
+              <span >핸드폰 번호 : {{phone}}</span>
             </p>
           </div>
           <div class="d-flex justify-start font-weight-bold">
@@ -116,7 +116,7 @@
                  팔로워 :  {{followers}}
               </span>
 
-              <span v-if="isMyself">
+              <span v-if="!isMyself">
                 <!-- 버튼도 두개를 -->
                 <v-btn @click="requestFollow"
                 v-if="!followStatus">
@@ -141,7 +141,6 @@
       </v-col>
 
     </v-row>
-    <hr class="mt-7">
   </v-container>
 
   </div>
@@ -176,12 +175,10 @@ export default {
       this.exitMsg = ""
     }
     const targetUid = this.$store.getters['userStore/getTargetUid']
-    
-    console.log('updated')
+  
     this.$store.dispatch('userStore/GET_FOLLOWER_NUM')
     this.$store.dispatch('userStore/GET_FOLLOWING_NUM')
     this.$store.dispatch('userStore/GET_MEMBER', targetUid)
-    console.log('updated after img??')
   },
   methods: {
     onExit () {
