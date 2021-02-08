@@ -167,10 +167,38 @@ public class UserServiceImpl implements UserService {
 			
 			//수신자 메일 주소
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
-			// 메일 제목 
-			message.setSubject("[Dreamy] 비밀번호 찾기를 통해 발급된 임시 비밀번호를 보내드립니다."); 
 			// 메일 내용 
-			message.setText("임시비밀번호 : " + newPassword);
+			message.setSubject("[Dreamy] 임시비밀번호 발송."); 
+			// 메일 내용 
+			//message.setText("KTKO Success222!"); 
+
+			message.setContent("<div>\r\n"
+					+ "		<section style=\"padding:50px 0;background-image: url('https://dreamybucket.s3.ap-northeast-2.amazonaws.com/background.png'); background-repeat:no-repeat; background-size: 100% 100%;\">\r\n"
+					+ "			<div style=\"width:540px;margin:0 auto;padding:30px;text-align:center;background-color:#fff;box-shadow:1px 2px 2px rgba(0,0,0,.1);border-radius:3px;\">\r\n"
+					+ "				<h3 style=\"font-style:italic\">DREAMY</h3>\r\n"
+					+ "				<hr>\r\n"
+					+ "				<p style=\"margin:73px 0 50px;text-align:center;color:#757575;font-size:20px;letter-spacing:-1px\">\r\n"
+					+ "				<strong style=\"display:block;margin-bottom:22px;color:#212121;font-size:28px;font-weight:normal\">임시 비밀번호 발급 안내 메일</strong>\r\n"
+					+ "				회원님의 임시 비밀번호는 아래와 같습니다.\r\n"
+					+ "				<br>\r\n"
+					+ "				<br>\r\n"
+					+ "				<strong style=\"color:#0100FF;font-weight:normal\">임시 비밀번호 :" + newPassword + "</strong>\r\n"
+					+ "				<br>\r\n"
+					+ "				<hr>\r\n"
+					+ "				<br>\r\n"
+					+ "				<div style=\"font-size:12px; text-align:left;\">\r\n"
+					+ "					- 임시 비밀번호로 로그인 하신 후, 반드시 비밀번호를 수정해주세요.<br>\r\n"
+					+ "					- 비밀번호는 DREAMY 홈페이지 로그인 > 마이페이지 > 회원정보 수정 에서 수정하실 수 있습니다.<br>\r\n"
+					+ "					- 안전한 서비스 이용을 위해 비밀번호는 정기적으로 변경해주는 것이 좋습니다.<br>\r\n"
+					+ "				</div>\r\n"
+					+ "				<br>		\r\n"
+					+ "				<a href=\"http://localhost:3000\" style=\"display:inline-block; margin-top:30px; padding: 0 30px;border: 1px solid blue; border-radius:5px;color:#6D6CFF; text-decoration:none\">DREAMY 바로가기</a>	\r\n"
+					+ "				</p>\r\n"
+					+ "			</div>\r\n"
+					+ "	\r\n"
+					+ "		</section>\r\n"
+					+ "	</div>"
+								,"text/html;charset=euckr");
 			// send the message 
 			Transport.send(message); 
 			System.out.println("Success Message Send"); 
