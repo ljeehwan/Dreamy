@@ -66,7 +66,7 @@ export default {
             } else {
               $state.complete();
             }
-          }, 500);
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);
