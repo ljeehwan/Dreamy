@@ -5,9 +5,11 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ssafy.Dreamy.model.mapper.ParticipateMapper;
 
+@Service
 public class ParticipateServiceImpl implements ParticipateService {
 
 	@Autowired
