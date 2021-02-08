@@ -31,7 +31,23 @@ const boardStore={
                 console.log(error);
             })
         },
-        
+        addLike(context,data){
+            axios({
+                method:"post",
+                url:`${SERVER_URL}/likes/addlikes`,
+                data:{
+                    userid:data.uid,
+                    postid:data.pid
+                }
+            })
+            .then((res)=>{
+                if(res.data.message==="success")
+                    console.log(data.uid+" "+data.pid+" "+"좋아요 성공")
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        }
 
     }
 }

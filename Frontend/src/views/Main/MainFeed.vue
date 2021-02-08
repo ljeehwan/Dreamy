@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10">
+  <div class="mt-15">
     <feed-menu id="menubar" @clickType="changeType"/>
     <v-layout row wrap class="mb-10 mx-10 align-center justify-center">
       <feed-item

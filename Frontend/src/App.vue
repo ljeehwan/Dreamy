@@ -2,12 +2,11 @@
   <div id="app">
     <v-app>
       <NavBar/>
-    
+ 
         <router-view></router-view>
         <Modal/>
         <SnackBar/>
         <Spinner/>
-
       <v-footer></v-footer>
     </v-app>
   </div>
