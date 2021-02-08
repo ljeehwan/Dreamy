@@ -30,8 +30,8 @@ import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.JwtServiceImpl;
 import com.ssafy.Dreamy.model.service.UserService;
 
-@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
-// @CrossOrigin(origins = { "*" }, maxAge = 6000)
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/account")
 // @RequestMapping("/user")
