@@ -3,13 +3,15 @@ import Vuex from 'vuex'
 
 import userStore from '@/vuex/modules/userStore.js'
 import boardStore from '@/vuex/modules/boardStore.js'
+import myBoardStore from '@/vuex/modules/myBoardStore.js'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     modules: {
         userStore: userStore,
-        boardStore: boardStore
+        boardStore: boardStore,
+        myBoardStore: myBoardStore,
       }
 })
 

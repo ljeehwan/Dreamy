@@ -5,9 +5,8 @@
       color="grey lighten-4"
       width="350"
       max-height="380"
-      @click="detail_view"
     >
-      <v-img :aspect-ratio="16 / 9" :src="item.imageUrl">
+      <v-img :aspect-ratio="16 / 9" :src="item.imageUrl" @click="detail_view" style="cursor:pointer">
         <v-expand-transition>
           <div
             v-if="hover"
@@ -18,7 +17,7 @@
           </div>
         </v-expand-transition>
       </v-img>
-      <v-row class="mt-3 px-5">
+      <v-row class="mt-3 px-5" @click="detail_view" style="cursor:pointer">
         <v-card-title id="title">{{ item.title }}</v-card-title>
         <v-spacer></v-spacer>
         <span>
@@ -26,7 +25,7 @@
         </span>
       </v-row>
       <v-card-text class="py-0">
-        <v-row class="my-1">
+        <v-row class="my-1" @click="detail_view" style="cursor:pointer">
           <v-btn id="name" color="black" text>
             {{ item.name }}
           </v-btn>
@@ -40,8 +39,11 @@
         >
         <v-divider></v-divider>
         <v-row class="my-2 align-center justify-center">
-          <v-btn class="mx-2" small icon="icon" color="red">
+          <v-btn v-if="isLiked" class="mx-2" small icon="icon" color="red">
             <v-icon>mdi-heart</v-icon>
+          </v-btn>
+          <v-btn v-if="!isLiked" class="mx-2" small icon="icon" color="red" @click="addLike">
+            <v-icon>mdi-heart-outline</v-icon>
           </v-btn>
           <span class="mx-1">{{ likes }}</span>
           <v-btn class="mx-2" small icon="icon" color="blue">
@@ -80,7 +82,23 @@
                     <v-card-text>{{ item.content }}</v-card-text>
                     <v-row class="mr-3">
                       <v-spacer></v-spacer>
-                      <v-btn small icon="icon" color="red" @click="addLike">
+                      <v-btn
+                        v-if="isLiked"
+                        class="mx-2"
+                        small
+                        icon="icon"
+                        color="red"
+                      >
+                        <v-icon>mdi-heart</v-icon>
+                      </v-btn>
+                      <v-btn
+                        v-if="!isLiked"
+                        class="mx-2"
+                        small
+                        icon="icon"
+                        color="red"
+                        @click="addLike"
+                      >
                         <v-icon>mdi-heart-outline</v-icon>
                       </v-btn>
                       <p>{{ likes }}<small>명</small></p>
@@ -121,36 +139,59 @@ export default {
     return {
       detail: false,
       likes: 0,
+      isLiked:null
     };
+  },
+  props: {
+    item: Object,
   },
   methods: {
     detail_view() {
       this.detail = true;
     },
     addLike() {
-
+      let data={
+        uid:localStorage.getItem("uid"),
+        pid:this.item.pid,
+      }
+      this.likes+=1;
+      this.isLiked=true;
+      this.$store.dispatch('boardStore/addLike',data);
     },
-    checkLike(){
-
-    },
-    countLike(){
+    checkLike() {
+      let uid=localStorage.getItem("uid");
+      let pid=this.item.pid;
       axios({
-      method: "get",
-      url: `${SERVER_URL}/likes/countlikes/${this.item.pid}`,
-    })
-      .then((res) => {
-        this.likes = res.data.count;
+        method: "get",
+        url: `${SERVER_URL}/likes/checklikes/${uid}/${pid}`,
       })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
-  },
-  props: {
-    item: Object,
+        .then((res) => {
+          if (res.data.message == "success") {
+            this.isLiked=true;
+          } else if (res.data.message == "fail") {
+            this.isLiked=false;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    countLike() {
+      axios({
+        method: "get",
+        url: `${SERVER_URL}/likes/countlikes/${this.item.pid}`,
+      })
+        .then((res) => {
+          this.likes = res.data.count;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   created() {
     this.countLike();
+    this.checkLike();
   },
 
   computed: {
