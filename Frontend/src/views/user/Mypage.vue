@@ -1,21 +1,43 @@
 <template>
-  <div>
+  <v-content>
       <div class="user-info">
         <MyInfo v-bind="{info:targetInfo}" />
-        
-        <!-- 그리드 쓸때 
-        https://vuetifyjs.com/en/components/images/#height
-        Misc grid 참고하기 -->
       </div>
-  </div>
+      <v-card class="overflow-hidden mx-auto
+       my-10" max-width="1155">
+        <MypageMenu />
+      </v-card>
+      <v-layout class="overflow-hidden mx-auto my-10 
+       align-center justify-center"
+       max-width="1155">
+        <MyFeed @myMenu="myMenu"/>
+      </v-layout>
+
+  </v-content>
 </template>
 
 <script>
 import MyInfo from '@/components/MyInfo.vue'
+import MypageMenu from '@/components/mypage/MypageMenu.vue'
+import MyFeed from '@/components/mypage/MyFeed.vue'
+
 export default {
   name: 'Mypage',
   components: {
     MyInfo,
+    MypageMenu,
+    MyFeed,
+  },
+  data: function () {
+    return {
+      menu: '',
+    }
+  },
+  methods: {
+    myMenu: function (menu) {
+      this.menu = menu
+      console.log(this.menu)
+    },
   },
   watch: {
     targetInfo() {
@@ -59,7 +81,7 @@ export default {
 
 <style scoped>
   .user-info {
-    margin-top: 100px;
+    margin-top: 60px;
   }
 
 </style>
