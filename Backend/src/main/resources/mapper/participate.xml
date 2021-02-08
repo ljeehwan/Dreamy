@@ -3,6 +3,24 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.ssafy.Dreamy.model.mapper.ParticipateMapper">
+	<!-- 참가자 추가 -->
+	<insert id="addParticipant" parameterType="Map">
+		insert into Participate
+		(uid,pid,success_date)
+		values
+		(#{uid},#{pid}, #{successDate})
+	</insert>
+	<!-- 
+	<select id="getParticipantList" parameterType="int">
+	</select>
 	
+	<select id="getMyListMine">
+	</select>
 
+	<select id="getMyListMyParticipate">
+	</select>
+	
+	<update id="addSuccessDate">
+	</update>
+	 -->
 </mapper>
