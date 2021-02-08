@@ -60,20 +60,18 @@ public class LikesController {
 	}
 
 	////////// 좋아요 취소 ///////////
-	@DeleteMapping("/unlikes")
-	public ResponseEntity<Map<String, Object>> unlikes(@RequestBody LikesDto likesdto) throws Exception {
+	@DeleteMapping("/unlikes/{uid}/{pid}")
+	public ResponseEntity<Map<String, Object>> unlikes(@PathVariable("uid") int userid,
+			@PathVariable("pid") int postid, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-
-		int user_id = likesdto.getUserid();
-		int post_id = likesdto.getPostid();
 		
-		System.out.println(user_id);
-		System.out.println(post_id);
+		System.out.println(userid);
+		System.out.println(postid);
 
 		try {
 			System.out.println("좋아요 취소함수 시작");
-			likesservice.unLike(user_id, post_id);
+			likesservice.unLike(userid, postid);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
@@ -106,17 +104,15 @@ public class LikesController {
 	}
 
 	////////// 좋아요 상태 체크 ///////////
-	@GetMapping("/checklikes")
-	public ResponseEntity<Map<String, Object>> likescheck(@RequestBody LikesDto likesdto) throws Exception {
+	@GetMapping("/checklikes/{uid}/{pid}")
+	public ResponseEntity<Map<String, Object>> likescheck(@PathVariable("uid") int userid,
+			@PathVariable("pid") int postid, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		int user_id = likesdto.getUserid();
-		int post_id = likesdto.getPostid();
-
 		try {
 			System.out.println("좋아요 상태 체크 함수 시작");
-			if (likesservice.checkLikes(user_id, post_id)) {
+			if (likesservice.checkLikes(userid, postid)) {
 				System.out.println("좋아요 누른적이 있다");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
