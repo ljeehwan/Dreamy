@@ -7,10 +7,8 @@ const boardStore={
     namespaced:true,
 
     state:{
-
     },
     getters:{
-
       
     },
     mutation:{
@@ -31,6 +29,7 @@ const boardStore={
                 console.log(error);
             })
         },
+
     }
 }
 

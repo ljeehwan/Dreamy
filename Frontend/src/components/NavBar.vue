@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="transparent" rounded single-line elevation="0">
+  <v-app-bar color="transparent" app rounded single-line elevation="0">
     <v-img
       alt="Dreamy Logo"
       class="shrink"
@@ -172,4 +172,5 @@ export default {
 input::placeholder {
   font-size: 13px;
 }
+
 </style>
