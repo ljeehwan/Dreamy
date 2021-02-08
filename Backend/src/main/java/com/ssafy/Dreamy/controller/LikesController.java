@@ -23,6 +23,7 @@ import com.ssafy.Dreamy.model.LikesDto;
 import com.ssafy.Dreamy.model.service.LikesService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/likes")
 public class LikesController {

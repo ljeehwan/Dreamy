@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.Dreamy.model.mapper.ReplyMapper">
+	
+	<!-- insert -->
+	<insert id="insertReply" parameterType="Map">
+		insert into Reply (pid, uid, content)
+		values (#{pid}, #{uid}, #{content})
+	</insert>
+	
+	<!-- get -->
+	<select id="getList" parameterType="Integer" resultType="com.ssafy.Dreamy.model.ReplyDto">
+		select rid, pid, uid, content, written_date as writtenDate
+		from Reply
+		where pid=#{pid}
+	</select>
+	
+	<!-- delete -->
+	
+</mapper>

@@ -21,6 +21,7 @@ import com.ssafy.Dreamy.model.service.ImageServiceImpl;
 import com.ssafy.Dreamy.model.service.UserServiceImpl;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 //@RequestMapping("/board")
 public class ImageController {
