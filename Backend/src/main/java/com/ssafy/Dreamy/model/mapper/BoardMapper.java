@@ -13,8 +13,8 @@ import com.ssafy.Dreamy.model.BoardDto;
 public interface BoardMapper {
 	
 	// search
-	public List<BoardDto> searchList(Map<String, Object> map) throws SQLException;	// 검색 리스트
 	public int searchTotalSize(@Param("word") String word) throws SQLException;		// 검색 리스트 개수
+	public List<BoardDto> searchList(Map<String, Object> map) throws SQLException;	// 검색 리스트
 	
 	// insert
 	public int insertBucket(Map<String, Object> map) throws SQLException;		// 등록

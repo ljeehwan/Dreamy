@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.Dreamy.model.BoardDto;
+import com.ssafy.Dreamy.model.ReplyDto;
 import com.ssafy.Dreamy.model.service.BoardService;
 
 
@@ -40,6 +42,33 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	// 검색
+	@GetMapping("/search/{keyword}")
+	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @RequestParam("limit") int limit, HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		try {
+			int totalSize = boardService.searchTotalSize(keyword);
+			List<BoardDto> list = boardService.searchList(keyword, limit);
+			if (totalSize > limit) {	// 리스트가 있을 때
+				resultMap.put("list", list);
+				resultMap.put("totalSize", totalSize);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {					// 리스트가 없을 때
+				resultMap.put("list", null);
+				resultMap.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
+			}
+		} catch (Exception e) {
+			logger.error("목록 불러오기 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	// 게시물 등록
 	@PostMapping("/insert")	// 매핑주소 변경가능
 	public ResponseEntity<Map<String, Object>> create(@RequestBody BoardDto boardDto) {
@@ -143,5 +172,27 @@ public class BoardController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	// 게시물 삭제
+	@DeleteMapping("/delete/{pid}")
+	public ResponseEntity<Map<String, Object>> deleteReply(@PathVariable("pid") int pid, HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		try {
+			int ret = boardService.delete(pid);
+			if (ret > 0) {
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} else {
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+			}
+		} catch (Exception e) {
+			logger.error("댓글 삭제 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	
 }
