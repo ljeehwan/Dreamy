@@ -16,7 +16,6 @@ const myBoardStore={
         
     },
     actions:{
-
     }
 }
 

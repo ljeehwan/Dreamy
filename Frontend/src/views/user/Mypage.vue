@@ -5,13 +5,23 @@
       </div>
       <v-card class="overflow-hidden mx-auto
        my-10" max-width="1155">
-        <MypageMenu />
+        <MypageMenu @myMenu="myMenu" />
       </v-card>
-      <v-layout class="overflow-hidden mx-auto my-10 
+      <v-layout row wrap class="overflow-hidden mx-10 my-10 
        align-center justify-center"
        max-width="1155">
-        <MyFeed @myMenu="myMenu"/>
+
+        <feed-item  v-for="(item, idx) in list"
+        v-bind:key="item.pid"
+        v-bind:item="list[idx]" />
+
       </v-layout>
+
+      <infinite-loading
+        @infinite="infiniteHandler"
+        spinner="circles"
+        ref="infiniteLoading"
+      ></infinite-loading>
 
   </v-content>
 </template>
@@ -19,18 +29,28 @@
 <script>
 import MyInfo from '@/components/MyInfo.vue'
 import MypageMenu from '@/components/mypage/MypageMenu.vue'
-import MyFeed from '@/components/mypage/MyFeed.vue'
+// import MyFeed from '@/components/mypage/MyFeed.vue'
+import FeedItem from "@/components/Item/FeedItem.vue";
+import axios from "axios";
+import InfiniteLoading from "vue-infinite-loading";
+// import { mapGetters } from "vuex";
+
+const SERVER_URL = "http://localhost:8080";
 
 export default {
   name: 'Mypage',
   components: {
     MyInfo,
     MypageMenu,
-    MyFeed,
+    FeedItem,
+    InfiniteLoading,
   },
   data: function () {
     return {
-      menu: '',
+      menu: null,
+      limit: 0,
+      uid: 0,
+      list: [],
     }
   },
   methods: {
@@ -38,10 +58,36 @@ export default {
       this.menu = menu
       console.log(this.menu)
     },
+    // 마이피드 불러오기
+    infiniteHandler($state) {
+      this.uid = this.$store.getters["userStore/getTargetUid"]
+      axios.get(`${SERVER_URL}/mylist/${this.menu}/${this.uid}/${this.limit}`,
+      {uid:`${this.uid}`})
+        .then(res => {
+          console.log(this.list)
+          setTimeout(()=> {
+            if(res.data.boardlist.length > this.limit) {
+              let data=res.data.boardlist
+              for (let key in data) {
+                this.list.push(data[key])
+              }
+              this.limit += 3
+                $state.loaded()
+            } else {
+              $state.complete()
+            }
+          }, 1000)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
   },
   watch: {
-    targetInfo() {
-      return this.$store.getters["userStore/getTargetInfo"];
+    menu() {
+      this.list=[];
+      this.limit=0;
+      this.$refs.infiniteLoading.stateChanger.reset();
     },
   },
   computed: {
@@ -74,6 +120,7 @@ export default {
     
     // follow 상태 확인 api 수정중..
     this.$store.dispatch('userStore/CHECK_FOLLOW')
+
   },
 
 }
