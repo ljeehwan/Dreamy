@@ -17,7 +17,6 @@ public class ParticipateServiceImpl implements ParticipateService {
 	
 	@Override
 	public int addParticipant(int uid, int pid, int successDate) throws Exception {
-		// TODO Auto-generated method stub
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("uid", uid);
@@ -25,6 +24,17 @@ public class ParticipateServiceImpl implements ParticipateService {
 		map.put("successDate", successDate);
 		
 		return sqlSession.getMapper(ParticipateMapper.class).addParticipant(map);
+	}
+
+	@Override
+	public int deleteParticipant(int uid, int pid) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("uid", uid);
+		map.put("pid", pid);
+		
+		return sqlSession.getMapper(ParticipateMapper.class).deleteParticipant(map);
+		
 	}
 
 }
