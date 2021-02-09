@@ -35,15 +35,17 @@ public class MylistController {
 	MylistService mylistservice;
 	
 	//////////마이리스트 내가 작성한 게시물 조회///////////
-	@GetMapping("/getMyBoardList/{uid}")
-	public ResponseEntity<Map<String, Object>> getMyBoardList(@PathVariable("uid") int uid, HttpServletRequest request) {
+	@GetMapping("/getMyBoardList/{uid}/{limit}")
+	public ResponseEntity<Map<String, Object>> getMyBoardList(@PathVariable("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		System.out.println("-- 내가 작성한 게시물 조회 uid : " + uid);
+		System.out.println("-- 내가 작성한 게시물 조회");
+		System.out.println("-- uid : " + uid);
+		System.out.println("-- limit : " + limit);
 		
 		try {
-			List<BoardDto> list = mylistservice.getMyBoardList(uid);
+			List<BoardDto> list = mylistservice.getMyBoardList(uid, limit);
 			
 			resultMap.put("boardlist", list);
 			resultMap.put("message", SUCCESS);
@@ -64,15 +66,17 @@ public class MylistController {
 	}
 
 	//////////마이리스트 내가 참여한 게시물 조회///////////
-	@GetMapping("/getMyParticipateList/{uid}")
-	public ResponseEntity<Map<String, Object>> getMyParticipateList(@PathVariable("uid") int uid, HttpServletRequest request) {
+	@GetMapping("/getMyParticipateList/{uid}/{limit}")
+	public ResponseEntity<Map<String, Object>> getMyParticipateList(@PathVariable("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 
-		System.out.println("-- 내 참여 게시물 조회 uid : " + uid);
+		System.out.println("-- 내 참여 게시물 조회");
+		System.out.println("-- uid : " + uid);
+		System.out.println("-- limit : " + limit);
 		
 		try {
-			List<BoardDto> list = mylistservice.getMyParticipateList(uid);
+			List<BoardDto> list = mylistservice.getMyParticipateList(uid, limit);
 			
 			resultMap.put("boardlist", list);
 			resultMap.put("message", SUCCESS);
