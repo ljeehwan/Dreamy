@@ -17,4 +17,6 @@ public class LikesDto {
 	public void setPostid(int postid) {
 		this.postid = postid;
 	}
+	
+	
 }

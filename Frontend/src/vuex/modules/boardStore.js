@@ -47,7 +47,25 @@ const boardStore={
             .catch((error)=>{
                 console.log(error);
             })
-        }
+        },
+        deleteLike(context,data){
+            axios({
+                method:"delete",
+                url:`${SERVER_URL}/likes/unlikes/${data.uid}/${data.pid}`,
+            }).then((res)=>{
+                if(res.data.message==="success")
+                    console.log(data.uid+" "+data.pid+" "+"좋아요 취소")
+            }).catch((error)=>{
+                console.log(error);
+            })
+        },
+
+        // deleteBoard(context,data){
+        //     axios({
+        //         method:"delete",
+
+        //     })
+        // }
 
     }
 }

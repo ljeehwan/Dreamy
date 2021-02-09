@@ -1,4 +1,5 @@
 <template>
+<div>
   <v-hover v-slot:default="{ hover }">
     <v-card
       class="my-10 mx-2"
@@ -24,7 +25,7 @@
           <small>{{ item.writtenDate | dateFilter }}</small>
         </span>
       </v-row>
-      <v-card-text class="py-0">
+      <v-card-text class="py-1">
         <v-row class="my-1" @click="detail_view" style="cursor:pointer">
           <v-btn id="name" color="black" text>
             {{ item.name }}
@@ -39,7 +40,7 @@
         >
         <v-divider></v-divider>
         <v-row class="my-2 align-center justify-center">
-          <v-btn v-if="isLiked" class="mx-2" small icon="icon" color="red">
+          <v-btn v-if="isLiked" class="mx-2" small icon="icon" color="red"  @click="deleteLike">
             <v-icon>mdi-heart</v-icon>
           </v-btn>
           <v-btn v-if="!isLiked" class="mx-2" small icon="icon" color="red" @click="addLike">
@@ -55,6 +56,9 @@
           </v-btn>
           <span class="mx-1">33</span>
         </v-row>
+         </v-card-text>
+    </v-card>
+  </v-hover>
         <v-dialog v-model="detail" width="1000">
           <v-layout style="background-color:black">
             <v-row class="align-center justify-center">
@@ -73,11 +77,13 @@
                     <v-row>
                       <v-card-title>{{ item.title }}</v-card-title>
                       <v-spacer></v-spacer>
-                      <v-card-title>참가하기</v-card-title>
+                      <v-btn v-if="data.uid==item.uid" class="my-4" icon="icon" @click="delflag=true">
+                          <v-icon>mdi-trash-can-outline</v-icon>
+                      </v-btn>
                     </v-row>
                     <v-row>
                       <v-spacer></v-spacer>
-                      <v-card-subtitle>{{ item.name }}</v-card-subtitle>
+                      <v-card-subtitle style="color:black">{{ item.name }}</v-card-subtitle>
                     </v-row>
                     <v-card-text>{{ item.content }}</v-card-text>
                     <v-row class="mr-3">
@@ -88,6 +94,7 @@
                         small
                         icon="icon"
                         color="red"
+                        @click="deleteLike"
                       >
                         <v-icon>mdi-heart</v-icon>
                       </v-btn>
@@ -122,14 +129,33 @@
             </v-row>
           </v-layout>
         </v-dialog>
-      </v-card-text>
-    </v-card>
-  </v-hover>
+        <v-dialog v-model="delflag" max-width="300">
+          <v-card class="py-5">
+            <v-card-subtitle style="color:black">
+                        정말 해당 게시물을 삭제하겠습니까?
+            </v-card-subtitle>
+            <v-row justify="center">
+            <v-btn
+            text
+            @click="delflag = false"
+          >
+            취소
+          </v-btn>
+          <v-btn
+            color="error"
+            text
+            @click="deleteBoard"
+          >
+            삭제
+          </v-btn>
+            </v-row>
+          </v-card>
+        </v-dialog>
+</div>
 </template>
 
 <script>
 import moment from "moment";
-import { mapGetters } from "vuex";
 import axios from "axios";
 import "moment/locale/ko";
 const SERVER_URL = "http://localhost:8080";
@@ -139,7 +165,12 @@ export default {
     return {
       detail: false,
       likes: 0,
-      isLiked:null
+      isLiked:null,
+      delflag:false,
+      data:{
+        uid:localStorage.getItem("uid"),
+        pid:this.item.pid,
+      }
     };
   },
   props: {
@@ -150,13 +181,14 @@ export default {
       this.detail = true;
     },
     addLike() {
-      let data={
-        uid:localStorage.getItem("uid"),
-        pid:this.item.pid,
-      }
+      this.$store.dispatch('boardStore/addLike',this.data);
       this.likes+=1;
       this.isLiked=true;
-      this.$store.dispatch('boardStore/addLike',data);
+    },
+    deleteLike(){
+      this.$store.dispatch('boardStore/deleteLike',this.data);
+      this.likes-=1;
+      this.isLiked=false;
     },
     checkLike() {
       let uid=localStorage.getItem("uid");
@@ -188,17 +220,15 @@ export default {
           console.log(err);
         });
     },
+    deleteBoard(){
+
+    }
   },
   created() {
     this.countLike();
     this.checkLike();
   },
 
-  computed: {
-    ...mapGetters({
-      getIsLogined: "userStore/getIsLogined",
-    }),
-  },
   filters: {
     category: function(value) {
       if (!value) return "";
@@ -211,7 +241,7 @@ export default {
       } else if (value === 4) {
         return "New Skill";
       } else if (value === 5) {
-        return "Culture";
+        return "Life Style";
       } else {
         return "Etc";
       }
