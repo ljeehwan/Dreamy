@@ -32,7 +32,7 @@ public class MylistController {
 	private static final String FAIL = "fail";
 
 	@Autowired
-	MylistService mylistservice;
+	private MylistService mylistservice;
 	
 	//////////마이리스트 내가 작성한 게시물 조회///////////
 	@GetMapping("/getMyBoardList/{uid}/{limit}")

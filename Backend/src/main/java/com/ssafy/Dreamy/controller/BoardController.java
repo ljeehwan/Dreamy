@@ -1,6 +1,5 @@
 package com.ssafy.Dreamy.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.Dreamy.model.BoardDto;
-import com.ssafy.Dreamy.model.ReplyDto;
 import com.ssafy.Dreamy.model.service.BoardService;
+import com.ssafy.Dreamy.model.service.ParticipateService;
 
 
 @CrossOrigin(origins = { "http://localhost:3000" })
@@ -42,6 +41,9 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 
+	@Autowired
+	private ParticipateService participateService;
+	
 	// 검색
 	@GetMapping("/search/{keyword}")
 	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @RequestParam("limit") int limit, HttpServletRequest request) {
@@ -109,8 +111,18 @@ public class BoardController {
 			
 			// insert 성공하면 AI값을 return
 			if (ret > 0) {	// 등록 성공
-				resultMap.put("message", SUCCESS);
-				status = HttpStatus.CREATED;
+				if(participateService.addParticipant(boardDto.getUid(), boardDto.getPid(), 0) > 0) { // 참가 성공
+					resultMap.put("message", SUCCESS);
+					status = HttpStatus.CREATED;
+					
+					System.out.println("-- 참가 성공");
+				}
+				else {		// 참가 실패
+					resultMap.put("message", FAIL);
+					status = HttpStatus.EXPECTATION_FAILED;
+					
+					System.out.println("-- 참가 실패");
+				}
 			} else {		// 등록 실패
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
