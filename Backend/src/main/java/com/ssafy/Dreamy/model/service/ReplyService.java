@@ -8,5 +8,6 @@ public interface ReplyService {
 
 	public int insert(ReplyDto replyDto) throws Exception;
 	public List<ReplyDto> getList(int pid) throws Exception;
+	public int delete(int rid) throws Exception;
 	
 }

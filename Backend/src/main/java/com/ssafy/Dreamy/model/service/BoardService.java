@@ -7,8 +7,8 @@ import com.ssafy.Dreamy.model.BoardDto;
 public interface BoardService {
 
 	// search
-	public List<BoardDto> searchList(String word, int limit) throws Exception;	// 검색 리스트
 	public int searchTotalSize(String word) throws Exception;					// 검색 리스트 개수
+	public List<BoardDto> searchList(String word, int limit) throws Exception;	// 검색 리스트 조회
 	
 	// insert
 	public int insertBucket(BoardDto boardDto) throws Exception;	// 등록
