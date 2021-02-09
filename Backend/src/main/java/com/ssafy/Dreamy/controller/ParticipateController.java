@@ -32,7 +32,7 @@ public class ParticipateController {
 	private static final String FAIL = "fail";
 	
 	@Autowired
-	ParticipateService participateService;
+	private ParticipateService participateService;
 	
 	//////////게시물 참가 ///////////
 	@PostMapping("/addParticipant")

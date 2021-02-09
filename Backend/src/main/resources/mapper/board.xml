@@ -18,16 +18,19 @@
 		limit #{limit}, 3
 	</select>
 	
-	<!-- insert -->
 	<insert id="insertBucket" parameterType="Map">
 		insert into Board (uid, board_type, title, content, start_date, end_date, category, image_url)
 		values (#{uid}, #{boardType}, #{title}, #{content}, current_date(), #{endDate}, #{category}, #{imageUrl})
-	</insert>
+	</insert> 
 	
 	<insert id="insertChallenge" parameterType="Map">
 		insert into Board (uid, board_type, title, content, start_date, end_date, category, image_url, total_date)
 		values (#{uid}, #{boardType}, #{title}, #{content}, #{startDate}, #{endDate}, #{category}, #{imageUrl}, #{totalDate})
 	</insert>
+ 	
+ 	<select id="selectLast" resultType="Integer">
+		select last_insert_id()
+	</select>
 	
 	<!-- get -->
 	<select id="getAllListTotalSize" resultType="Integer">
