@@ -17,19 +17,19 @@ public class BoardServiceImpl implements BoardService {
 	@Autowired
 	private SqlSession sqlSession;
 	private Map<String, Object> map;
-
-	@Override
-	public List<BoardDto> searchList(String word, int limit) throws Exception {
-		map = new HashMap<>();
-		map.put("word", "%" + word + "%");
-		map.put("limit", limit);
-		return sqlSession.getMapper(BoardMapper.class).searchList(map);
-	}
 	
 	@Override
 	public int searchTotalSize(String word) throws Exception {
 		String searchWord = "%" + word + "%";
 		return sqlSession.getMapper(BoardMapper.class).searchTotalSize(searchWord);
+	}
+
+	@Override
+	public List<BoardDto> searchList(String word, int limit) throws Exception {
+		map = new HashMap<>();
+		map.put("searchWord", "%" + word + "%");
+		map.put("limit", limit);
+		return sqlSession.getMapper(BoardMapper.class).searchList(map);
 	}
 	
 	@Override

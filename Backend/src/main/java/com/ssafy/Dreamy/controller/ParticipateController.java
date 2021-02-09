@@ -62,16 +62,5 @@ public class ParticipateController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//////////마이리스트 내가 작성한 게시물 조회///////////
-	@GetMapping("/getMyListMine")
-	public ResponseEntity<Map<String, Object>> getMyListMine(@RequestParam("uid")int uid, HttpServletRequest request){
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		
-		
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
 	
-	//////////마이리스트 내가 참여한 게시물 조회///////////
 }

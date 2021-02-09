@@ -31,5 +31,10 @@ public class ReplyServiceImpl implements ReplyService {
 	public List<ReplyDto> getList(int pid) throws Exception {
 		return sqlSession.getMapper(ReplyMapper.class).getList(pid);
 	}
+
+	@Override
+	public int delete(int rid) throws Exception {
+		return sqlSession.getMapper(ReplyMapper.class).deleteReply(rid);
+	}
 	
 }

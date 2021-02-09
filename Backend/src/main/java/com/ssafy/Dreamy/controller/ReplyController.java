@@ -84,15 +84,14 @@ public class ReplyController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	/*
 	// 댓글 삭제
-	@DeleteMapping("/delete")
-	public ResponseEntity<Map<String, Object>> deleteReply(@RequestParam("pid") int pid, @RequestParam("uid") int uid, HttpServletRequest request) {
+	@DeleteMapping("/delete/{rid}")
+	public ResponseEntity<Map<String, Object>> deleteReply(@PathVariable("rid") int rid, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
 		try {
-			int ret = replyService.delete(pid, uid);
+			int ret = replyService.delete(rid);
 			if (ret > 0) {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
@@ -107,5 +106,4 @@ public class ReplyController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	*/
 }

@@ -18,5 +18,8 @@
 	</select>
 	
 	<!-- delete -->
+	<delete id="deleteReply" parameterType="Integer">
+		delete from Reply where rid=#{rid}
+	</delete>
 	
 </mapper>
