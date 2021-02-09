@@ -40,7 +40,7 @@ export default {
       list: [],
       limit: 0,
       uid: 0,
-      type: 0,
+      type:null,
     };
   },
   methods: {
