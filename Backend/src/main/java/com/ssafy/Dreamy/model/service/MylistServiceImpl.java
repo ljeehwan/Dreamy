@@ -38,4 +38,16 @@ public class MylistServiceImpl implements MylistService {
 		return sqlSession.getMapper(MylistMapper.class).getMyParticipateList(map);
 	}
 
+	@Override
+	public int getMyBoardTotal(int uid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(MylistMapper.class).getMyBoardTotal(uid);
+	}
+
+	@Override
+	public int getMyParticipateTotal(int uid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.getMapper(MylistMapper.class).getMyParticipateTotal(uid);
+	}
+
 }
