@@ -9,16 +9,30 @@
 		from Board as b join User as u
 		ON b.uid = u.uid
 		where b.uid = #{uid}
+		order by b.written_date DESC
 		limit #{limit}, 3;
 		
 	</select>
 	
-	<select id="getMyParticipateList" parameterType="Integer" resultType="com.ssafy.Dreamy.model.BoardDto">
+	<select id="getMyParticipateList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
 		select b.pid as pid, b.uid as uid, u.name as name, b.board_type as boardType, b.title, b.content, b.written_date as writtenDate, b.start_date as startDate, b.end_date as endDate, b.category, b.image_url as imageUrl, b.total_date as totalDate
 		from Board as b join User as u
 		ON b.uid = u.uid
-		where b.pid IN (select pid from Participate where uid=1)
+		where b.pid IN (select pid from Participate where uid=#{uid})
+		order by b.written_date DESC
 		limit #{limit}, 3;
 	</select>
 
+	<select id="getMyBoardTotal" parameterType="Integer" resultType="Integer">
+		select count(*) 
+		from Board 
+		where uid=#{uid}
+	</select>
+	
+	<select id="getMyParticipateTotal" parameterType="Integer" resultType="Integer">
+		select count(*)
+		from Board as b join User as u
+		ON b.uid = u.uid
+		where b.pid IN (select pid from Participate where uid=#{uid})
+	</select>
 </mapper>
