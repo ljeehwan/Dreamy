@@ -16,9 +16,11 @@ public interface BoardMapper {
 	public int searchTotalSize(@Param("word") String word) throws SQLException;		// 검색 리스트 개수
 	public List<BoardDto> searchList(Map<String, Object> map) throws SQLException;	// 검색 리스트
 	
+	
 	// insert
 	public int insertBucket(Map<String, Object> map) throws SQLException;		// 등록
 	public int insertChallenge(Map<String, Object> map) throws SQLException;	// 등록
+	public int selectLast() throws SQLException;								// 최근 insert key 값 
 	
 	// get
 	public int getAllListTotalSize() throws SQLException;										// 전체 리스트 개수

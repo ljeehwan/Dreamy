@@ -42,7 +42,15 @@ public class BoardServiceImpl implements BoardService {
 		map.put("endDate", boardDto.getEndDate());
 		map.put("category", boardDto.getCategory());
 		map.put("imageUrl", boardDto.getImageUrl());
-		return sqlSession.getMapper(BoardMapper.class).insertBucket(map);
+		
+		int result = sqlSession.getMapper(BoardMapper.class).insertBucket(map);
+				
+		int lastPid = sqlSession.getMapper(BoardMapper.class).selectLast();
+		
+		System.out.println("-- postid : " + lastPid);
+		boardDto.setPid(lastPid);
+		
+		return result;
 	}
 	
 	@Override
@@ -55,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
         // 이제 24*60*60*1000(각 시간값에 따른 차이점) 을 나눠주면 일수가 나온다.
 		long totalDate = tempDate / (24 * 60 * 60 * 1000);
 		
-		map.put("uid", boardDto.getUid());
+		map.put("uid", boardDto.getUid());				
 		map.put("boardType", 2);
 		map.put("title", boardDto.getTitle());
 		map.put("content", boardDto.getContent());
@@ -64,7 +72,15 @@ public class BoardServiceImpl implements BoardService {
 		map.put("category", boardDto.getCategory());
 		map.put("imageUrl", boardDto.getImageUrl());
 		map.put("totalDate", totalDate);
-		return sqlSession.getMapper(BoardMapper.class).insertChallenge(map);
+		
+		int result = sqlSession.getMapper(BoardMapper.class).insertChallenge(map);
+		
+		int lastPid = sqlSession.getMapper(BoardMapper.class).selectLast();
+		
+		System.out.println("-- postid : " + lastPid);
+		boardDto.setPid(lastPid);
+		
+		return result;
 	}
 	
 	@Override
