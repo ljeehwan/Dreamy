@@ -13,12 +13,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.Dreamy.model.service.ImageServiceImpl;
-import com.ssafy.Dreamy.model.service.UserServiceImpl;
+import com.ssafy.Dreamy.model.service.ImageService;
+import com.ssafy.Dreamy.model.service.UserService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
 //@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
@@ -32,10 +31,10 @@ public class ImageController {
 	private static final String CloudFrontDomain = "d2dmrocw1z3urn.cloudfront.net";
 	
 	@Autowired
-	private ImageServiceImpl imageService;
+	private ImageService imageService;
 
 	@Autowired
-	private UserServiceImpl userService;
+	private UserService userService;
 	
 	@PostMapping("/board/imageupload")
 	public ResponseEntity<Map<String, Object>> boardImageUpload(@RequestBody MultipartFile files) throws IOException {

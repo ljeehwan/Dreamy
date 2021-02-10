@@ -10,14 +10,14 @@
 		values
 		(#{uid},#{pid}, #{successDate})
 	</insert>
+	
+	<delete id="deleteParticipant" parameterType="Map">
+		delete from Participate
+		where uid=#{uid} and pid=#{pid}
+	</delete>
+	
 	<!-- 
 	<select id="getParticipantList" parameterType="int">
-	</select>
-	
-	<select id="getMyListMine">
-	</select>
-
-	<select id="getMyListMyParticipate">
 	</select>
 	
 	<update id="addSuccessDate">
