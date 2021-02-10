@@ -7,14 +7,6 @@
       src="http://placehold.it/50"
       transition="scale-transition"
     />
-
-    <!-- <v-img
-          alt="Dreamy Name"
-          class="shrink"
-          contain
-         src="http://placehold.it/150x50"
-        /> -->
-
     <div class="logo" transition="scale-transition">
       <div class="header-container" transition="scale-transition">
         <div class="content" transition="scale-transition">
@@ -25,12 +17,24 @@
     </div>
 
     <v-spacer> </v-spacer>
-    <v-btn icon class="mx-2 my-auto">
+
+
+      <v-flex shrink>
+        <v-expand-x-transition>
+          <div v-show="expand" class="search-box">
+          <input type="text" class="search-txt" name="" placeholder="Type to search">
+          </div>
+        </v-expand-x-transition>
+      </v-flex>
+
+   <v-btn id="search-icon" @click="expand=!expand" icon class="mx-2 my-auto">
       <v-icon size="26">
-        <!--프로필 이미지 가져오기-->
         mdi-magnify
       </v-icon>
     </v-btn>
+
+
+
 
     <hr
       role="separator"
@@ -155,6 +159,7 @@ import LoginUser from "./Login/LoginUser.vue";
 export default {
   data: () => ({
     searchWord: "",
+    expand:false,
   }),
   components: {
     loginComponent,
@@ -172,5 +177,29 @@ export default {
 input::placeholder {
   font-size: 13px;
 }
-
+.search-box{
+  padding: 10px;
+  position: relative;
+  transform: translate(0%,15%);
+  height: 30px;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  border-radius: 30px;
+  transition: 0.4s;
+  width:282px;
+}
+.search-txt{
+  position: relative;
+  bottom: 10px;
+  display: flex;
+  border:none;
+  background: none;
+  outline: none;
+  float: left;
+  font-size: 1rem;
+  line-height: 30px;
+  transition: .4s;
+  width: 240px;
+  padding: 0 6px;
+}
 </style>
