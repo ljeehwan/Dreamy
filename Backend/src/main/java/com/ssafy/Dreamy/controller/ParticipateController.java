@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -97,6 +98,36 @@ public class ParticipateController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	//////////게시물 참가 여부 조회///////////
+	@GetMapping("/checkParticipant/{uid}/{pid}")
+	public ResponseEntity<Map<String, Object>> checkParticipant(@PathVariable("uid") int uid, @PathVariable("pid") int pid, HttpServletRequest request){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		System.out.println("-- 참가 여부 조회");
+		System.out.println("-- uid : " + uid);
+		System.out.println("-- pid : " + pid);
+		
+		try {
+			if(participateService.checkParticipant(uid, pid) < 1) { // 참가 여부 X
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+			}
+			else { // 참가 여부 O
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			}
+		}
+		catch(Exception e) {
+			logger.error("게시물 참가 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
