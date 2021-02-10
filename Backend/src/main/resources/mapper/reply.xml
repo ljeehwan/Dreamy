@@ -11,6 +11,10 @@
 	</insert>
 	
 	<!-- get -->
+	<select id="countList" parameterType="Integer" resultType="Integer">
+		select count(*) from Reply where pid=#{pid};
+	</select>
+	
 	<select id="getList" parameterType="Integer" resultType="com.ssafy.Dreamy.model.ReplyDto">
 		select rid, pid, Reply.uid, name, content, written_date as writtenDate
 		from Reply, User
