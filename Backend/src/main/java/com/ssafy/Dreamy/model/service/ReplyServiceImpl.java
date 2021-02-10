@@ -28,6 +28,11 @@ public class ReplyServiceImpl implements ReplyService {
 	}
 
 	@Override
+	public int countList(int pid) throws Exception {
+		return sqlSession.getMapper(ReplyMapper.class).countList(pid);
+	}
+
+	@Override
 	public List<ReplyDto> getList(int pid) throws Exception {
 		return sqlSession.getMapper(ReplyMapper.class).getList(pid);
 	}

@@ -47,7 +47,10 @@ public class MylistController {
 		try {
 			List<BoardDto> list = mylistservice.getMyBoardList(uid, limit);
 			
+			int totalSize = mylistservice.getMyBoardTotal(uid);
+			
 			resultMap.put("boardlist", list);
+			resultMap.put("totalSize", totalSize);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			
@@ -78,7 +81,10 @@ public class MylistController {
 		try {
 			List<BoardDto> list = mylistservice.getMyParticipateList(uid, limit);
 			
+			int totalSize = mylistservice.getMyParticipateTotal(uid);
+			
 			resultMap.put("boardlist", list);
+			resultMap.put("totalSize", totalSize);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			
