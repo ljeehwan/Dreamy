@@ -35,7 +35,7 @@ public class ReplyController {
 
 	@Autowired
 	private ReplyService replyService;
-
+	
 	// 댓글 작성
 	@PostMapping("/insert")
 	public ResponseEntity<Map<String, Object>> insertReply(@RequestBody ReplyDto replyDto) {
@@ -59,6 +59,25 @@ public class ReplyController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
+	// 댓글 개수
+	@GetMapping("/countlist/{pid}")
+	public ResponseEntity<Map<String, Object>> countList(@PathVariable("pid") int pid, HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		try {
+			int count = replyService.countList(pid);
+			resultMap.put("count", count);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		} catch (Exception e) {
+			logger.error("댓글 개수 불러오기 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
 	// 댓글 목록
 	@GetMapping("/list/{pid}")
 	public ResponseEntity<Map<String, Object>> getList(@PathVariable("pid") int pid, HttpServletRequest request) {

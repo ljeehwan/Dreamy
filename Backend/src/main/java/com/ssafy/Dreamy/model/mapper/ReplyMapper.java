@@ -13,6 +13,7 @@ import com.ssafy.Dreamy.model.ReplyDto;
 public interface ReplyMapper {
 	
 	public int insertReply(Map<String, Object> map) throws SQLException;
+	public int countList(@Param("pid") int pid) throws SQLException;
 	public List<ReplyDto> getList(@Param("pid") int pid) throws SQLException;
 	public int deleteReply(@Param("rid") int rid) throws SQLException;
 	
