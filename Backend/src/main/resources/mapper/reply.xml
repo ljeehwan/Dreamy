@@ -12,9 +12,10 @@
 	
 	<!-- get -->
 	<select id="getList" parameterType="Integer" resultType="com.ssafy.Dreamy.model.ReplyDto">
-		select rid, pid, uid, content, written_date as writtenDate
-		from Reply
-		where pid=#{pid}
+		select rid, pid, Reply.uid, name, content, written_date as writtenDate
+		from Reply, User
+		where Reply.uid=User.uid and pid=#{pid}
+		order by written_date DESC
 	</select>
 	
 	<!-- delete -->
