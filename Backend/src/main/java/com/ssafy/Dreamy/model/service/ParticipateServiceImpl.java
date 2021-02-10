@@ -37,4 +37,14 @@ public class ParticipateServiceImpl implements ParticipateService {
 		
 	}
 
+	@Override
+	public int checkParticipant(int uid, int pid) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("uid", uid);
+		map.put("pid", pid);
+		
+		return sqlSession.getMapper(ParticipateMapper.class).checkParticipant(map);
+	}
+
 }

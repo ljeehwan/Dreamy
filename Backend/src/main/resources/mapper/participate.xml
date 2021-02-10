@@ -11,16 +11,30 @@
 		(#{uid},#{pid}, #{successDate})
 	</insert>
 	
+	<!-- 참가 취소 -->
 	<delete id="deleteParticipant" parameterType="Map">
 		delete from Participate
 		where uid=#{uid} and pid=#{pid}
 	</delete>
 	
-	<!-- 
-	<select id="getParticipantList" parameterType="int">
+	<!-- 참가여부 조회 -->
+	<select id="checkParticipant" parameterType="Map" resultType="Integer">
+		select count(*)
+		from Participate
+		where uid=#{uid} and pid=#{pid}
 	</select>
 	
-	<update id="addSuccessDate">
-	</update>
-	 -->
+	<!-- 참가자 리스트 조회 -->
+	
+	<!-- 성공 여부 조회 -->
+	
+	<!-- 달성 체크하기 -->
+	
+	
+<!-- 	<select id="getParticipantList" parameterType="int"> -->
+<!-- 	</select> -->
+	
+<!-- 	<update id="addSuccessDate"> -->
+<!-- 	</update> -->
+	 
 </mapper>
