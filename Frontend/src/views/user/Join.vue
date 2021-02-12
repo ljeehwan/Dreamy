@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar/>
-  <v-container fluid class="mb-7">
+  <v-container id="joinbox" fluid class="mb-7">
     <v-row align="center" class="fill-height" justify="center">
       <div class="register elevation-12">
   
@@ -178,5 +178,9 @@
   width: 80%;
   border: white 1px solid;
   padding: 20px;
+}
+
+#joinbox{
+  padding-top: 5%;
 }
 </style>
