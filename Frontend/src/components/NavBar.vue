@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="white" app rounded single-line elevation="0">
+  <v-app-bar color="yellow" app rounded single-line elevation="0">
     <router-link to="/" style="text-decoration:none;">
     <div class="logo" transition="scale-transition">
       <div class="header-container" transition="scale-transition">
@@ -46,8 +46,7 @@
       >
     </div>
    
-
-    <div v-if="!getIsLogined">
+    <div id="right" v-if="!getIsLogined">
       <span
         ><router-link to="/user/join" style="text-decoration:none;">
           <v-btn target="_blank" text style="width:120px;"
@@ -128,5 +127,4 @@ input::placeholder {
   width: 220px;
   padding: 0 6px;
 }
-
 </style>
