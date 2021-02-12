@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavBar2/>
+    <NavBar/>
   <v-container fluid class="mb-7">
     <v-row align="center" class="fill-height" justify="center">
       <div class="register elevation-12">
@@ -102,12 +102,12 @@
 <script>
   import Modal from "@/components/Modal.vue"
   import {router} from "@/routes.js"
-      import NavBar2 from '@/components/NavBar2.vue'
+      import NavBar from '@/components/NavBar.vue'
 
   export default {
     components: {
       Modal,
-      NavBar2,
+      NavBar,
     },
     data:() => {
       return {
