@@ -27,9 +27,13 @@ body{
 .logo {
   position: fixed;
   top: 53%;
-  left: 6%;
+  left: 19%;
   min-height: 100vh;
 
+}
+
+#right{
+  padding-right: 12%;
 }
 .content h2 {
 
@@ -129,7 +133,7 @@ body{
   .logo {
     position: fixed;
     top: 53%;
-    left: 7%;
+    left: 17%;
     min-height: 100vh;
   
   }
@@ -143,12 +147,15 @@ body{
     color: transparent;
     /* 배경 색 */
     -webkit-text-stroke: 1px #000000;
+  }
+  #right{
+    padding-right: 9%;
   }
 }
 @media ( max-width: 1328px ) {
   .logo {
     top: 53%;
-    left: 8%;
+    left: 14%;
     min-height: 100vh;
   
   }
@@ -162,13 +169,16 @@ body{
     color: transparent;
     /* 배경 색 */
     -webkit-text-stroke: 1px #000000;
+  }
+  #right{
+    padding-right: 6%;
   }
 }
 @media ( max-width: 1150px ) {
   .logo {
     position: fixed;
     top: 53%;
-    left: 9%;
+    left: 25%;
     min-height: 100vh;
   
   }
@@ -182,6 +192,9 @@ body{
     color: transparent;
     /* 배경 색 */
     -webkit-text-stroke: 1px #000000;
+  }
+  #right{
+    padding-right: 15%;
   }
 }
 @media ( max-width: 970px ) {
