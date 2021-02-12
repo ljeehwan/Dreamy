@@ -26,8 +26,8 @@ body{
 }
 .logo {
   position: fixed;
-  top: 54%;
-  left: 11%;
+  top: 53%;
+  left: 6%;
   min-height: 100vh;
 
 }
@@ -35,7 +35,7 @@ body{
 
   position: absolute;
   transform: translate(-50%, -50%);
-  font-size: 3.5em;
+  font-size: 2.5em;
 }
 .content h2:nth-child(1) {
   color: transparent;
@@ -128,8 +128,8 @@ body{
 @media ( max-width: 1428px ) {
   .logo {
     position: fixed;
-    top: 54%;
-    left: 11%;
+    top: 53%;
+    left: 7%;
     min-height: 100vh;
   
   }
@@ -137,7 +137,7 @@ body{
   
     position: absolute;
     transform: translate(-50%, -50%);
-    font-size: 3em;
+    font-size: 2.5em;
   }
   .content h2:nth-child(1) {
     color: transparent;
@@ -147,17 +147,16 @@ body{
 }
 @media ( max-width: 1328px ) {
   .logo {
-    /* position: fixed; */
-    top: 54%;
-    left: 11%;
+    top: 53%;
+    left: 8%;
     min-height: 100vh;
-    
+  
   }
   .content h2 {
-    font-size: 3.5rem;
+  
     position: absolute;
     transform: translate(-50%, -50%);
-    font-size: 3em;
+    font-size: 2.5em;
   }
   .content h2:nth-child(1) {
     color: transparent;
@@ -167,17 +166,17 @@ body{
 }
 @media ( max-width: 1150px ) {
   .logo {
-    /* position: fixed; */
-    top: 54%;
-    left: 11%;
+    position: fixed;
+    top: 53%;
+    left: 9%;
     min-height: 100vh;
-    
+  
   }
   .content h2 {
-    font-size: 3.5rem;
+  
     position: absolute;
     transform: translate(-50%, -50%);
-    font-size: 3em;
+    font-size: 2.5em;
   }
   .content h2:nth-child(1) {
     color: transparent;

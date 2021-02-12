@@ -1,5 +1,9 @@
 <template>
+<div id="bar">
+      <NavBar2/>
+
   <div class="img-container-l">
+
     <!-- <div class="logo">
       <div class="header-container">
         <div class="content">
@@ -22,11 +26,15 @@
     
   </router-link>
   </div>
+  </div>
 </template>
 
 <script>
+import NavBar2 from '@/components/NavBar2.vue'
 export default {
-
+    components:{
+    NavBar2,
+  },
 }
 </script>
 

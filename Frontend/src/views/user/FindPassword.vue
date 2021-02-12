@@ -1,5 +1,6 @@
 <template>
     <v-main>
+        <NavBar/>
         <v-container class="back" fill-height="fill-height" fluid="fluid">
             <v-row align="center" justify="center">
 
@@ -40,7 +41,11 @@
 
 <script>
     import {router} from "@/routes.js"
+    import NavBar from '@/components/NavBar.vue'
     export default {
+        components: {
+    NavBar,
+  },
         data: () => {
             return {
                 user: {
