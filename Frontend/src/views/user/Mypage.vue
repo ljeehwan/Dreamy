@@ -1,5 +1,6 @@
 <template>
   <v-content>
+        <NavBar/>
       <div class="user-info">
         <MyInfo v-bind="{info:targetInfo}" />
       </div>
@@ -34,6 +35,7 @@ import FeedItem from "@/components/Item/FeedItem.vue";
 import axios from "axios";
 import InfiniteLoading from "vue-infinite-loading";
 // import { mapGetters } from "vuex";
+import NavBar from '@/components/NavBar.vue'
 
 const SERVER_URL = "http://localhost:8080";
 
@@ -44,6 +46,7 @@ export default {
     MypageMenu,
     FeedItem,
     InfiniteLoading,
+    NavBar,
   },
   data: function () {
     return {

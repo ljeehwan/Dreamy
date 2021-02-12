@@ -1,5 +1,7 @@
 <template>
+
   <div class="mt-15">
+    <NavBar/>
     <feed-menu id="menubar" @clickType="changeType"/>
     <v-layout row wrap class="mb-10 mx-10 align-center justify-center">
       <feed-item
@@ -24,6 +26,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import FeedItem from "@/components/Item/FeedItem.vue";
 // import FeedList from "./feedList";
 import { mapGetters } from "vuex";
+import NavBar from '@/components/NavBar.vue'
 
 const SERVER_URL = "http://localhost:8080";
 export default {
@@ -34,6 +37,7 @@ export default {
     InfiniteLoading,
     FeedItem,
     FeedMenu,
+    NavBar,
   },
   data() {
     return {
