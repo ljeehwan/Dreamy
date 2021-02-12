@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="yellow" app rounded single-line elevation="0">
+  <v-app-bar color="white" app rounded single-line elevation="0">
     <router-link to="/" style="text-decoration:none;">
     <div class="logo" transition="scale-transition">
       <div class="header-container" transition="scale-transition">
