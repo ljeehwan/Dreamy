@@ -4,13 +4,13 @@
     v-model="value" :background-color="color"
     dark shift >
 
-    <v-btn class="mx-auto" @click="onClick('myFeed')">
+    <v-btn class="mx-auto" @click="onClick('getMyBoardList')">
       <span>내 피드</span>
 
       <v-icon>mdi-image</v-icon>
     </v-btn>
 
-    <v-btn class="mx-auto" @click="onClick('participated')">
+    <v-btn class="mx-auto" @click="onClick('getMyParticipateList')">
       <span>참여중</span>
 
       <v-icon>mdi-book</v-icon>
@@ -26,6 +26,7 @@ export default {
   data: function () {
     return {
        value: 0,
+       menus: null,
     }
   },
   computed: {
@@ -39,8 +40,17 @@ export default {
   },
   methods: {
     onClick(menu) {
-      this.$emit('myMenu', menu)
-      // console.log(menu)
+      this.menus = menu
+      this.$emit('myMenu', this.menus)
+    },
+  },
+  mounted() {
+    this.menus = 'getMyBoardList'
+    this.$emit("myMenu", this.menus)
+  },
+  watch: {
+    menus() {
+      return this.menus
     },
   },
 }

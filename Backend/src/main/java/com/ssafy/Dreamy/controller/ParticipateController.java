@@ -2,6 +2,7 @@ package com.ssafy.Dreamy.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.Dreamy.model.ParticipateDto;
+import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.ParticipateService;
 
 @CrossOrigin(origins = { "http://localhost:3000" })
@@ -123,11 +125,47 @@ public class ParticipateController {
 			}
 		}
 		catch(Exception e) {
-			logger.error("게시물 참가 실패 : {}", e);
+			logger.error("참가 여부 조회 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	//////////참가자 리스트 조회///////////
+	@GetMapping ("/getUserList/{pid}")
+	public ResponseEntity<Map<String,Object>> getUserList(@PathVariable("pid") int pid, HttpServletRequest request){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		System.out.println("-- 참가자 리스트 조회");
+		System.out.println("-- pid : " + pid);
+		
+		try {
+			int userTotal = participateService.getListSize(pid);
+			System.out.println("-- userTotal : " + userTotal);
+			if( userTotal < 1) {
+				resultMap.put("userTotal", 0);
+				resultMap.put("message", FAIL);
+				status = HttpStatus.EXPECTATION_FAILED;
+				
+				System.out.println("-- 참가자 없음");
+			}else {
+				List<UserDto> list = participateService.getUserList(pid);
+				
+				resultMap.put("userTotal", userTotal);
+				resultMap.put("userList", list);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			}
+		}
+		catch(Exception e) {
+			logger.error("참가자 리스트 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
