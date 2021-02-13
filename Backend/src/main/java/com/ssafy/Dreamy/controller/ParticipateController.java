@@ -151,7 +151,8 @@ public class ParticipateController {
 			if( userTotal < 1) {
 				resultMap.put("userTotal", 0);
 				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
+//				status = HttpStatus.EXPECTATION_FAILED;
+				status = HttpStatus.ACCEPTED;
 				
 				System.out.println("-- 참가자 없음");
 			}else {
@@ -185,7 +186,8 @@ public class ParticipateController {
 		try {
 			if(participateService.addSuccess(uid, pid) < 1) {
 				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
+//				status = HttpStatus.EXPECTATION_FAILED;
+				status = HttpStatus.ACCEPTED;
 			}
 			else {
 				resultMap.put("message", SUCCESS);
