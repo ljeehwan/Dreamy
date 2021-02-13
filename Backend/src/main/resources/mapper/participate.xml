@@ -35,14 +35,18 @@
 	<!-- 참가자 수 조회 -->
 	<select id="getListSize" parameterType="Integer" resultType="Integer">
 		select count(*)
-		from User
+		from Participate
 		where pid=#{pid}
 	</select>
 	
-	<!-- 성공 여부 조회 -->
-	
 	<!-- 달성 체크하기 -->
+	<update id="addSuccess" parameterType="Map">
+		update Participate
+		set success_date = success_date+1
+		where uid=#{uid} and pid=#{pid}
+	</update>
 	
+	<!-- 성공 여부 조회 -->
 	
 <!-- 	<select id="getParticipantList" parameterType="int"> -->
 <!-- 	</select> -->
