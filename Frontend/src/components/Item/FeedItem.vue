@@ -57,8 +57,7 @@
           </div>
           <div></div>
           <v-row class="align-center justify-center">
-            <v-btn id="add" class="mx-2" outlined>
-              <v-icon>mdi-plus</v-icon>
+            <v-btn id="detail" class="mx-2" outlined>
               자세히보기
             </v-btn>
           </v-row>
@@ -140,11 +139,12 @@
                   }}</v-card-subtitle>
                 </v-row>
                 <v-card-text>{{ item.content }}</v-card-text>
-                <v-row class="mr-3 my-2">
+                <v-row class="mr-3 my-2 align-center justify-center">
                   <v-spacer></v-spacer>
+                  <div class="mx-2">
                   <v-btn
                     v-if="isLiked"
-                    class="mx-2"
+                    class="mr-1"
                     small
                     icon="icon"
                     color="red"
@@ -154,7 +154,7 @@
                   </v-btn>
                   <v-btn
                     v-if="!isLiked"
-                    class="mx-2"
+                    class="mr-1"
                     small
                     icon="icon"
                     color="red"
@@ -162,7 +162,15 @@
                   >
                     <v-icon>mdi-heart-outline</v-icon>
                   </v-btn>
-                  <p>{{ likes }}<small>명</small></p>
+                  <span>{{ likes }}<small>명</small></span>
+                  </div>
+                  <v-btn v-if="!this.isParticipate" id="add" class="ml-5" outlined @click="addParticipant">
+                      참여하기
+                    </v-btn>
+                  <v-btn v-else id="isOn" class="ml-5" outlined @click="delParticipate">
+                      참여 중
+                    </v-btn>
+
                 </v-row>
                 <v-divider></v-divider>
                 <template>
@@ -176,7 +184,7 @@
                     </v-tab>
                     <v-tab>댓글</v-tab>
                     <v-tab-item>
-                      <Participate/>
+                      <Participate :type="item.boardType"/>
                     </v-tab-item>
                     <v-tab-item>
                       <Reply :pid="this.data.pid" :uid="this.data.uid"/>
@@ -291,7 +299,46 @@ export default {
         url:`${SERVER_URL}/participate/checkParticipant/${this.data.uid}/${this.data.pid}`,
       })
       .then((res)=>{
-          console.log(res.data.message);
+          if(res.data.message==="success"){
+            this.isParticipate=true;
+          }else{
+            this.isParticipate=false;
+          }
+      })
+    },
+    addParticipant(){
+       axios({
+        method:"post",
+        url:`${SERVER_URL}/participate/addParticipant`,
+        data:{
+          uid:this.data.uid,
+          pid:this.data.pid,
+          successDate:0,
+        }
+      })
+      .then((res)=>{
+          if(res.data.message==="success"){
+            this.isParticipate=true;
+            this.$store.commit("boardStore/setParticipate");
+            this.$store.dispatch("boardStore/getParticipate", this.data.pid);
+          }else{
+            this.isParticipate=false;
+          }
+      })
+    },
+    delParticipate(){
+        axios({
+        method:"delete",
+        url:`${SERVER_URL}/participate/deleteParticipant/${this.data.uid}/${this.data.pid}`,
+      })
+      .then((res)=>{
+          if(res.data.message==="success"){
+            this.isParticipate=false;
+            this.$store.commit("boardStore/setParticipate");
+            this.$store.dispatch("boardStore/getParticipate", this.data.pid);
+          }else{
+            this.isParticipate=true;
+          }
       })
     },
     deleteBoard() {
