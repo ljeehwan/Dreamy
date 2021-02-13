@@ -7,22 +7,39 @@ const boardStore={
     namespaced:true,
 
     state:{
-        replyList:[]
+        replyList:[],
+        partiList:[],
+        partitotal:null,
     },
     getters:{
        getReply(state){
         return state.replyList;
+       },
+       getParticipate(state){
+        return state.partiList;
+       },
+       getPartiTotal(state){
+           return state.partitotal;
        }
     },
     mutations:{
-        setDefault(state){
-            state.replyList=[]
+        setReply(state){
+            state.replyList=[];
+        },
+        setParticipate(state){
+            state.partiList=[];
+            state.partitotal=0;
         },
         setReplyList(state,payload){
-            let data=payload.list
-            for (let key in data) {
-                state.replyList.push(data[key]);
+            for (let key in payload.list) {
+                state.replyList.push(payload.list[key]);
             }
+        },
+        setParticipateList(state,payload){
+            for(let key in payload.userList){
+            state.partiList.push(payload.userList[key])
+            }
+            state.partitotal=payload.userTotal;
         }
     },
     actions:{
@@ -85,6 +102,33 @@ const boardStore={
             })
         },
 
+        addReply(context,data){
+            axios({
+                method:"post",
+                url:`${SERVER_URL}/reply/insert`,
+                data
+            }).then((res)=>{
+                if(res.data.message==="success"){
+                    context.commit('setReply');
+                    context.dispatch('getReply',data.pid);
+                }
+            }).catch((error)=>{
+                console.log(error);
+            })
+        },
+        deleteReply(context,data){
+            axios({
+                method:"delete",
+                url:`${SERVER_URL}/reply/delete/${data.rid}`,
+            }).then((res)=>{
+                if(res.data.message==="success"){
+                    context.commit('setReply');
+                    context.dispatch('getReply',data.pid);
+                }
+            }).catch((error)=>{
+                console.log(error);
+            })
+        },
         getReply(context,pid){
             axios({
                 method:"get",
@@ -97,7 +141,21 @@ const boardStore={
             .catch((error)=>{
                 console.log(error);
             })
-        }
+        },
+
+        getParticipate(context,pid){
+            axios({
+                method:"get",
+                url:`${SERVER_URL}/participate/getUserList/${pid}`,
+            })
+            .then((res)=>{
+                console.log(res.data);
+                context.commit('setParticipateList',res.data);
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        },
         
 
     }

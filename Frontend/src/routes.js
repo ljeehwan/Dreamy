@@ -10,9 +10,6 @@ import FindPassword from './views/user/FindPassword.vue'
 import Landing from './views/Main/Landing.vue'
 import MainFeed from './views/Main/MainFeed.vue'
 // Community
-import Bucket from './views/Community/Bucket'
-import Challenge from './views/Community/Challenge'
-import Ranking from './views/Community/Ranking'
 // import { userSetter } from 'core-js/fn/symbol'
 
 Vue.use(VueRouter)
@@ -54,22 +51,6 @@ const router = new VueRouter({
             name : 'FindPassword',
             component : FindPassword
         },
-    
-        {
-            path: '/community/bucket',
-            name: 'Bucket',
-            component: Bucket
-        },
-        {
-            path: '/community/challenge',
-            name: 'Challenge',
-            component: Challenge
-        },
-        {
-            path: '/community/ranking',
-            name: 'Ranking',
-            component: Ranking
-        }
     
     ]
 })
