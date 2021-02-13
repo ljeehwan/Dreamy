@@ -118,7 +118,6 @@ public class ParticipateController {
 		try {
 			if(participateService.checkParticipant(uid, pid) < 1) { // 참가 여부 X
 				resultMap.put("message", FAIL);
-				//status = HttpStatus.EXPECTATION_FAILED;
 				status = HttpStatus.ACCEPTED;
 			}
 			else { // 참가 여부 O
@@ -151,7 +150,7 @@ public class ParticipateController {
 			if( userTotal < 1) {
 				resultMap.put("userTotal", 0);
 				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
+				status = HttpStatus.ACCEPTED;
 				
 				System.out.println("-- 참가자 없음");
 			}else {
@@ -201,4 +200,29 @@ public class ParticipateController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	//////////달성률 조회///////////
+	@GetMapping("/getSuccessRate/{uid}/{pid}")
+	public ResponseEntity<Map<String, Object>> getSuccessRate(@PathVariable("uid") int uid, @PathVariable("pid") int pid, HttpServletRequest request){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		System.out.println("-- 달성률 조회");
+		System.out.println("-- uid : " + uid);
+		System.out.println("-- pid : " + pid);
+		
+		try {
+			int successRate = participateService.getSuccessRate(uid, pid);
+			
+			resultMap.put("successRate", successRate);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+		}
+		catch (Exception e) {
+			logger.error("달성률 조회 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }
