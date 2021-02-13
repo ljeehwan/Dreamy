@@ -25,11 +25,28 @@
 	</select>
 	
 	<!-- 참가자 리스트 조회 -->
+	<select id="getUserList" parameterType="Integer" resultType="com.ssafy.Dreamy.model.UserDto">
+		select p.uid as uid, u.name as name, u.profile_url as profileUrl
+		from Participate p join User u
+		ON p.uid=u.uid
+		where p.pid=#{pid};
+	</select>
 	
-	<!-- 성공 여부 조회 -->
+	<!-- 참가자 수 조회 -->
+	<select id="getListSize" parameterType="Integer" resultType="Integer">
+		select count(*)
+		from Participate
+		where pid=#{pid}
+	</select>
 	
 	<!-- 달성 체크하기 -->
+	<update id="addSuccess" parameterType="Map">
+		update Participate
+		set success_date = success_date+1
+		where uid=#{uid} and pid=#{pid}
+	</update>
 	
+	<!-- 성공 여부 조회 -->
 	
 <!-- 	<select id="getParticipantList" parameterType="int"> -->
 <!-- 	</select> -->
