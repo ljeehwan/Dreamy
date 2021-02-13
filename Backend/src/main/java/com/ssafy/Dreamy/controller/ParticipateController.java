@@ -118,7 +118,8 @@ public class ParticipateController {
 		try {
 			if(participateService.checkParticipant(uid, pid) < 1) { // 참가 여부 X
 				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
+				//status = HttpStatus.EXPECTATION_FAILED;
+				status = HttpStatus.ACCEPTED;
 			}
 			else { // 참가 여부 O
 				resultMap.put("message", SUCCESS);
