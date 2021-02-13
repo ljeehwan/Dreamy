@@ -1,6 +1,5 @@
 package com.ssafy.Dreamy.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import com.ssafy.Dreamy.model.UserDto;
@@ -12,4 +11,5 @@ public interface ParticipateService {
 	public List<UserDto>getUserList(int pid) throws Exception;							// 참가자 리스트 조회
 	public int getListSize(int pid) throws Exception;									// 참가자 수 조회
 	public int addSuccess(int uid, int pid) throws Exception;							// 달성 체크
+	public int getSuccessRate(int uid, int pid) throws Exception;						// 달성률 조회
 }
