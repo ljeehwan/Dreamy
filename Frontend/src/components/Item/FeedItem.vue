@@ -170,7 +170,6 @@
                     color="deep-purple accent-4"
                     fixed-tabs
                     slider-color="block"
-                   
                   >
                     <v-tab>
                       참가자
@@ -180,7 +179,7 @@
                       <Participate/>
                     </v-tab-item>
                     <v-tab-item>
-                      <Reply :pid="item.pid" :uid="this.data.uid"/>
+                      <Reply :pid="this.data.pid" :uid="this.data.uid"/>
                     </v-tab-item>
                   </v-tabs>
                 </template>
@@ -225,6 +224,7 @@ export default {
       detail: false,
       likes: 0,
       isLiked: null,
+      isParticipate:null,
       delflag: false,
       data: {
         uid: parseInt(localStorage.getItem("uid")),
@@ -242,8 +242,10 @@ export default {
   methods: {
     detail_view() {
       this.detail = true;
-      this.$store.commit("boardStore/setDefault");
+      this.$store.commit("boardStore/setReply");
+      this.$store.commit("boardStore/setParticipate");
       this.$store.dispatch("boardStore/getReply", this.data.pid);
+      this.$store.dispatch("boardStore/getParticipate", this.data.pid);
     },
     addLike() {
       this.$store.dispatch("boardStore/addLike", this.data);
@@ -256,11 +258,9 @@ export default {
       this.isLiked = false;
     },
     checkLike() {
-      let uid = localStorage.getItem("uid");
-      let pid = this.item.pid;
       axios({
         method: "get",
-        url: `${SERVER_URL}/likes/checklikes/${uid}/${pid}`,
+        url: `${SERVER_URL}/likes/checklikes/${this.data.uid}/${this.data.pid}`,
       })
         .then((res) => {
           if (res.data.message == "success") {
@@ -285,13 +285,23 @@ export default {
           console.log(err);
         });
     },
+    checkParticipate(){
+      axios({
+        method:"get",
+        url:`${SERVER_URL}/participate/checkParticipant/${this.data.uid}/${this.data.pid}`,
+      })
+      .then((res)=>{
+          console.log(res.data.message);
+      })
+    },
     deleteBoard() {
       this.$store.dispatch("boardStore/deleteBoard", this.data.pid);
     },
   },
   created() {
-    this.countLike();
     this.checkLike();
+    this.checkParticipate();
+    this.countLike();
   },
   filters: {
     dateFilter: function(date) {
