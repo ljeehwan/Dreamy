@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="270" width="450">
+  <v-sheet max-height="270" width="460">
     <v-list class="my-2">
       <v-row class="ma-2">
       <v-text-field
@@ -18,7 +18,7 @@
       </v-row>
       <div v-if="getReply.length===0">
           등록된 댓글이 없습니다!
-        </div>
+      </div>
       <v-list-item-group>
         <v-list-item
           dense
