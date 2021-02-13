@@ -3,6 +3,7 @@
   <div class="mt-15">
     <NavBar/>
     <feed-menu id="menubar" @clickType="changeType"/>
+    <v-divider></v-divider>
     <v-layout row wrap class="mb-10 mx-10 align-center justify-center">
       <feed-item
         v-for="(item, index) in list"

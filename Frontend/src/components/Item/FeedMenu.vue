@@ -200,7 +200,6 @@
         <p>기타</p>
       </div>
     </v-row>
-    <v-divider></v-divider>
   </div>
 </template>
 
