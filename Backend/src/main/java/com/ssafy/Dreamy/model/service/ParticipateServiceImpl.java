@@ -62,4 +62,14 @@ public class ParticipateServiceImpl implements ParticipateService {
 		return sqlSession.getMapper(ParticipateMapper.class).getListSize(pid);
 	}
 
+	@Override
+	public int addSuccess(int uid, int pid) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("uid", uid);
+		map.put("pid", pid);
+		
+		return sqlSession.getMapper(ParticipateMapper.class).addSuccess(map);
+	}
+
 }
