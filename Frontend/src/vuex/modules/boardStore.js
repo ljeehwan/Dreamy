@@ -7,13 +7,23 @@ const boardStore={
     namespaced:true,
 
     state:{
-        
+        replyList:[]
     },
     getters:{
-       
+       getReply(state){
+        return state.replyList;
+       }
     },
     mutations:{
-        
+        setDefault(state){
+            state.replyList=[]
+        },
+        setReplyList(state,payload){
+            let data=payload.list
+            for (let key in data) {
+                state.replyList.push(data[key]);
+            }
+        }
     },
     actions:{
         insertBoard(context,card){
@@ -31,6 +41,21 @@ const boardStore={
                 console.log(error);
             })
         },
+        deleteBoard(context,pid){
+            axios({
+                method:"delete",
+                url:`${SERVER_URL}/board/delete/${pid}`,
+            })
+            .then((res)=>{
+                if(res.data.message==="success")
+                    console.log(pid+" "+"삭제 성공")
+                window.location.reload();
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        },
+
         addLike(context,data){
             axios({
                 method:"post",
@@ -60,12 +85,20 @@ const boardStore={
             })
         },
 
-        // deleteBoard(context,data){
-        //     axios({
-        //         method:"delete",
-
-        //     })
-        // }
+        getReply(context,pid){
+            axios({
+                method:"get",
+                url:`${SERVER_URL}/reply/list/${pid}`,
+            })
+            .then((res)=>{
+                console.log(res.data);
+                context.commit('setReplyList',res.data)
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+        }
+        
 
     }
 }
