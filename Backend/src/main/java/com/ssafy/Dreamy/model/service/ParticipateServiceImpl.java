@@ -72,4 +72,21 @@ public class ParticipateServiceImpl implements ParticipateService {
 		return sqlSession.getMapper(ParticipateMapper.class).addSuccess(map);
 	}
 
+	@Override
+	public int getSuccessRate(int uid, int pid) throws Exception {
+		int result = 0;
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("uid", uid);
+		map.put("pid", pid);
+		
+		int totalDate = sqlSession.getMapper(ParticipateMapper.class).getTotalDate(pid);	
+		int successDate = sqlSession.getMapper(ParticipateMapper.class).getSuccessDate(map);
+		
+		result = Math.round(((float)successDate/(float)totalDate)*100);
+		
+		return result;
+	}
+
 }

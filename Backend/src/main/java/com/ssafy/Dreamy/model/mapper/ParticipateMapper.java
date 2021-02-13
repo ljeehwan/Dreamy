@@ -16,4 +16,6 @@ public interface ParticipateMapper {
 	public List<UserDto> getUserList(int pid) throws SQLException;				// 참가자 리스트 조회
 	public int getListSize(int pid) throws SQLException;						// 참가자 수 조회
 	public int addSuccess(Map<String, Object> map) throws SQLException;			// 달성 체크
+	public int getTotalDate(int pid) throws SQLException;						// total date 조회
+	public int getSuccessDate(Map<String, Object> map) throws SQLException;		// success date 조회
 }
