@@ -216,3 +216,180 @@ body{
     -webkit-text-stroke: 1px #000000;
   }
 }
+
+
+/* FEEDITEM CSS*/
+
+.v-application--wrap {
+  min-height: 100vh;
+}
+
+.v-dialog::-webkit-scrollbar {
+  display: none;
+}
+#card{
+  border-radius: 0.25rem;
+  opacity: 1;
+}
+#card_img:hover{  
+    transform: matrix(1.1,0,0,1.1,0,0);
+}
+#card_img:hover #card_contents{
+    transform: translate(0,-60px);
+}
+#card_img:hover #detail{
+    opacity: 1.0;
+}
+
+#card_img{
+cursor:pointer;
+background-size: cover;
+transition: transform 300ms ease-out;
+margin :0;
+top:0;
+left: 0;
+}
+
+#imgsection{
+  overflow: hidden;
+  position: relative;
+}
+#cardTitle{
+  text-align: center;
+  position: absolute;
+  display: block;
+  color:white;
+  width: 100%;
+  font-size: 20px;
+  line-height: 25px;
+  letter-spacing: -1px;
+  font-weight: bold;
+  bottom: 65px;
+  left: 0;
+  transition: transform 300ms ease-out;
+}
+
+.typeName{
+  position: absolute;
+  text-align: center;
+  display: block;
+  top: 30px;
+  left: 40px;
+}
+#bucket{
+
+}
+#card_contents{
+  position: absolute;
+  text-align: center;
+  display: block;
+  bottom: -30px;
+  transition: transform 300ms ease-out;
+}
+#detail{
+  position: absolute;
+  text-align: center;
+  display: block;
+  height: 30px;
+  border: 2px solid white;
+  border-radius: 20px;
+  font-weight: bold;
+  color:white;
+  bottom : 150px;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+}
+#add{
+  text-align: center;
+  height: 25px;
+  border-radius: 20px;
+  font-weight: bold;
+  color:white;
+  background-color: #5E35B1;
+  letter-spacing:2px; 
+}
+#isOn{
+  text-align: center;
+  height: 25px;
+  border-radius: 20px;
+  font-weight: bold;
+  color:white;
+  background-color: #43A047;
+  letter-spacing:2px; 
+}
+#writtenDate{
+  text-align: right;
+  position: absolute;
+  width: 100%;
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
+  top:25px;
+  right: 30px;
+}
+#category #sport{
+  text-align: center;
+  position: absolute;
+   font-size: 16px;
+   width: 100%;
+   font-weight: bold;
+    transition: transform 300ms ease-out;
+  bottom: 90px;
+   left: 0;
+   color:#4e1891;
+}
+#category #food{
+   text-align: center;
+  position: absolute;
+   font-size: 16px;
+   width: 100%;
+   font-weight: bold;
+     transition: transform 300ms ease-out;
+  bottom: 90px;
+   left: 0;
+   color:#cc4f79;
+}
+#category #travel{
+   text-align: center;
+  position: absolute;
+   font-size: 16px;
+   width: 100%;
+   font-weight: bold;
+     transition: transform 300ms ease-out;
+  bottom: 90px;
+   left: 0;
+   color:#3f84c1;
+}
+#category #NewSkill{
+   text-align: center;
+  position: absolute;
+   font-size: 16px;
+   width: 100%;
+   font-weight: bold;
+     transition: transform 300ms ease-out;
+  bottom: 90px;
+   left: 0;
+   color:#e0a855;
+}
+#category #lifestyle{
+   text-align: center;
+  position: absolute;
+   font-size: 16px;
+   width: 100%;
+   font-weight: bold;
+     transition: transform 300ms ease-out;
+  bottom: 90px;
+   left: 0;
+   color:#239f29;
+}
+#category #etc{
+  text-align: center;
+  position: absolute;
+   font-size: 16px;
+   width: 100%;
+   font-weight: bold;
+     transition: transform 300ms ease-out;
+  bottom: 90px;
+   left: 0;
+   color:#479aa5;
+}

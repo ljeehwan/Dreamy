@@ -192,7 +192,7 @@ public class UserServiceImpl implements UserService {
 					+ "					- 안전한 서비스 이용을 위해 비밀번호는 정기적으로 변경해주는 것이 좋습니다.<br>\r\n"
 					+ "				</div>\r\n"
 					+ "				<br>		\r\n"
-					+ "				<a href=\"http://localhost:3000\" style=\"display:inline-block; margin-top:30px; padding: 0 30px;border: 1px solid blue; border-radius:5px;color:#6D6CFF; text-decoration:none\">DREAMY 바로가기</a>	\r\n"
+					+ "				<a href=\"http://i4a306.p.ssafy.io\" style=\"display:inline-block; margin-top:30px; padding: 0 30px;border: 1px solid blue; border-radius:5px;color:#6D6CFF; text-decoration:none\">DREAMY 바로가기</a>	\r\n"
 					+ "				</p>\r\n"
 					+ "			</div>\r\n"
 					+ "	\r\n"

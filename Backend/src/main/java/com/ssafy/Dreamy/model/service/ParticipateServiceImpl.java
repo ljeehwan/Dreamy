@@ -1,12 +1,15 @@
 package com.ssafy.Dreamy.model.service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.mapper.ParticipateMapper;
 
 @Service
@@ -45,6 +48,45 @@ public class ParticipateServiceImpl implements ParticipateService {
 		map.put("pid", pid);
 		
 		return sqlSession.getMapper(ParticipateMapper.class).checkParticipant(map);
+	}
+
+	@Override
+	public List<UserDto> getUserList(int pid) throws Exception {
+
+		return sqlSession.getMapper(ParticipateMapper.class).getUserList(pid);
+	}
+
+	@Override
+	public int getListSize(int pid) throws SQLException {
+		
+		return sqlSession.getMapper(ParticipateMapper.class).getListSize(pid);
+	}
+
+	@Override
+	public int addSuccess(int uid, int pid) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("uid", uid);
+		map.put("pid", pid);
+		
+		return sqlSession.getMapper(ParticipateMapper.class).addSuccess(map);
+	}
+
+	@Override
+	public int getSuccessRate(int uid, int pid) throws Exception {
+		int result = 0;
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("uid", uid);
+		map.put("pid", pid);
+		
+		int totalDate = sqlSession.getMapper(ParticipateMapper.class).getTotalDate(pid);	
+		int successDate = sqlSession.getMapper(ParticipateMapper.class).getSuccessDate(map);
+		
+		result = Math.round(((float)successDate/(float)totalDate)*100);
+		
+		return result;
 	}
 
 }
