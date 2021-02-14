@@ -46,12 +46,20 @@
 		where uid=#{uid} and pid=#{pid}
 	</update>
 	
+	<!-- total date 조회 -->
+	<select id="getTotalDate" parameterType="Integer" resultType="Integer">
+		select total_date as totalDate
+		from Board
+		where pid=#{pid}
+	</select>
+	
+	<!-- success date 조회 -->
+	<select id="getSuccessDate" parameterType="Map" resultType="Integer">
+		select success_date as successDate
+		from Participate
+		where uid=#{uid} and pid=#{pid}
+	</select>
+	
 	<!-- 성공 여부 조회 -->
-	
-<!-- 	<select id="getParticipantList" parameterType="int"> -->
-<!-- 	</select> -->
-	
-<!-- 	<update id="addSuccessDate"> -->
-<!-- 	</update> -->
 	 
 </mapper>
