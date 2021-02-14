@@ -179,7 +179,6 @@
   border: white 1px solid;
   padding: 20px;
 }
-
 #joinbox{
   padding-top: 5%;
 }
