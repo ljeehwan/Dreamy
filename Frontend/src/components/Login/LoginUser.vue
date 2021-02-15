@@ -93,9 +93,9 @@ export default {
             // 원래는 다른사람 uid을 받아오겠지만, 마이페이지니까 그냥 uid 준다
             const targetUid = this.$store.getters["userStore/getUserId"]
             // const name = this.$store.getters["userStore/getUsername"];
-            this.$store.commit('userStore/PUT_REQUEST_UID', targetUid)
+            // this.$store.commit('userStore/PUT_REQUEST_UID', targetUid)
             //uid 받아서 팔로우 요청(이것도 내꺼 그냥 준다)
-            router.push('/user/mypage/')
+            router.push(`/user/mypage/${targetUid}`)
         },
   },
 };

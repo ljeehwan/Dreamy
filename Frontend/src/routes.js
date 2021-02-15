@@ -41,10 +41,10 @@ const router = new VueRouter({
             component : Join
         },
         {
-            path: '/user/mypage/',
+            path: '/user/mypage/:id',
             name: 'myPage',
             component: myPage,
-            props: true
+            // props: true
         },
         {
             path : '/user/findpassword',
