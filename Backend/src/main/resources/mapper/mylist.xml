@@ -4,13 +4,13 @@
     
 <mapper namespace="com.ssafy.Dreamy.model.mapper.MylistMapper">
 
-	<select id="getMyBoardList" parameterType="Integer" resultType="com.ssafy.Dreamy.model.BoardDto">
+	<select id="getMyBoardList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
 		select b.pid as pid, b.uid as uid, u.name as name, b.board_type as boardType, b.title, b.content, b.written_date as writtenDate, b.start_date as startDate, b.end_date as endDate, b.category, b.image_url as imageUrl, b.total_date as totalDate
 		from Board as b join User as u
 		ON b.uid = u.uid
 		where b.uid = #{uid}
 		order by b.written_date DESC
-		limit #{limit}, 3;
+		limit #{limit}, 3
 		
 	</select>
 	
@@ -20,9 +20,18 @@
 		ON b.uid = u.uid
 		where b.pid IN (select pid from Participate where uid=#{uid})
 		order by b.written_date DESC
-		limit #{limit}, 3;
+		limit #{limit}, 3
 	</select>
 
+	<select id="getMySuccessList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
+		select b.pid as pid, b.uid as uid, u.name as name, b.board_type as boardType, b.title, b.content, b.written_date as writtenDate, b.start_date as startDate, b.end_date as endDate, b.category, b.image_url as imageUrl, b.total_date as totalDate
+		from Board as b join User as u
+		ON b.uid = u.uid
+		where b.pid IN (select pid from Participate where uid=#{uid} and success=1)
+		order by b.written_date DESC
+		limit #{limit}, 3
+	</select>
+	
 	<select id="getMyBoardTotal" parameterType="Integer" resultType="Integer">
 		select count(*) 
 		from Board 
@@ -31,8 +40,13 @@
 	
 	<select id="getMyParticipateTotal" parameterType="Integer" resultType="Integer">
 		select count(*)
-		from Board as b join User as u
-		ON b.uid = u.uid
-		where b.pid IN (select pid from Participate where uid=#{uid})
+		from Board
+		where pid IN (select pid from Participate where uid=#{uid})
+	</select>
+	
+	<select id="getMySuccessTotal" parameterType="Integer" resultType="Integer">
+		select count(*)
+		from Board
+		where pid IN (select pid from Participate where uid=#{uid} and success=1);   
 	</select>
 </mapper>
