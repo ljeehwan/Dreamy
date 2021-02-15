@@ -9,12 +9,12 @@
           </v-icon>
         </v-avatar>
       </v-btn>
+      <!--
       <v-btn icon class="mx-3 my-auto">
         <v-icon size="26">
-          <!--프로필 이미지 가져오기-->
           mdi-bell
         </v-icon>
-      </v-btn>
+      </v-btn>-->
     </template>
     <v-card width="300">
       <v-container grid-list-md>
