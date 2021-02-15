@@ -118,8 +118,7 @@ public class FollowController {
 		HttpStatus status = null;
 		logger.info("팔로잉 목록 출력");
 		try {
-			List<UserDto> list = new ArrayList<>();
-			list = followservice.listfollowing(uid);
+			List<UserDto> list = followservice.listfollowing(uid);
 			if (list.size() != 0) {
 				resultMap.put("list", list);
 				resultMap.put("message", SUCCESS);
@@ -146,8 +145,7 @@ public class FollowController {
 		HttpStatus status = null;
 		logger.info("팔로워 목록 출력");
 		try {
-			List<UserDto> list = new ArrayList<>();
-			list = followservice.listfollower(uid);
+			List<UserDto> list = followservice.listfollower(uid);
 			if (list.size() != 0) {
 				resultMap.put("list", list);
 				resultMap.put("message", SUCCESS);

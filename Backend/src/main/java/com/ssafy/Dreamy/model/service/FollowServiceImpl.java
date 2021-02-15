@@ -1,7 +1,10 @@
 package com.ssafy.Dreamy.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ public class FollowServiceImpl implements FollowService {
 
 	@Autowired
 	private SqlSession sqlSession;
+	private Map<String, Object> map;
 
 	@Override
 	public void followService(int following, int follow) {// 팔로우버튼 누른사람, 팔로우당한사람
@@ -62,12 +66,16 @@ public class FollowServiceImpl implements FollowService {
 
 	@Override
 	public List<UserDto> listfollowing(int userid) {// 팔로우 리스트 넘겨줌
-		return sqlSession.getMapper(FollowMapper.class).listFollowing(userid);
+		map = new HashMap<>();
+		map.put("userid", userid);
+		return sqlSession.getMapper(FollowMapper.class).listFollowing(map);
 	}
 
 	@Override
 	public List<UserDto> listfollower(int userid) {// 팔로워 리스트 넘겨줌
-		return sqlSession.getMapper(FollowMapper.class).listFollower(userid);
+		map = new HashMap<>();
+		map.put("userid", userid);
+		return sqlSession.getMapper(FollowMapper.class).listFollower(map);
 	}
 
 }
