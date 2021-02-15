@@ -1,6 +1,6 @@
 <template>
   <div>
-  <v-container class="pa-6">
+  <v-container class="pa-13">
     <v-row>
       <v-col cols="6" sm="4" md="4" elevation="0">
 

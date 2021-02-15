@@ -16,6 +16,13 @@
       <v-icon>mdi-book</v-icon>
     </v-btn>
 
+    <!-- 성공, 완료한 목록 -->
+    <!-- <v-btn class="mx-auto" @click="onClick('getMyParticipateList')">
+      <span>참여중</span>
+
+      <v-icon>mdi-book</v-icon>
+    </v-btn> -->
+
     </v-bottom-navigation>    
   </div>
 </template>
@@ -34,6 +41,7 @@ export default {
         switch (this.value) {
           case 0: return 'teal'
           case 1: return 'amber'
+          case 2: return 'blue-grey'
           default: return 'blue-grey'
         }
       },

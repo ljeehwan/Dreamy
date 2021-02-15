@@ -5,7 +5,7 @@
         <MyInfo v-bind="{info:targetInfo}" />
       </div>
       <v-card class="overflow-hidden mx-auto
-       my-10" max-width="1155">
+       my-10" max-width="1100">
         <MypageMenu @myMenu="myMenu" />
       </v-card>
       <v-layout row wrap class="overflow-hidden mx-10 my-10 
@@ -108,6 +108,7 @@ export default {
     //1. 스토어에 있는 GET_MEMBER dispatch한다. (네브 바의 마이 페이지 버튼은 어차피 
     // 자기 자신이기 때문에 이름을 내이름을 내려보내줌)
     // 응답을 변수에 담아서 저장
+
     this.$store.dispatch('userStore/GET_MEMBER', requestUid)
     //vuex에서 정보 가져오기
     // 저장한 변수에서 data의 email, username, phone으로 이름을 할당해주고 브라우저에 출력해준다
