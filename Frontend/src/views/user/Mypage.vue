@@ -96,18 +96,24 @@ export default {
     },
   },
   created: function () {
-    // 뷰엑스로 받은 이름을 타겟에 넣어서
-    const targetUid = this.$store.getters['userStore/getTargetUid']
+    // 뷰엑스로 받은 uid를 타겟에 넣어서
+    // const targetUid = this.$store.getters['userStore/getTargetUid']
+    
+    //동적 파라미터로 Uid받기 
+    const requestUid = this.$route.params.id;
+    this.$store.commit('userStore/PUT_REQUEST_UID', requestUid)
     //1. 스토어에 있는 GET_MEMBER dispatch한다. (네브 바의 마이 페이지 버튼은 어차피 
     // 자기 자신이기 때문에 이름을 내이름을 내려보내줌)
     // 응답을 변수에 담아서 저장
-    this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+    this.$store.dispatch('userStore/GET_MEMBER', requestUid)
     //vuex에서 정보 가져오기
     // 저장한 변수에서 data의 email, username, phone으로 이름을 할당해주고 브라우저에 출력해준다
     // 2. 응답받은(위에서 출력한) 유저의 name과 로그인한 유저의 이름이 같으면 수정 버튼 활성화
     // 타겟과 로그인한 이름이 일치하면 수정 버튼을 보여준다.
-    if (targetUid === this.$store.getters["userStore/getUserId"]) {
+    
+    if (requestUid == this.$store.getters["userStore/getUserId"]) {
       console.log('이름이 일치합니당')
+      
       this.$store.commit('userStore/MYSELF')
       console.log(`뷰엑스의 불린값 ${this.$store.getters["userStore/getMyself"]}`)
     } else {
@@ -118,9 +124,12 @@ export default {
     this.$store.dispatch('userStore/GET_FOLLOWING_NUM')
     // 뷰엑스에서 컴퓨티드로 보여줌
     
-    // follow 상태 확인 api 수정중..
+    // follow 상태 확인 api 새로고침하면 user.uid가 안가져온당? 확인
     this.$store.dispatch('userStore/CHECK_FOLLOW')
-
+    
+    // 팔로우, 팔로워 리스트 요청해서 저장해놓기
+    this.$store.dispatch('userStore/REQUEST_FOLLOWING_LIST')
+    this.$store.dispatch('userStore/REQUEST_FOLLOWER_LIST')
   },
 
 }

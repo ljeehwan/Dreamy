@@ -512,6 +512,26 @@ const userStore={
                   context.commit('END_LOADING')
               })
         },
+        REQUEST_FOLLOWING_LIST() {
+            const requestUid = this.state.userStore.requestUid
+            axios.get(`${SERVER_URL}/follow/listfollowing/${requestUid}`)
+              .then(res => {
+                  console.log(res)
+              })
+              .catch(err => {
+                  console.log(err)
+              })
+        },
+        REQUEST_FOLLOWER_LIST() {
+            const requestUid = this.state.userStore.requestUid
+            axios.get(`${SERVER_URL}/follow/listfollower/${requestUid}`)
+              .then(res => {
+                  console.log(res)
+              })
+              .catch(err => {
+                  console.log(err)
+              })
+        },
 
     }
 }
