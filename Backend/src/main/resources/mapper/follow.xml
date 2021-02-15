@@ -30,15 +30,15 @@
 		select count(*) from Follow
 		where following=#{followingUid} and follower = #{followUid}
 	</select>
-	<select id="listFollowing" parameterType="Integer"
+	<select id="listFollowing" parameterType="Map"
 		resultType="com.ssafy.Dreamy.model.UserDto">
-		select name,profileUrl from User where uid IN (select
+		select uid,name,profile_url as profileUrl from User where uid IN (select
 		follower from Follow where following=#{userid})
 	</select>
 
-	<select id="listFollower" parameterType="Integer"
+	<select id="listFollower" parameterType="Map"
 		resultType="com.ssafy.Dreamy.model.UserDto">
-		select name,profileUrl from User where uid IN (select
+		select uid,name,profile_url as profileUrl from User where uid IN (select
 		following from Follow where follower=#{userid})
 	</select>
 </mapper>
