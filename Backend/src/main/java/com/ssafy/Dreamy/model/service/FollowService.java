@@ -15,7 +15,7 @@ public interface FollowService {
 
 	public boolean followcheck(int userid, int targetid); // 팔로우관계를 맺은 유저인지 체크 => 팔로우버튼을 누른상태인지 아닌지
 
-	public List<UserDto> listfollowing(int userid); // 팔로잉 목록(팔로잉하는 사람들 이름을 보여준다)
+	public List<UserDto> listfollowing(int userid) throws Exception; // 팔로잉 목록(팔로잉하는 사람들 이름을 보여준다)
 
 	public List<UserDto> listfollower(int userid);// 팔로워 목록(팔로워들의 이름을 보여준다)
 }

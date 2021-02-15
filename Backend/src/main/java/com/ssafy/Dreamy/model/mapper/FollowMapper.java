@@ -1,6 +1,8 @@
 package com.ssafy.Dreamy.model.mapper;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,7 +21,7 @@ public interface FollowMapper {
 
 	public int checkFollow(FollowDto followdto);
 
-	public List<UserDto> listFollowing(int userid);
+	public List<UserDto> listFollowing(Map<String, Object> map);
 
-	public List<UserDto> listFollower(int userid);
+	public List<UserDto> listFollower(Map<String, Object> map);
 }
