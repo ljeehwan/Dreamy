@@ -108,12 +108,34 @@
           <div class="d-flex justify-start font-weight-bold">
             <p>
                <span class="follow-m">
-                 <v-icon left>mdi-account-supervisor-circle</v-icon>
-                 팔로잉 :  {{followings}}
+                  <v-icon left>mdi-account-supervisor-circle</v-icon>
+                  <v-dialog v-model="followingClose" scrollable max-width="300">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn text v-bind="attrs" v-on="on">
+                        <span>팔로잉 :  {{followings}} </span>
+                      </v-btn>
+                    </template>
+
+                     <v-card>
+                      <followingList @followinglistClose="followingClose = false"
+                       />
+                    </v-card>
+
+                  </v-dialog>
               </span>
               <span class="follower-m">
-                 <v-icon left>mdi-account-group-outline</v-icon>
-                 팔로워 :  {{followers}}
+                <v-icon left>mdi-account-group-outline</v-icon>
+                <v-dialog v-model="followerClose" scrollable max-width="300">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn text v-bind="attrs" v-on="on">
+                      <span>팔로워 :  {{followers}}</span>
+                    </v-btn>
+                  </template>
+
+                     <v-card>
+                      <followerList @followerlistClose="followerClose = false"/>
+                    </v-card>
+                </v-dialog>
               </span>
 
               <span v-if="!isMyself">
@@ -150,16 +172,21 @@
 import UserInfoUpdate from "./UserInfoUpdate.vue"
 import {router} from "@/routes"
 import UpdateProfileImg from "@/components/mypage/UpdateProfileImg.vue"
+import followingList from "@/components/mypage/FollowingList.vue"
+import followerList from "@/components/mypage/FollowerList.vue"
 
 export default {
   components: {
     UserInfoUpdate,
     UpdateProfileImg,
+    followingList,
+    followerList,
   },
   data: function () {
     return {
+      followingClose: false,
+      followerClose: false,
       modal: false,
-
       sheet: false,
       dialog: false,
       exitPass: false,
@@ -201,6 +228,7 @@ export default {
     requestUnfollow() {
       this.$store.dispatch('userStore/REQUEST_UNFOLLOW')
     },
+
   },
   watch: {
     isMyself() {

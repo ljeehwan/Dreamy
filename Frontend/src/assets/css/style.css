@@ -237,7 +237,7 @@ body{
 #card_img:hover #card_contents{
     transform: translate(0,-60px);
 }
-#card_img:hover #add{
+#card_img:hover #detail{
     opacity: 1.0;
 }
 
@@ -286,7 +286,7 @@ left: 0;
   bottom: -30px;
   transition: transform 300ms ease-out;
 }
-#add{
+#detail{
   position: absolute;
   text-align: center;
   display: block;
@@ -298,6 +298,24 @@ left: 0;
   bottom : 150px;
   opacity: 0;
   transition: opacity 300ms ease-out;
+}
+#add{
+  text-align: center;
+  height: 25px;
+  border-radius: 20px;
+  font-weight: bold;
+  color:white;
+  background-color: #5E35B1;
+  letter-spacing:2px; 
+}
+#isOn{
+  text-align: center;
+  height: 25px;
+  border-radius: 20px;
+  font-weight: bold;
+  color:white;
+  background-color: #43A047;
+  letter-spacing:2px; 
 }
 #writtenDate{
   text-align: right;
