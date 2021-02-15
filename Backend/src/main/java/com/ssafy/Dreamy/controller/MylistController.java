@@ -32,7 +32,7 @@ public class MylistController {
 	private static final String FAIL = "fail";
 
 	@Autowired
-	private MylistService mylistservice;
+	private MylistService mylistService;
 	
 	//////////마이리스트 내가 작성한 게시물 조회///////////
 	@GetMapping("/getMyBoardList/{uid}/{limit}")
@@ -45,9 +45,9 @@ public class MylistController {
 		System.out.println("-- limit : " + limit);
 		
 		try {
-			List<BoardDto> list = mylistservice.getMyBoardList(uid, limit);
+			List<BoardDto> list = mylistService.getMyBoardList(uid, limit);
 			
-			int totalSize = mylistservice.getMyBoardTotal(uid);
+			int totalSize = mylistService.getMyBoardTotal(uid);
 			
 			resultMap.put("boardlist", list);
 			resultMap.put("totalSize", totalSize);
@@ -79,9 +79,9 @@ public class MylistController {
 		System.out.println("-- limit : " + limit);
 		
 		try {
-			List<BoardDto> list = mylistservice.getMyParticipateList(uid, limit);
+			List<BoardDto> list = mylistService.getMyParticipateList(uid, limit);
 			
-			int totalSize = mylistservice.getMyParticipateTotal(uid);
+			int totalSize = mylistService.getMyParticipateTotal(uid);
 			
 			resultMap.put("boardlist", list);
 			resultMap.put("totalSize", totalSize);
@@ -97,6 +97,37 @@ public class MylistController {
 			System.out.println("-- 내가 참여한 게시물 조회 실패");
 		}
 		
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	//////////마이리스트 내가 성공한 게시물 조회///////////
+	@GetMapping("/getMySuccessList/{uid}/{limit}")
+	public ResponseEntity<Map<String, Object>> getMySuccessList (@PathVariable("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request){
+		Map<String, Object> resultMap = new HashMap<>();
+		HttpStatus status = null;
+		
+		System.out.println("-- 내 성공 게시물 조회");
+		System.out.println("-- uid : " + uid);
+		System.out.println("-- limit : " + limit);
+		
+		try {
+			List<BoardDto> list = mylistService.getMySuccessList(uid, limit);
+			
+			int totalSize = mylistService.getMySuccessTotal(uid);
+			
+			resultMap.put("boardlist", list);
+			resultMap.put("totalSize", totalSize);
+			resultMap.put("message", SUCCESS);
+			status = HttpStatus.ACCEPTED;
+			
+			System.out.println("-- 내가 성공한 게시물 조회 완료");
+		}catch(Exception e) {
+			logger.error("목록 불러오기 실패 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			
+			System.out.println("-- 내가 성공한 게시물 조회 실패");
+		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 }
