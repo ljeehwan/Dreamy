@@ -3,9 +3,11 @@
     <template v-slot:activator="{ on }">
       <v-btn icon v-on="on" class="mx-3 my-auto">
         <v-avatar size="34">
-          <v-icon size="34">
-            mdi-account-circle
-          </v-icon>
+          <template>
+              <v-avatar size="45">
+                <img alt :src="profileUrl" />
+              </v-avatar>
+            </template>
         </v-avatar>
       </v-btn>
     </template>
@@ -14,11 +16,11 @@
         <v-layout row wrap>
 
           <v-flex xs4>
-            <v-avatar class="mx-1" size="64">
-              <v-icon size="64">
-                mdi-account-circle
-              </v-icon>
-            </v-avatar>
+            <template>
+              <v-avatar size="60">
+                <img alt :src="profileUrl" />
+              </v-avatar>
+            </template>
           </v-flex>
 
 
@@ -62,7 +64,7 @@ export default {
       return this.$store.getters["userStore/getLogintype"];
     },
     profileUrl () {
-      return this.$store.getters['userStore/getTargetImg']
+      return this.$store.getters["userStore/getProfileUrl"];
     },
   },
 
@@ -101,9 +103,4 @@ export default {
 </script>
 
 
-<style scope>
-.user-img {
-    height: 200px;
-    max-height: 200px;
-    max-width: 200px;
-}</style>
+<style></style>

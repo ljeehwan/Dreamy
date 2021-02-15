@@ -50,6 +50,7 @@ const userStore={
             state.user.email=payload["user"].email;
             state.user.name=payload["user"].name;
             state.user.phone=payload["user"].phone;
+            state.user.profileUrl=payload["user"].profileUrl;
             state.user.logintype=payload["user"].loginType;
             localStorage.setItem("uid",payload["user"].uid);
         },
@@ -187,6 +188,9 @@ const userStore={
         },
         getTargetImg (state) {
             return state.targetUser.profileUrl
+        },
+        getProfileUrl(state){
+            return state.user.profileUrl;
         },
     },
 
