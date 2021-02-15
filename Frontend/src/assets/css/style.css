@@ -276,9 +276,6 @@ left: 0;
   top: 30px;
   left: 40px;
 }
-#bucket{
-
-}
 #card_contents{
   position: absolute;
   text-align: center;
@@ -316,6 +313,9 @@ left: 0;
   color:white;
   background-color: #43A047;
   letter-spacing:2px; 
+}
+#isOn:hover{
+  background-color: red;
 }
 #writtenDate{
   text-align: right;
