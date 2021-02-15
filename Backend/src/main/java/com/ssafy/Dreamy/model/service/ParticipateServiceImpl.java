@@ -19,23 +19,18 @@ public class ParticipateServiceImpl implements ParticipateService {
 	SqlSession sqlSession;
 	
 	@Override
-	public int addParticipant(int uid, int pid, int successDate) throws Exception {
+	public int addParticipant(int uid, int pid) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		
 		map.put("uid", uid);
 		map.put("pid", pid);
-		map.put("successDate", successDate);
-		
 		return sqlSession.getMapper(ParticipateMapper.class).addParticipant(map);
 	}
 
 	@Override
 	public int deleteParticipant(int uid, int pid) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		
 		map.put("uid", uid);
 		map.put("pid", pid);
-		
 		return sqlSession.getMapper(ParticipateMapper.class).deleteParticipant(map);
 		
 	}
@@ -43,50 +38,27 @@ public class ParticipateServiceImpl implements ParticipateService {
 	@Override
 	public int checkParticipant(int uid, int pid) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		
 		map.put("uid", uid);
 		map.put("pid", pid);
-		
 		return sqlSession.getMapper(ParticipateMapper.class).checkParticipant(map);
 	}
 
 	@Override
 	public List<UserDto> getUserList(int pid) throws Exception {
-
 		return sqlSession.getMapper(ParticipateMapper.class).getUserList(pid);
 	}
 
 	@Override
 	public int getListSize(int pid) throws SQLException {
-		
 		return sqlSession.getMapper(ParticipateMapper.class).getListSize(pid);
 	}
 
 	@Override
-	public int addSuccess(int uid, int pid) throws Exception {
+	public int bucketSuccess(int uid, int pid) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		
 		map.put("uid", uid);
 		map.put("pid", pid);
-		
-		return sqlSession.getMapper(ParticipateMapper.class).addSuccess(map);
-	}
-
-	@Override
-	public int getSuccessRate(int uid, int pid) throws Exception {
-		int result = 0;
-		
-		Map<String, Object> map = new HashMap<>();
-		
-		map.put("uid", uid);
-		map.put("pid", pid);
-		
-		int totalDate = sqlSession.getMapper(ParticipateMapper.class).getTotalDate(pid);	
-		int successDate = sqlSession.getMapper(ParticipateMapper.class).getSuccessDate(map);
-		
-		result = Math.round(((float)successDate/(float)totalDate)*100);
-		
-		return result;
+		return sqlSession.getMapper(ParticipateMapper.class).bucketSuccess(map);
 	}
 
 }

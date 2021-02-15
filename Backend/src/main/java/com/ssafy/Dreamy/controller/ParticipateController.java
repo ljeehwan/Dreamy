@@ -38,7 +38,7 @@ public class ParticipateController {
 	@Autowired
 	private ParticipateService participateService;
 	
-	//////////게시물 참가 ///////////
+	// 게시물 참가
 	@PostMapping("/addParticipant")
 	public ResponseEntity<Map<String, Object>> addParticipant(@RequestBody ParticipateDto participatedto) throws IOException {
 		Map<String, Object> resultMap = new HashMap<>();
@@ -46,13 +46,12 @@ public class ParticipateController {
 		
 		int uid = participatedto.getUid();
 		int pid = participatedto.getPid();
-		int successDate = 0;
 		
 		System.out.println("-- 게시물 참가");
 		System.out.println("-- uid : " + uid);
 		System.out.println("-- pid : " + pid);
 		try {
-			if(participateService.addParticipant(uid, pid, successDate) < 1) { // 게시물 참가 실패
+			if(participateService.addParticipant(uid, pid) < 1) { // 게시물 참가 실패
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
 				
@@ -69,11 +68,10 @@ public class ParticipateController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//////////게시물 참가 취소 ///////////
+	// 게시물 참가 취소
 	@DeleteMapping("/deleteParticipant/{uid}/{pid}")
 	public ResponseEntity<Map<String, Object>> deleteParticipant(@PathVariable("uid") int uid,@PathVariable("pid") int pid, HttpServletRequest request){
 		Map<String, Object> resultMap = new HashMap<>();
@@ -101,11 +99,10 @@ public class ParticipateController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//////////게시물 참가 여부 조회///////////
+	// 게시물 참가 여부 조회
 	@GetMapping("/checkParticipant/{uid}/{pid}")
 	public ResponseEntity<Map<String, Object>> checkParticipant(@PathVariable("uid") int uid, @PathVariable("pid") int pid, HttpServletRequest request){
 		Map<String, Object> resultMap = new HashMap<>();
@@ -130,13 +127,11 @@ public class ParticipateController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//////////참가자 리스트 조회///////////
-	@GetMapping ("/getUserList/{pid}")
+	// 참가자 리스트 조회
+	@GetMapping("/getUserList/{pid}")
 	public ResponseEntity<Map<String,Object>> getUserList(@PathVariable("pid") int pid, HttpServletRequest request){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
@@ -150,9 +145,7 @@ public class ParticipateController {
 			if( userTotal < 1) {
 				resultMap.put("userTotal", 0);
 				resultMap.put("message", FAIL);
-//				status = HttpStatus.EXPECTATION_FAILED;
-				status = HttpStatus.ACCEPTED;
-				
+				status = HttpStatus.NO_CONTENT;
 				System.out.println("-- 참가자 없음");
 			}else {
 				List<UserDto> list = participateService.getUserList(pid);
@@ -168,63 +161,30 @@ public class ParticipateController {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//////////달성 체크///////////
-	@PutMapping("/addSuccess/{uid}/{pid}")
+	// 달성 체크
+	@PutMapping("/success/{uid}/{pid}")
 	public ResponseEntity<Map<String, Object>> addSuccess(@PathVariable("uid") int uid, @PathVariable("pid") int pid, HttpServletRequest request){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		System.out.println("-- 성공 체크");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- pid : " + pid);
-		
 		try {
-			if(participateService.addSuccess(uid, pid) < 1) {
-				resultMap.put("message", FAIL);
-//				status = HttpStatus.EXPECTATION_FAILED;
-				status = HttpStatus.ACCEPTED;
-			}
-			else {
+			int isSuccess = participateService.bucketSuccess(uid, pid);
+			if(isSuccess > 0) {	// update 성공
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
+			} else {			// update 실패
+				resultMap.put("message", FAIL);
+				status = HttpStatus.NO_CONTENT;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			logger.error("성공 체크 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	//////////달성률 조회///////////
-	@GetMapping("/getSuccessRate/{uid}/{pid}")
-	public ResponseEntity<Map<String, Object>> getSuccessRate(@PathVariable("uid") int uid, @PathVariable("pid") int pid, HttpServletRequest request){
-		Map<String, Object> resultMap = new HashMap<>();
-		HttpStatus status = null;
-		
-		System.out.println("-- 달성률 조회");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- pid : " + pid);
-		
-		try {
-			int successRate = participateService.getSuccessRate(uid, pid);
-			
-			resultMap.put("successRate", successRate);
-			resultMap.put("message", SUCCESS);
-			status = HttpStatus.ACCEPTED;
-		}
-		catch (Exception e) {
-			logger.error("달성률 조회 실패 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
 }
