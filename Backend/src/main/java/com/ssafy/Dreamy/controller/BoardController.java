@@ -111,7 +111,7 @@ public class BoardController {
 			
 			// insert 성공하면 AI값을 return
 			if (ret > 0) {	// 등록 성공
-				if(participateService.addParticipant(boardDto.getUid(), boardDto.getPid(), 0) > 0) { // 참가 성공
+				if(participateService.addParticipant(boardDto.getUid(), boardDto.getPid()) > 0) { // 참가 성공
 					resultMap.put("message", SUCCESS);
 					status = HttpStatus.CREATED;
 					
