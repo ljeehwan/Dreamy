@@ -26,6 +26,8 @@ import com.ssafy.Dreamy.model.FollowDto;
 import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.FollowService;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 @CrossOrigin(origins = { "http://localhost:3000" })
 //@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
