@@ -206,6 +206,7 @@ const userStore={
             localStorage.setItem("isLogin", true)
             axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
             context.dispatch("getUserinfo");
+            router.push('/mainfeed');
           }).catch((error) => {
             alert("이메일과 비밀번호를 확인하세요");
             console.log(error);
@@ -243,6 +244,7 @@ const userStore={
                     context.commit("setSocialUser",user);
                     context.dispatch("socialSignup",user);
                     alert("자동 회원가입 완료! 초기 비밀번호를 꼭 수정해주세요");
+                    router.push('/mainfeed');
                   }
                   //자동 로그인
                   else if(response.data["message"]=="success"){ 
@@ -250,6 +252,7 @@ const userStore={
                     localStorage.setItem("isLogin", true)
                     axios.defaults.headers.common["access-token"]=`${response.data["access-token"]}`;
                     context.dispatch("getUserinfo");
+                    router.push('/mainfeed');
                   }
               }).catch((error)=>{
                   console.log(error.message)

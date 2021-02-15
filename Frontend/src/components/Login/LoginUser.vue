@@ -4,21 +4,15 @@
       <v-btn icon v-on="on" class="mx-3 my-auto">
         <v-avatar size="34">
           <v-icon size="34">
-            <!--프로필 이미지 가져오기-->
             mdi-account-circle
           </v-icon>
         </v-avatar>
       </v-btn>
-      <!--
-      <v-btn icon class="mx-3 my-auto">
-        <v-icon size="26">
-          mdi-bell
-        </v-icon>
-      </v-btn>-->
     </template>
     <v-card width="300">
       <v-container grid-list-md>
         <v-layout row wrap>
+
           <v-flex xs4>
             <v-avatar class="mx-1" size="64">
               <v-icon size="64">
@@ -26,6 +20,8 @@
               </v-icon>
             </v-avatar>
           </v-flex>
+
+
           <v-flex xs8>
             <v-card-text>
               {{ getUsername }} 님<br />
@@ -65,6 +61,9 @@ export default {
     getLogintype() {
       return this.$store.getters["userStore/getLogintype"];
     },
+    profileUrl () {
+      return this.$store.getters['userStore/getTargetImg']
+    },
   },
 
   methods: {
@@ -102,4 +101,9 @@ export default {
 </script>
 
 
-<style></style>
+<style scope>
+.user-img {
+    height: 200px;
+    max-height: 200px;
+    max-width: 200px;
+}</style>
