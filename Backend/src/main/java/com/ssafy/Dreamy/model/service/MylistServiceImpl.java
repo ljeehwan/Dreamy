@@ -40,14 +40,30 @@ public class MylistServiceImpl implements MylistService {
 
 	@Override
 	public int getMyBoardTotal(int uid) throws Exception {
-		// TODO Auto-generated method stub
+
 		return sqlSession.getMapper(MylistMapper.class).getMyBoardTotal(uid);
 	}
 
 	@Override
 	public int getMyParticipateTotal(int uid) throws Exception {
-		// TODO Auto-generated method stub
+
 		return sqlSession.getMapper(MylistMapper.class).getMyParticipateTotal(uid);
+	}
+
+	@Override
+	public List<BoardDto> getMySuccessList(int uid, int limit) throws Exception {
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("uid", uid);
+		map.put("limit", limit);
+		
+		return sqlSession.getMapper(MylistMapper.class).getMySuccessList(map);
+	}
+
+	@Override
+	public int getMySuccessTotal(int uid) throws Exception {
+		
+		return sqlSession.getMapper(MylistMapper.class).getMySuccessTotal(uid);
 	}
 
 }
