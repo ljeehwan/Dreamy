@@ -40,7 +40,11 @@ const userStore={
         spinnerLoading: false,
         snackbar: {open: false, text: '', location: 'top',},
         modal: {open: false, title: '', content: '', option1: '', option2: '',},
-        errorMessage: '잘못된 요청입니다'
+        errorMessage: '잘못된 요청입니다',
+
+        // 팔로우, 팔로워 리스트
+        followingList: [],
+        followerList: [],
     },
 
     mutations:{
@@ -124,11 +128,11 @@ const userStore={
             state.targetUser.following = targetFollowing
         },
         NEW_REQUEST(state) {
-            console.log(state.newRequest)
+            // console.log(state.newRequest)
             state.newRequest = !state.newRequest
         },
         TRUE_FOLLOW(state) {
-            console.log(state.followStatus)
+            // console.log(state.followStatus)
             state.followStatus = true
         },
         FALSE_FOLLOW(state) {
@@ -136,7 +140,12 @@ const userStore={
         },
         PUT_TARGET_IMG(state, imgUrl) {
             state.targetUser.profileUrl = imgUrl
-           
+        },
+        PUT_FOLLOWER_LIST(state, followerList) {
+            state.followerList = followerList
+        },
+        PUT_FOLLOWING_LIST(state, followingList) {
+            state.followingList = followingList
         },
     },
 
@@ -190,8 +199,14 @@ const userStore={
         getTargetImg (state) {
             return state.targetUser.profileUrl
         },
-        getProfileUrl(state){
-            return state.user.profileUrl;
+        getFollowerList (state) {
+            return state.followerList
+        },
+        getFollowingList (state) {
+            return state.followingList
+        },
+        getProfileUrl(state) {
+            return state.user.profileUrl
         },
     },
 
@@ -318,7 +333,7 @@ const userStore={
                 context.commit('START_SPINNER')
                 const response = await requestJoinMember(credentials)  
                 setTimeout(function () {
-                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다.', 'primary', 'top'))
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원가입이 완료되었습니다.', 'light-green', 'buttom'))
                     context.commit('END_SPINNER')
                     context.commit('END_LOADING')
                     router.push('/')
@@ -334,18 +349,14 @@ const userStore={
                 context.commit('START_LOADING')
                 context.commit('START_SPINNER')
                 const userId = this.state.userStore.user.uid
-                console.log(`스토어 진입성공 : ${userId}`)
                 const response = await requestUpdateMember(credentials, userId)
-                console.log(response)
                 setTimeout(function () {
-                    console.log('셋 타임아웃 시작')
                     context.commit('END_LOADING')
                     context.commit('END_SPINNER')
                     // 타겟 정보가 바꼈다는 표시
                     context.commit('NEW_REQUEST')
-                    context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'primary', 'top'))
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('수정이 완료되었습니다.', 'light-green', 'top'))
                     // 어디로 보낼지 다시 정해야함
-                    
                     return response                    
                 }, 500)
             } catch (e) {
@@ -364,7 +375,6 @@ const userStore={
                 "Content-Type" : "multipart/form-data"
             }})
               .then(res => {
-                  console.log(res.data.imgPath)
                   context.commit('PUT_TARGET_IMG', res.data.imgPath)
 
               })
@@ -376,15 +386,13 @@ const userStore={
 
         // 회원 상세 정보 요청 
         GET_MEMBER(context, targetUid) {
-            // 일단 요청하는 방식 uid 말고 name으로 바꿔달라고 해서 요청보내서 응답을 받아온다.
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.get(`${SERVER_URL}/account/user/${targetUid}`)
             .then(res => {
-                console.log(res)
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
-                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'info', 'bottom'))
+                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'light-green', 'bottom'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone,
                 profileUrl: res.data.userInfo.profileUrl}
@@ -395,24 +403,25 @@ const userStore={
                 context.commit('END_LOADING')
                 context.commit('OPEN_MODAL', {title: '회원 정보 요청 실패', content: err, option1: '닫기',})
             })
+            // 일치 확인
+                if (targetUid === parseInt(localStorage.getItem("uid"))) { 
+                context.commit('MYSELF')
+              } else {
+                context.commit('NOT_ME')
+              }
         },
-
-
 
         async DELETE_MEMBER(context) {
             try {
                 context.commit('START_LOADING')
                 context.commit('START_SPINNER')
                 const userId = this.state.userStore.user.uid
-                console.log(`삭제 스토어 진입성공 : ${userId}`)
                 const response = await requestDeleteMember(userId)
-                console.log(`회원 삭제 리스폰스 ${response}`)
                 context.dispatch('logout')
                 setTimeout(function () {
-                    console.log('셋 타임아웃 시작')
                     context.commit('END_LOADING')
                     context.commit('END_SPINNER')
-                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원 탈퇴가 완료되었습니다.', 'primary', 'top'))
+                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원 탈퇴가 완료되었습니다.', 'light-green', 'top'))
                     // 어디로 보낼지 다시 정해야함
                     
                     return response                    
@@ -423,11 +432,11 @@ const userStore={
             }
             
         },
-        GET_FOLLOWER_NUM(context) {
-            const targetUid = this.state.userStore.requestUid      
+        GET_FOLLOWER_NUM(context, requestUid) {
+            // const targetUid = this.state.userStore.requestUid      
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/follow/countfollower/${targetUid}`)
+            axios.get(`${SERVER_URL}/follow/countfollower/${requestUid}`)
             .then(res => {
                 context.commit('PUT_TARGET_FOLLOWER', res.data.count)
                 context.commit('END_SPINNER')
@@ -441,11 +450,10 @@ const userStore={
                 context.commit('END_LOADING')
             })
         },
-        GET_FOLLOWING_NUM(context) {
-            const targetUid = this.state.userStore.requestUid
+        GET_FOLLOWING_NUM(context, requestUid) {
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/follow/countfollowing/${targetUid}`)
+            axios.get(`${SERVER_URL}/follow/countfollowing/${requestUid}`)
               .then(res => {
                   context.commit('PUT_TARGET_FOLLOWING', res.data.count)
                   context.commit('END_SPINNER')
@@ -457,10 +465,9 @@ const userStore={
                   context.commit('END_LOADING')
               })
         },
-        REQUEST_FOLLOW(context) {
-            const requestUid = this.state.userStore.requestUid
+        REQUEST_FOLLOW(context, requestUid) {
             const credentials= {
-                'followingUid': this.state.userStore.user.uid,
+                'followingUid': parseInt(localStorage.getItem("uid")),
                 'followUid' : requestUid
             }
             context.commit('START_LOADING')
@@ -478,17 +485,17 @@ const userStore={
                   context.commit('END_LOADING')
               })
         },
-        REQUEST_UNFOLLOW(context) {
-            const requestUid = this.state.userStore.requestUid
-            const userId = this.state.userStore.user.uid
+        REQUEST_UNFOLLOW(context, requestUid) {
+            const userId = parseInt(localStorage.getItem("uid"))
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.delete(`${SERVER_URL}/follow/unfollow/${userId}/${requestUid}`)
-              .then(res => {
-                  console.log(res)
+              .then( () => {
+                  context.commit('SET_SNACKBAR', setSnackBarInfo('팔로우 해제가 완료되었습니다.', 'orange', 'buttom'))
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
                   context.commit('FALSE_FOLLOW')
+                  
               })
               .catch(err => {
                   console.log(err)
@@ -497,19 +504,15 @@ const userStore={
               })
         },
         // api 수정중...
-        CHECK_FOLLOW(context) {
-            const requestUid = this.state.userStore.requestUid
-            const userId = this.state.userStore.user.uid
+        CHECK_FOLLOW(context, comparingData) {
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
-            axios.get(`${SERVER_URL}/follow/checkfollow/${userId}/${requestUid}`)
+            axios.get(`${SERVER_URL}/follow/checkfollow/${comparingData.userUid}/${comparingData.requestUid}`)
               .then(res => {
-                  console.log('관계 확인')
-                  console.log(res.data.message)
-                  if (res.data.message === 'success') {
-                      context.commit('TRUE_FOLLOW')
+                  if (res.data.message === 'fail') {
+                    context.commit('FALSE_FOLLOW')
                   } else {
-                      context.commit('FALSE_FOLLOW')
+                    context.commit('TRUE_FOLLOW')
                   }
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
@@ -520,21 +523,20 @@ const userStore={
                   context.commit('END_LOADING')
               })
         },
-        REQUEST_FOLLOWING_LIST() {
-            const requestUid = this.state.userStore.requestUid
+        REQUEST_FOLLOWING_LIST(context, requestUid) {
             axios.get(`${SERVER_URL}/follow/listfollowing/${requestUid}`)
               .then(res => {
-                  console.log(res)
+                  context.commit('PUT_FOLLOWING_LIST', res.data.list)
               })
               .catch(err => {
                   console.log(err)
               })
         },
-        REQUEST_FOLLOWER_LIST() {
-            const requestUid = this.state.userStore.requestUid
+        REQUEST_FOLLOWER_LIST(context, requestUid) {
             axios.get(`${SERVER_URL}/follow/listfollower/${requestUid}`)
               .then(res => {
-                  console.log(res)
+                  context.commit('PUT_FOLLOWER_LIST', res.data.list)
+                  
               })
               .catch(err => {
                   console.log(err)
