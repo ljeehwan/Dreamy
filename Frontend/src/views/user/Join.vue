@@ -1,9 +1,9 @@
 <template>
   <div>
     <NavBar/>
-  <v-container id="joinbox" fluid class="mb-7">
+  <v-container id="joinbox" fluid class="mb-6">
     <v-row align="center" class="fill-height" justify="center">
-      <div class="register elevation-12">
+      <div class="register elevation-12 pa-1 mt-3" >
   
           <h3 class="text-h6  text-center py-3 darkgrey--text">
           회 원 가 입
@@ -47,14 +47,7 @@
             required >
             </v-text-field>
 
-            <!-- 이용 약관 -->
-            <v-checkbox
-            class="pr-3 pl-3 my-0"
-            v-model="checkbox"
-            :rules="[v => !!v || '약관에 동의하셔야 합니다!']"
-            label="약관에 동의하십니까?"
-            required
-            ></v-checkbox>
+           
             <!-- 약관 -->
               <v-col class="shrink">
                 <v-btn
@@ -71,14 +64,28 @@
                     width="100%"
                     color="grey lighten-5"
                     class="mx-auto pa-3"
-                  ><p class="text-caption" color="grey">수집된 정보를 타인에게 노출, 공개하지 아니한다.
-                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.
-                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.
-                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.
-                    개인정보 수집 약관이 길게 만들고 있기 때문에 아무 내용이 없어도 된다.</p></v-card>
+                  >
+                  <v-responsive
+                    class="overflow-y-auto pa-1"
+                    max-height="280"
+                  >
+                    <v-card-text class="text-caption" color="grey"
+                    >
+                      <policy />
+                    </v-card-text>
+                  </v-responsive>
+                  </v-card>
 
                 </v-expand-x-transition>
               </v-col>
+               <!-- 이용 약관 -->
+            <v-checkbox
+            class="pr-3 pl-3 my-0"
+            v-model="checkbox"
+            :rules="[v => !!v || '약관에 동의하셔야 합니다!']"
+            label="약관에 동의하십니까?"
+            required
+            ></v-checkbox>
 
             <!-- 가입 버튼 -->
             <div>
@@ -102,12 +109,14 @@
 <script>
   import Modal from "@/components/Modal.vue"
   import {router} from "@/routes.js"
-      import NavBar from '@/components/NavBar.vue'
+  import NavBar from '@/components/NavBar.vue'
+  import policy from "@/components/mypage/Policy.vue"
 
   export default {
     components: {
       Modal,
       NavBar,
+      policy,
     },
     data:() => {
       return {
