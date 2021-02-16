@@ -201,11 +201,27 @@ export default {
     if (this.sheet === false) {
       this.exitMsg = ""
     }
-    const targetUid = this.$store.getters['userStore/getTargetUid']
-  
-    this.$store.dispatch('userStore/GET_FOLLOWER_NUM')
-    this.$store.dispatch('userStore/GET_FOLLOWING_NUM')
-    this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+    const requestUid = Number(this.$route.params.id)
+    this.$store.dispatch('userStore/GET_FOLLOWER_NUM', requestUid)
+    this.$store.dispatch('userStore/GET_FOLLOWING_NUM', requestUid)
+    this.$store.dispatch('userStore/GET_MEMBER', requestUid)
+
+    const userUid = this.$store.getters["userStore/getUserId"]
+    // const requestUid = Number(this.$route.params.id);
+    const comparingData = {userUid : userUid,
+    requestUid: requestUid}
+    console.log(comparingData)
+    this.$store.dispatch('userStore/CHECK_FOLLOW',comparingData)
+    // if (requestUid === this.$store.getters["userStore/getUserId"]) {
+    //   console.log('이름이 일치합니당')
+      
+    //   this.$store.commit('userStore/MYSELF')
+    //   console.log(`뷰엑스의 불린값 ${this.$store.getters["userStore/getMyself"]}`)
+    // } else {
+    //   console.log('이름이 일치하지 않습니다')
+    //   this.$store.commit('userStore/NOT_ME')
+    // }
+
   },
   methods: {
     onExit () {
@@ -222,11 +238,13 @@ export default {
       router.push('/')
     },
     requestFollow() {
-      this.$store.dispatch('userStore/REQUEST_FOLLOW')
+      const requestUid = this.$route.params.id
+      this.$store.dispatch('userStore/REQUEST_FOLLOW', requestUid)
     },
     // unfollow 하는 메소드
     requestUnfollow() {
-      this.$store.dispatch('userStore/REQUEST_UNFOLLOW')
+      const requestUid = this.$route.params.id
+      this.$store.dispatch('userStore/REQUEST_UNFOLLOW', requestUid)
     },
 
   },

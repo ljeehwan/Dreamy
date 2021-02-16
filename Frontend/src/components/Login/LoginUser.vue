@@ -95,6 +95,8 @@ export default {
             // const name = this.$store.getters["userStore/getUsername"];
             // this.$store.commit('userStore/PUT_REQUEST_UID', targetUid)
             //uid 받아서 팔로우 요청(이것도 내꺼 그냥 준다)
+            // this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+            this.$store.commit('userStore/MYSELF')
             router.push(`/user/mypage/${targetUid}`)
         },
   },

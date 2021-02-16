@@ -2,8 +2,29 @@
   <div>
     <v-card-title>팔로워</v-card-title>
     <v-divider></v-divider>
-    <v-card-text style="height: 300px;">
+
+    <v-card-text style="height: 300px;" class="pa-2">
+        <v-list dense>
+            <v-subheader>팔로우하고 있는 회원들입니다</v-subheader>
+            <v-list-item-group v-model="selectedFollower" color="teal">
+                <v-list-item v-for="(item, idx) in followerList"
+                 :key="idx" style="height: 20px;"
+                 class="px-8 ma-2"
+                >
+                    <v-list-item-avatar>
+                        <v-img :src="item.profileUrl"></v-img>
+                    </v-list-item-avatar>
+
+                    <v-list-item-content>
+                        <v-list-item-title
+                         v-text="item.name" style="font-size: medium">
+                        </v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list-item-group>
+        </v-list>
     </v-card-text>
+
     <v-divider></v-divider>
     <v-card-actions>
     <v-btn color="orange darken-1" text @click="onClose" class="mx-auto">
@@ -18,8 +39,13 @@ export default {
     name : "FollowingList",
     data: function() {
         return {
-
+            selectedFollower: null,
         }
+    },
+    computed: {
+        followerList() {
+            return this.$store.getters["userStore/getFollowerList"]
+        },
     },
     methods: {
         onClose () {
