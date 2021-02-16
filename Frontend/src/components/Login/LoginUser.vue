@@ -5,7 +5,7 @@
         <v-avatar size="34">
           <template>
               <v-avatar size="45">
-                <img alt :src="profileUrl" />
+                <img class="rounded-circle portrait" alt :src="profileUrl" />
               </v-avatar>
             </template>
         </v-avatar>
@@ -18,7 +18,7 @@
           <v-flex xs4>
             <template>
               <v-avatar size="60">
-                <img alt :src="profileUrl" />
+                <img class="rounded-circle portrait" alt :src="profileUrl" />
               </v-avatar>
             </template>
           </v-flex>
@@ -96,6 +96,8 @@ export default {
             // const name = this.$store.getters["userStore/getUsername"];
             // this.$store.commit('userStore/PUT_REQUEST_UID', targetUid)
             //uid 받아서 팔로우 요청(이것도 내꺼 그냥 준다)
+            // this.$store.dispatch('userStore/GET_MEMBER', targetUid)
+            this.$store.commit('userStore/MYSELF')
             router.push(`/user/mypage/${targetUid}`)
         },
   },

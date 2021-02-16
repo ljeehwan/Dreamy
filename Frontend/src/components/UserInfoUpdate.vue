@@ -121,6 +121,8 @@
                   this.isCorrect = false
               }
           }
+          const targetUid = this.$route.params.id;
+          this.$store.dispatch('userStore/GET_MEMBER', targetUid)
       },
     },
 

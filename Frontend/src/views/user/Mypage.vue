@@ -5,7 +5,7 @@
         <MyInfo v-bind="{info:targetInfo}" />
       </div>
       <v-card class="overflow-hidden mx-auto
-       my-10" max-width="1155">
+       my-10" max-width="1100">
         <MypageMenu @myMenu="myMenu" />
       </v-card>
       <v-layout row wrap class="overflow-hidden mx-10 my-10 
@@ -52,18 +52,17 @@ export default {
     return {
       menu: null,
       limit: 0,
-      uid: 0,
+      // uid: 0,
       list: [],
     }
   },
   methods: {
     myMenu: function (menu) {
       this.menu = menu
-      console.log(this.menu)
     },
     // 마이피드 불러오기
     infiniteHandler($state) {
-      this.uid = this.$store.getters["userStore/getTargetUid"]
+      // this.uid = Number(this.$route.params.id)
       axios.get(`${SERVER_URL}/mylist/${this.menu}/${this.uid}/${this.limit}`,
       {uid:`${this.uid}`})
         .then(res => {
@@ -92,47 +91,50 @@ export default {
       this.limit=0;
       this.$refs.infiniteLoading.stateChanger.reset();
     },
+    uid() {
+      this.list=[];
+      this.limit=0;
+      this.$refs.infiniteLoading.stateChanger.reset();
+      const comparingData = {userUid : parseInt(localStorage.getItem("uid")),
+      requestUid: Number(this.$route.params.id)}
+      this.$store.dispatch('userStore/CHECK_FOLLOW', comparingData)
+      },
   },
   computed: {
     targetInfo() {
       return this.$store.getters["userStore/getTargetInfo"];
     },
+    uid() {
+      return this.$route.params.id
+    },
   },
-  created: function () {
-    // 뷰엑스로 받은 uid를 타겟에 넣어서
-    // const targetUid = this.$store.getters['userStore/getTargetUid']
-    
+  updated: function () {
     //동적 파라미터로 Uid받기 
-    const requestUid = this.$route.params.id;
-    this.$store.commit('userStore/PUT_REQUEST_UID', requestUid)
-    //1. 스토어에 있는 GET_MEMBER dispatch한다. (네브 바의 마이 페이지 버튼은 어차피 
-    // 자기 자신이기 때문에 이름을 내이름을 내려보내줌)
-    // 응답을 변수에 담아서 저장
+    let requestUid = Number(this.$route.params.id);
+    // 로그인 유저 정보 받기
+    let userUid = parseInt(localStorage.getItem("uid"))
+    // 회원 정보 받기
     this.$store.dispatch('userStore/GET_MEMBER', requestUid)
-    //vuex에서 정보 가져오기
-    // 저장한 변수에서 data의 email, username, phone으로 이름을 할당해주고 브라우저에 출력해준다
     // 2. 응답받은(위에서 출력한) 유저의 name과 로그인한 유저의 이름이 같으면 수정 버튼 활성화
     // 타겟과 로그인한 이름이 일치하면 수정 버튼을 보여준다.
-    
-    if (requestUid == this.$store.getters["userStore/getUserId"]) {
-      console.log('이름이 일치합니당')
-      
+    if (requestUid === parseInt(localStorage.getItem("uid"))) {
       this.$store.commit('userStore/MYSELF')
-      console.log(`뷰엑스의 불린값 ${this.$store.getters["userStore/getMyself"]}`)
     } else {
       this.$store.commit('userStore/NOT_ME')
     }
     // 팔로우 정보 요청
-    this.$store.dispatch('userStore/GET_FOLLOWER_NUM')
-    this.$store.dispatch('userStore/GET_FOLLOWING_NUM')
+    this.$store.dispatch('userStore/GET_FOLLOWER_NUM', requestUid)
+    this.$store.dispatch('userStore/GET_FOLLOWING_NUM', requestUid)
     // 뷰엑스에서 컴퓨티드로 보여줌
     
     // follow 상태 확인 api 새로고침하면 user.uid가 안가져온당? 확인
-    this.$store.dispatch('userStore/CHECK_FOLLOW')
+    const comparingData = {userUid : userUid,
+    requestUid: requestUid}
+    this.$store.dispatch('userStore/CHECK_FOLLOW', comparingData)
     
     // 팔로우, 팔로워 리스트 요청해서 저장해놓기
-    this.$store.dispatch('userStore/REQUEST_FOLLOWING_LIST')
-    this.$store.dispatch('userStore/REQUEST_FOLLOWER_LIST')
+    this.$store.dispatch('userStore/REQUEST_FOLLOWING_LIST', requestUid)
+    this.$store.dispatch('userStore/REQUEST_FOLLOWER_LIST', requestUid)
   },
 
 }
