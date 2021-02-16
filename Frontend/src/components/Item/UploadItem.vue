@@ -216,20 +216,24 @@
                 label="제목 입력"
                 clearable
                 dense
+                :rules="titleRules"
+                :counter="15"
                 class="ma-10"
               ></v-text-field>
             </v-row>
             <v-row>
-              <v-textarea
+              <v-text-field
                 clearable
                 clear-icon="mdi-close-circle"
                 outlined
-                dense
-                width="500"
+                width="70%"
+                height="100px"
                 label="내용 입력"
+                :rules="contentRules"
+                :counter="100"
                 class="mx-10"
                 v-model="card.content"
-              ></v-textarea>
+              ></v-text-field>
             </v-row>
             <v-row>
               <v-col class="sm-6 mx-10">
@@ -298,6 +302,11 @@ export default {
         endDate: "",
         imageUrl: "",
       },
+      titleRules: [v => !!v || '제목을 입력해주세요',
+      v => v.length <= 15 || '글자수를 확인해주세요'
+    ],
+    contentRules:[v => !!v || '내용을 입력해주세요',
+      v => v.length <= 100 || '글자수를 확인해주세요'],
       dateRange: [],
       items: [
         { text: "1. 운동", value: 1 },

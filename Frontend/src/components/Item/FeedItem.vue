@@ -92,15 +92,15 @@
                 <v-btn class="" small icon="icon" color="blue">
                   <v-icon>mdi-comment-outline</v-icon>
                 </v-btn>
-                <span style="color:white">22</span>
+                <span style="color:white">댓글 보기</span>
               </span>
 
-              <span class="mx-3">
+              <!-- <span class="mx-3">
                 <v-btn small="small" icon="icon" color="green">
                   <v-icon>mdi-bookmark</v-icon>
                 </v-btn>
                 <span style="color:white">33</span>
-              </span>
+              </span> -->
             </v-row>
           </v-card-text>
         </v-img>
@@ -134,9 +134,12 @@
                 </v-row>
                 <v-row>
                   <v-spacer></v-spacer>
-                  <v-card-subtitle style="color:black">{{
-                    item.name
-                  }}</v-card-subtitle>
+                  <v-card-subtitle style="color:black">
+                    <span>
+                      <v-btn text rounded
+                       color="purple" @click="moveToPage(item.uid)">{{item.name}}</v-btn>
+                    </span>
+                  </v-card-subtitle>
                 </v-row>
                 <v-card-text>{{ item.content }}</v-card-text>
                 <v-row class="mr-3 my-2 align-center justify-center">
@@ -184,7 +187,9 @@
                     </v-tab>
                     <v-tab>댓글</v-tab>
                     <v-tab-item>
-                      <Participate :type="item.boardType"/>
+                      <Participate :type="item.boardType"
+                       @exitModal="detail=false"
+                      />
                     </v-tab-item>
                     <v-tab-item>
                       <Reply :pid="this.data.pid" :uid="this.data.uid"/>
@@ -223,6 +228,7 @@ import Reply from "./ItemReply";
 import Participate from "./ParticipateList";
 import "moment/locale/ko";
 import "@/assets/css/style.css";
+import {router} from "@/routes.js"
 
 const SERVER_URL = "http://localhost:8080";
 
@@ -343,6 +349,11 @@ export default {
     },
     deleteBoard() {
       this.$store.dispatch("boardStore/deleteBoard", this.data.pid);
+    },
+    moveToPage(uid) {
+      this.detail = false
+      router.push(`/user/mypage/${uid}`)
+      this.$store.dispatch("userStore/GET_MEMBER", uid)
     },
   },
   created() {

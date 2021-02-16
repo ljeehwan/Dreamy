@@ -3,29 +3,27 @@
     <template v-slot:activator="{ on }">
       <v-btn icon v-on="on" class="mx-3 my-auto">
         <v-avatar size="34">
-          <v-icon size="34">
-            <!--프로필 이미지 가져오기-->
-            mdi-account-circle
-          </v-icon>
+          <template>
+              <v-avatar size="45">
+                <img class="rounded-circle portrait" alt :src="profileUrl" />
+              </v-avatar>
+            </template>
         </v-avatar>
-      </v-btn>
-      <v-btn icon class="mx-3 my-auto">
-        <v-icon size="26">
-          <!--프로필 이미지 가져오기-->
-          mdi-bell
-        </v-icon>
       </v-btn>
     </template>
     <v-card width="300">
       <v-container grid-list-md>
         <v-layout row wrap>
+
           <v-flex xs4>
-            <v-avatar class="mx-1" size="64">
-              <v-icon size="64">
-                mdi-account-circle
-              </v-icon>
-            </v-avatar>
+            <template>
+              <v-avatar size="60">
+                <img class="rounded-circle portrait" alt :src="profileUrl" />
+              </v-avatar>
+            </template>
           </v-flex>
+
+
           <v-flex xs8>
             <v-card-text>
               {{ getUsername }} 님<br />
@@ -64,6 +62,9 @@ export default {
     },
     getLogintype() {
       return this.$store.getters["userStore/getLogintype"];
+    },
+    profileUrl () {
+      return this.$store.getters["userStore/getProfileUrl"];
     },
   },
 

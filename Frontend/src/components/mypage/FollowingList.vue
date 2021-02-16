@@ -3,27 +3,33 @@
     <v-card-title>팔로잉 목록</v-card-title>
     <v-divider></v-divider>
     
-    <v-card-text style="height: 300px;"  class="pa-2">
+    <v-card-text style="max-height: 300px;"  class="pa-2">
         <v-list dense>
             <v-subheader>
                  팔로우하고 있는 회원들입니다</v-subheader>
-            <v-list-item-group v-model="selectedFollowing" color="teal">
-                <v-list-item v-for="(item, idx) in followingList"
-                 :key="idx" style="height: 20px;"
-                 class="px-8 ma-2"
-                 @click="moveToPage(item.uid)"
-                >   
-                    <v-list-item-avatar >
-                        <v-img :src="item.profileUrl"></v-img>
-                    </v-list-item-avatar>
+            <v-responsive
+                class="overflow-y-auto pa-1"
+                max-height="240"
+            >
+                <v-list-item-group v-model="selectedFollowing" color="teal"
+                >
+                    <v-list-item v-for="(item, idx) in followingList"
+                    :key="idx" style="height: 20px;"
+                    class="px-8 ma-2"
+                    @click="moveToPage(item.uid)"
+                    >   
+                        <v-list-item-avatar >
+                            <v-img :src="item.profileUrl"></v-img>
+                        </v-list-item-avatar>
 
-                    <v-list-item-content>
-                        <v-list-item-title
-                         v-text="item.name" style="font-size: medium">
-                        </v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-            </v-list-item-group>
+                        <v-list-item-content>
+                            <v-list-item-title
+                            v-text="item.name" style="font-size: medium">
+                            </v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-item-group>
+            </v-responsive>
         </v-list>
     </v-card-text>
 
@@ -38,6 +44,7 @@
 
 <script>
 import {router} from "@/routes.js"
+
 export default {
     name : "FollowingList",
     data: function() {
@@ -56,10 +63,8 @@ export default {
             this.$emit('followinglistClose')
         },
         moveToPage (uid) {
-            console.log(uid)
-            this.$emit('followinglistClose')
             router.push(`/user/mypage/${uid}`)
-            this.$store.dispatch("userStore/GET_MEMBER", uid)
+            this.$emit('followinglistClose')
         },
     },
 }

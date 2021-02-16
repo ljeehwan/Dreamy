@@ -78,7 +78,7 @@
                 <span >E-mail : {{targetInfo.email}}</span>
                   <v-dialog v-model="dialog" width="400" height="800">
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn class="pa-0 ma-0" rounded fab d-inline-block v-if="isMyself"
+                      <v-btn class="pa-0 ma-0" rounded fab d-inline-block
                       text small v-bind="attrs" v-on="on">
                         <v-icon>mdi-cog-outline</v-icon>
                       </v-btn>
@@ -111,8 +111,9 @@
                   <v-icon left>mdi-account-supervisor-circle</v-icon>
                   <v-dialog v-model="followingClose" scrollable max-width="300">
                     <template v-slot:activator="{ on, attrs }">
-                      <v-btn text v-bind="attrs" v-on="on">
-                        <span>팔로잉 :  {{followings}} </span>
+                      <v-btn class="ml-0 pl-1" 
+                      text v-bind="attrs" v-on="on">
+                        <span>팔로잉 : <b> {{followings}}</b> </span>
                       </v-btn>
                     </template>
 
@@ -128,7 +129,7 @@
                 <v-dialog v-model="followerClose" scrollable max-width="300">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">
-                      <span>팔로워 :  {{followers}}</span>
+                      <span>팔로워 : <b> {{followers}}</b></span>
                     </v-btn>
                   </template>
 
@@ -206,21 +207,16 @@ export default {
     this.$store.dispatch('userStore/GET_FOLLOWING_NUM', requestUid)
     this.$store.dispatch('userStore/GET_MEMBER', requestUid)
 
-    const userUid = this.$store.getters["userStore/getUserId"]
-    // const requestUid = Number(this.$route.params.id);
+    const userUid = parseInt(localStorage.getItem("uid"))
+
     const comparingData = {userUid : userUid,
     requestUid: requestUid}
-    console.log(comparingData)
     this.$store.dispatch('userStore/CHECK_FOLLOW',comparingData)
-    // if (requestUid === this.$store.getters["userStore/getUserId"]) {
-    //   console.log('이름이 일치합니당')
-      
-    //   this.$store.commit('userStore/MYSELF')
-    //   console.log(`뷰엑스의 불린값 ${this.$store.getters["userStore/getMyself"]}`)
-    // } else {
-    //   console.log('이름이 일치하지 않습니다')
-    //   this.$store.commit('userStore/NOT_ME')
-    // }
+    // 팔로우, 팔로워 리스트 요청해서 저장해놓기
+    this.$store.dispatch('userStore/REQUEST_FOLLOWING_LIST', requestUid)
+    this.$store.dispatch('userStore/REQUEST_FOLLOWER_LIST', requestUid)
+
+
 
   },
   methods: {

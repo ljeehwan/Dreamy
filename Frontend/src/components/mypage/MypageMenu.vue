@@ -5,23 +5,23 @@
     dark shift >
 
     <v-btn class="mx-auto" @click="onClick('getMyBoardList')">
-      <span>내 피드</span>
+      <span>내 드림</span>
 
       <v-icon>mdi-image</v-icon>
     </v-btn>
 
     <v-btn class="mx-auto" @click="onClick('getMyParticipateList')">
-      <span>참여중</span>
+      <span>참여중 드림</span>
 
       <v-icon>mdi-book</v-icon>
     </v-btn>
 
     <!-- 성공, 완료한 목록 -->
-    <!-- <v-btn class="mx-auto" @click="onClick('getMyParticipateList')">
-      <span>참여중</span>
+    <v-btn class="mx-auto" @click="onClick('getMySuccessList')">
+      <span>성공한 드림</span>
 
-      <v-icon>mdi-book</v-icon>
-    </v-btn> -->
+      <v-icon>mdi-check-bold</v-icon>
+    </v-btn>
 
     </v-bottom-navigation>    
   </div>
@@ -33,15 +33,15 @@ export default {
   data: function () {
     return {
        value: 0,
-       menus: null,
+       menus: 'getMyBoardList',
     }
   },
   computed: {
       color () {
         switch (this.value) {
-          case 0: return 'teal'
-          case 1: return 'amber'
-          case 2: return 'blue-grey'
+          case 0: return 'amber'
+          case 1: return '#EF5350'
+          case 2: return 'teal'
           default: return 'blue-grey'
         }
       },
