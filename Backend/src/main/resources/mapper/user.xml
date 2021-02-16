@@ -12,7 +12,7 @@
 	
 	<!-- 소셜 로그인 관련 -->
 	<select id="setUser" parameterType="String" resultType="userDto">
-		select uid, email, name, phone, login_type as loginType
+		select uid, email, name, phone, login_type as loginType, profile_url as profileUrl
 		from User
 		where email=#{email}
 	</select>

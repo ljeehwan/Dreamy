@@ -92,15 +92,15 @@
                 <v-btn class="" small icon="icon" color="blue">
                   <v-icon>mdi-comment-outline</v-icon>
                 </v-btn>
-                <span style="color:white">22</span>
+                <span style="color:white">댓글 보기</span>
               </span>
 
-              <span class="mx-3">
+              <!-- <span class="mx-3">
                 <v-btn small="small" icon="icon" color="green">
                   <v-icon>mdi-bookmark</v-icon>
                 </v-btn>
                 <span style="color:white">33</span>
-              </span>
+              </span> -->
             </v-row>
           </v-card-text>
         </v-img>
