@@ -296,6 +296,13 @@ left: 0;
   opacity: 0;
   transition: opacity 300ms ease-out;
 }
+#accepted{
+  text-align: center;
+  height: 25px;
+  font-weight: bold;
+  color:rgb(83, 78, 226);
+  letter-spacing:2px; 
+}
 #add{
   text-align: center;
   height: 25px;
