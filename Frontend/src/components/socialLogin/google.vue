@@ -21,7 +21,8 @@ export default {
     return {
       params: {
         client_id:
-          "59282748193-2ftph4gilb0g6vfnuentcfkr1c2oiirk.apps.googleusercontent.com",
+          // "59282748193-2ftph4gilb0g6vfnuentcfkr1c2oiirk.apps.googleusercontent.com",
+          "59282748193-kgvm5jglbkvdb3f07r1d505fjlopi9u9.apps.googleusercontent.com"
       },
     };
   },

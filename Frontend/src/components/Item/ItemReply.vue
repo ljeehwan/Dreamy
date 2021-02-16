@@ -1,5 +1,5 @@
 <template>
-  <v-sheet max-height="270" width="460">
+  <v-sheet max-height="350" width="460">
     <v-list class="my-2">
       <v-row class="ma-2">
       <v-text-field
@@ -22,7 +22,7 @@
       <v-list-item-group>
         <v-list-item
           dense
-          v-for="reply in getReply"
+          v-for="reply in pagingList"
           v-bind:key="reply.rid"
         >
           <v-list-item>
@@ -40,6 +40,7 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+     <v-pagination v-model="curPage" :length="pages" circle></v-pagination>
   </v-sheet>
 </template>
 
@@ -49,7 +50,10 @@ import "moment/locale/ko";
 export default {
   data() {
     return {
-      content:""
+      content:"",
+      dataPerPage:4,
+      replyList:[],
+      curPage:1,
     };
   },
   props:{
@@ -86,7 +90,19 @@ export default {
     },
     getUsername(){
       return this.$store.getters["userStore/getUsername"]
-    }
+    },
+    startOffset() {
+        return ((this.curPage - 1) * this.dataPerPage);
+    },
+    endOffset() {
+        return (this.startOffset + this.dataPerPage);
+    },
+    pages(){
+         return Math.ceil(this.getReply.length / this.dataPerPage);
+    },
+    pagingList(){
+        return this.getReply.slice(this.startOffset,this.endOffset);
+    },
   },
   
 };

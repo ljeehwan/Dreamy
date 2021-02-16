@@ -135,7 +135,7 @@ const boardStore={
                 url:`${SERVER_URL}/reply/list/${pid}`,
             })
             .then((res)=>{
-                console.log(res.data);
+                // console.log(res.data);
                 context.commit('setReplyList',res.data)
             })
             .catch((error)=>{
@@ -149,14 +149,24 @@ const boardStore={
                 url:`${SERVER_URL}/participate/getUserList/${pid}`,
             })
             .then((res)=>{
-                console.log(res.data);
+                // console.log(res.data);
                 context.commit('setParticipateList',res.data);
             })
             .catch((error)=>{
                 console.log(error);
             })
         },
-        
+        addSuccess(context,data){
+            axios({
+                method:"put",
+                url:`${SERVER_URL}/participate/addSuccess/${data.uid}/${data.pid}`,
+            })
+            .then((res)=>{
+                if(res.data.message==="fail"){
+                     alert("성공 체크 실패")
+                }
+            })
+        }
 
     }
 }

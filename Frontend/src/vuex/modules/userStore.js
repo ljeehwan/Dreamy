@@ -159,6 +159,7 @@ const userStore={
         getLogintype(state){
             return state.user.logintype;
         },
+        
         getTargetUid(state){
             return state.requestUid;
         },
