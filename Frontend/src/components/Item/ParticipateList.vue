@@ -1,5 +1,5 @@
 <template>
-   <v-sheet max-height="270" width="460"> 
+   <v-sheet max-height="300" width="460"> 
        <div class="px-5"  v-if="getPartiTotal==0">
            <v-row class="my-8 align-center justify-center">현재 참가자가 없습니다!</v-row>
        </div>
@@ -23,6 +23,7 @@
                 </v-tooltip>
            </div>
            </v-row>
+           <v-pagination v-model="curPage" :length="pages" circle></v-pagination>
        </div>
    </v-sheet>
 </template>
@@ -32,16 +33,34 @@ import {router} from "@/routes.js"
 
 
 export default {
+    data(){
+        return{
+            curPage:1,
+            dataPerPage:8,
+        }
+    },
 props:{
     type:Number
 },
 computed: {
+    startOffset() {
+        return ((this.curPage - 1) * this.dataPerPage);
+      },
+      endOffset() {
+        return (this.startOffset + this.dataPerPage);
+      },
     getParticipate() {
       return this.$store.getters["boardStore/getParticipate"];
     },
      getPartiTotal() {
       return this.$store.getters["boardStore/getPartiTotal"];
     },
+    pagingList(){
+        return this.getParticipate.slice(this.startOffset,this.endOffset);
+    },
+    pages(){
+         return Math.ceil(this.getPartiTotal / this.dataPerPage);
+    }
   },
   methods: {
       moveToPage(uid) {
