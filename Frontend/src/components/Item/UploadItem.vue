@@ -22,7 +22,7 @@
     <v-card>
       <v-toolbar dark flat>
         <v-toolbar-title>
-          버킷리스트 / 첼린지 등록
+          버킷리스트 / 챌린지 등록
         </v-toolbar-title>
       </v-toolbar>
       <v-divider></v-divider>

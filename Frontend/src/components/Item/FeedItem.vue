@@ -144,7 +144,7 @@
                 <v-card-text>{{ item.content }}</v-card-text>
                 <v-row class="mr-3 my-2 align-center justify-center">
                   <v-spacer></v-spacer>
-                  <div class="mx-2">
+                  <div class="mx-1">
                   <v-btn
                     v-if="isLiked"
                     class="mr-1"
@@ -170,10 +170,13 @@
                   <v-btn v-if="!this.isParticipate" id="add" class="ml-5" outlined @click="addParticipant">
                       참여하기
                     </v-btn>
-                  <v-btn v-else id="isOn" class="ml-5" outlined @click="delParticipate">
+                  <v-btn v-else id="isOn" class="ml-3" outlined @click="cancel=true">
                       참여 중
                     </v-btn>
-
+                  <v-btn v-if="item.boardType==2&&this.isParticipate" id="accepted" class="ml-1" text color="blue" @click="done">
+                      <v-icon class="mr-1">mdi-checkbox-marked-outline</v-icon>
+                      완료하기
+                    </v-btn>
                 </v-row>
                 <v-divider></v-divider>
                 <template>
@@ -202,7 +205,36 @@
           </v-col>
         </v-row>
       </v-layout>
+        </v-dialog>
+        <v-dialog v-model="cancel" max-width="400">
+      <v-card class="py-5">
+        <v-card-subtitle style="color:black">
+          정말 해당 {{item.boardType|typeFilter}} 진행을 취소 하시겠습니까? 
+        </v-card-subtitle>
+        <v-row justify="center">
+          <v-btn text @click="cancel = false">
+            아니오
+          </v-btn>
+          <v-btn color="error" text @click="delParticipate">
+            취소
+          </v-btn>
+        </v-row>
+      </v-card>
     </v-dialog>
+
+        <v-dialog v-model="success" max-width="300">
+      <v-card class="py-5">
+        <v-card-subtitle style="color:black">
+          해당 챌린지가 완료되었습니다. 
+        </v-card-subtitle>
+        <v-row justify="center">
+          <v-btn color="primary" text @click="success=false">
+            OK
+          </v-btn>
+        </v-row>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="delflag" max-width="300">
       <v-card class="py-5">
         <v-card-subtitle style="color:black">
@@ -244,6 +276,8 @@ export default {
         uid: parseInt(localStorage.getItem("uid")),
         pid: this.item.pid,
       },
+      success:false,
+      cancel:false,
     };
   },
   components: {
@@ -350,11 +384,11 @@ export default {
     deleteBoard() {
       this.$store.dispatch("boardStore/deleteBoard", this.data.pid);
     },
-    moveToPage(uid) {
-      this.detail = false
-      router.push(`/user/mypage/${uid}`)
-      this.$store.dispatch("userStore/GET_MEMBER", uid)
-    },
+    done(){
+      this.$store.dispatch("boardStore/addSuccess",this.data);
+      this.success=true;
+      this.isParticipate=false;
+    }
   },
   created() {
     this.checkLike();
@@ -364,6 +398,13 @@ export default {
   filters: {
     dateFilter: function(date) {
       return moment(date).fromNow();
+    },
+     typeFilter: function(type) {
+      if(type==1){
+          return "버킷리스트"
+      }else if(type==2){
+          return "챌린지"
+      }
     },
   },
 };
