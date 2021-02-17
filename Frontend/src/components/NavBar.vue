@@ -13,11 +13,12 @@
 
     <v-spacer> </v-spacer>
 
-
+      <!-- 검색 인풋 창 -->
       <v-flex shrink>
         <v-expand-x-transition>
           <div v-show="expand" class="search-box">
-          <input type="text" class="search-txt" name="" placeholder="Type to search">
+          <input type="text" class="search-txt" name="" placeholder="Type to search"
+          @keydown.enter="onSearch" v-model="searchMsg">
           </div>
         </v-expand-x-transition>
       </v-flex>
@@ -83,8 +84,8 @@ import LoginUser from "./Login/LoginUser.vue";
 
 export default {
   data: () => ({
-    searchWord: "",
     expand:false,
+    searchMsg: "",
   }),
   components: {
     loginComponent,
@@ -93,6 +94,13 @@ export default {
   computed: {
     getIsLogined() {
       return this.$store.getters["userStore/getIsLogined"];
+    },
+  },
+  methods: {
+    onSearch () {
+      // console.log(this.searchMsg)
+      this.$emit("searchMsg", this.searchMsg)
+      this.searchMsg = ""
     },
   },
 };

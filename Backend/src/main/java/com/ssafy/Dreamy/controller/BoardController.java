@@ -45,8 +45,8 @@ public class BoardController {
 	private ParticipateService participateService;
 	
 	// 검색
-	@GetMapping("/search/{keyword}")
-	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @RequestParam("limit") int limit, HttpServletRequest request) {
+	@GetMapping("/search/{keyword}/{limit}")
+	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @PathVariable("limit") int limit, @RequestParam("uid") int uid, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
