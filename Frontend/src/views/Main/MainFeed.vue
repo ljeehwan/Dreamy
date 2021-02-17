@@ -1,7 +1,7 @@
 <template>
 
   <div class="mt-15">
-    <NavBar/>
+    <NavBar @searchMsg="requestSearch" />
     <feed-menu id="menubar" @clickType="changeType"/>
     <v-divider></v-divider>
     <v-layout row wrap class="mb-10 mx-10 align-center justify-center">
@@ -45,41 +45,79 @@ export default {
       list: [],
       limit: 0,
       uid: 0,
-      type:null,
+      type: '',
+      searchingStatus : false,
     };
   },
   methods: {
     infiniteHandler($state) {
       let id = localStorage.getItem("uid");
-      axios({
-        method: "get",
-        url: `${SERVER_URL}/board/list/${this.type}/${this.limit}`,
-        params: {
-          uid: id,
-        },
-      })
-        .then((res) => {
-          // console.log(res)
-          console.log(this.list);
-          setTimeout(() => {
-            if (res.data.totalSize>this.limit) {
-            let data=res.data.list
-            for (let key in data) {
-                this.list.push(data[key]);
-            }
-            this.limit+=3;
-              $state.loaded();
-            } else {
-              $state.complete();
-            }
-          }, 1000);
+      if (this.searchingStatus === false) {
+        axios({
+          method: "get",
+          url: `${SERVER_URL}/board/list/${this.type}/${this.limit}`,
+          params: {
+            uid: id,
+          },
         })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then((res) => {
+            // console.log(res)
+            console.log(this.list);
+            setTimeout(() => {
+              if (res.data.totalSize>this.limit) {
+              let data=res.data.list
+              for (let key in data) {
+                  this.list.push(data[key]);
+              }
+              this.limit+=3;
+                $state.loaded();
+              } else {
+                $state.complete();
+              }
+            }, 1000);
+          })
+          .catch((error) => {
+            console.log(error);
+          }) 
+      } else {
+          axios({
+            method: "get",
+            url: `${SERVER_URL}/board/search/${this.type}/${this.limit}`,
+            params: {
+              uid: id,
+            },
+          })
+          
+          .then((res) => {
+            console.log(res)
+            console.log(this.list);
+            setTimeout(() => {
+              if (res.data.totalSize>this.limit) {
+              let data=res.data.list
+              for (let key in data) {
+                  this.list.push(data[key]);
+              }
+              this.limit+=3;
+                $state.loaded();
+              } else {
+                $state.complete();
+                this.searchingStatus = false
+              }
+            }, 1000);
+            })
+          .catch((error) => {
+            console.log(error);
+          }) 
+      }
     },
     changeType(val) {
       this.type = val;
+    },
+    requestSearch (searchText) {
+      // console.log(searchText)
+      this.searchingStatus = true
+      this.type = searchText
+      console.log(this.type)
     },
   },
   computed: {
