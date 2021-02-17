@@ -63,7 +63,7 @@
           </v-row>
           <!-- <div class="typeName" v-if="item.boardType==1" style="color:green">B<span id="bucket"></span></div>
       <div class="typeName" v-if="item.boardType==2" style="color:red">C<span id="challenge"></span></div> -->
-          <v-card-text id="card_contents">
+          <v-card-text id="card_contents"  @click.stop="">
             <v-row class="align-center justify-center">
               <span class="mx-3">
                 <v-btn
@@ -92,7 +92,7 @@
                 <v-btn class="" small icon="icon" color="blue">
                   <v-icon>mdi-comment-outline</v-icon>
                 </v-btn>
-                <span style="color:white">댓글 보기</span>
+                <span style="color:white">{{replycnt}}</span>
               </span>
 
               <!-- <span class="mx-3">
@@ -278,6 +278,7 @@ export default {
       },
       success:false,
       cancel:false,
+      replycnt:0,
     };
   },
   components: {
@@ -332,6 +333,18 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    countReply(){
+      axios({
+        method:"get",
+        url:`${SERVER_URL}/reply/countlist/${this.item.pid}`,
+      })
+      .then((res)=>{
+          this.replycnt = res.data.count;
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
     },
     checkParticipate(){
       axios({
@@ -399,6 +412,7 @@ export default {
     this.checkLike();
     this.checkParticipate();
     this.countLike();
+    this.countReply();
   },
   filters: {
     dateFilter: function(date) {
@@ -439,6 +453,3 @@ export default {
  font-size: 15px;
 }
 </style>
-
-
-
