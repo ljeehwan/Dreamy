@@ -1,10 +1,10 @@
 <template>
    <v-sheet max-height="330" width="460"> 
        <div class="px-5"  v-if="getPartiTotal==0">
-           <v-row class="my-8 align-center justify-center">현재 참가자가 없습니다!</v-row>
+           <v-row id="fonttest" class="my-8 align-center justify-center">현재 참가자가 없습니다!</v-row>
        </div>
        <div class="px-5" v-else>
-           <p class="my-8 align-center justify-center">현재 {{getPartiTotal}}명이 해당 <b>{{type|typeFilter}}</b>를 함께하고 있습니다!</p>
+           <p id="fonttest" class="my-8 align-center justify-center">현재 {{getPartiTotal}}명이 해당 {{type|typeFilter}}를 함께하고 있습니다!</p>
            <v-row class="my-5 align-center justify-center">
            <div class="ma-5" v-for="part in pagingList" v-bind:key="part.uid">
                <v-tooltip bottom>
@@ -80,5 +80,11 @@ computed: {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap");
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
 
+#fonttest{
+ font-family: 'Hanna';
+ font-size: 18px;
+}
 </style>
