@@ -1,5 +1,7 @@
 package com.ssafy.Dreamy.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,13 +48,15 @@ public class BoardController {
 	
 	// 검색
 	@GetMapping("/search/{keyword}/{limit}")
-	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @PathVariable("limit") int limit, @RequestParam("uid") int uid, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String EncodedKeyword, @PathVariable("limit") int limit, @RequestParam("uid") int uid, HttpServletRequest request) throws UnsupportedEncodingException {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
+		String Decodedkeyword = URLDecoder.decode(EncodedKeyword, "UTF-8");
+		logger.info("keyword : {}", Decodedkeyword);
 		
 		try {
-			int totalSize = boardService.searchTotalSize(keyword);
-			List<BoardDto> list = boardService.searchList(keyword, limit);
+			int totalSize = boardService.searchTotalSize(Decodedkeyword);
+			List<BoardDto> list = boardService.searchList(Decodedkeyword, limit);
 			if (totalSize > limit) {	// 리스트가 있을 때
 				resultMap.put("list", list);
 				resultMap.put("totalSize", totalSize);
