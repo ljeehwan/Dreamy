@@ -90,7 +90,6 @@ export default {
               uid: id,
             },
           })
-          
           .then((res) => {
             console.log(res)
             console.log(this.list);
