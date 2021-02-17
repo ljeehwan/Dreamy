@@ -23,7 +23,7 @@
         </v-expand-x-transition>
       </v-flex>
 
-   <v-btn id="search-icon" @click="expand=!expand" icon class="mx-2 my-auto">
+   <v-btn id="search-icon" @click="onClick" icon class="mx-2 my-auto">
       <v-icon size="26">
         mdi-magnify
       </v-icon>
@@ -81,6 +81,7 @@
 <script>
 import loginComponent from "./Login/Login.vue";
 import LoginUser from "./Login/LoginUser.vue";
+// const searchTXT=document.getElementsByClassName("search-txt");
 
 export default {
   data: () => ({
@@ -97,11 +98,17 @@ export default {
     },
   },
   methods: {
-    onSearch () {
+    onSearch() {
       // console.log(this.searchMsg)
       this.$emit("searchMsg", this.searchMsg)
       this.searchMsg = ""
     },
+    onClick() {
+      this.expand=!this.expand;
+      setTimeout(function () {
+          document.getElementsByClassName("search-txt")[0].focus()
+        }, 100);
+    }
   },
 };
 </script>

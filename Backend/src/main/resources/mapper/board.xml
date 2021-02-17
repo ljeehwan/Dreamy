@@ -13,7 +13,7 @@
 	<select id="searchList" parameterType="Map" resultType="com.ssafy.Dreamy.model.BoardDto">
 		select pid, Board.uid, name, board_type as boardType, title, content, written_date as writtenDate,
 		start_date as startDate, end_date as endDate, category, image_url as imageUrl, total_date as totalDate from User, Board
-		where User.uid = Board.uid and (title like #{word} or content like #{word})
+		where User.uid = Board.uid and (title like #{searchWord} or content like #{searchWord})
 		order by written_date DESC
 		limit #{limit}, 3
 	</select>
