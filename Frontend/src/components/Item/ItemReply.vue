@@ -16,7 +16,7 @@
       >
       </v-text-field>
       </v-row>
-      <div v-if="getReply.length===0">
+      <div id="fonttest" v-if="getReply.length===0">
           등록된 댓글이 없습니다!
       </div>
       <v-list-item-group>
@@ -26,7 +26,7 @@
           v-bind:key="reply.rid"
         >
           <v-list-item>
-            <v-list-item-title>{{ reply.name }}</v-list-item-title>
+            <v-list-item-title id="fonttest">{{ reply.name }}</v-list-item-title>
             <v-list-item-subtitle>{{ reply.content }}</v-list-item-subtitle>
             <v-list-item-subtitle>{{
               reply.writtenDate | replyFilter
@@ -114,5 +114,12 @@ export default {
 }
 #reply:hover {
   background-color: #eeeeee;
+}
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap");
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+
+#fonttest{
+ font-family: 'Hanna';
+ font-size: 18px;
 }
 </style>
