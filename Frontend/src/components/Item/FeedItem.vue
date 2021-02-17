@@ -12,8 +12,9 @@
         <img
           src="@/assets/empty.png"
           class="cardbg"
-          style="height:100%; vertical-align: top; width:100%; position: absolute; top: 0;
-  left: 0;"
+          style="height:100%; vertical-align: top; width:100%; 
+                position: absolute; top: 0;
+                left: 0;"
           alt="bg"
         />
         <v-img
@@ -27,7 +28,7 @@
             src="@/assets/shadow.png"
             class="cardbg"
             style="height:100%; vertical-align: top; width:100%; position: absolute; top: 0;
-  left: 0;"
+                  left: 0;"
             alt="bg2"
           />
 
@@ -95,19 +96,13 @@
                 <span style="color:white">댓글 보기</span>
               </span>
 
-              <!-- <span class="mx-3">
-                <v-btn small="small" icon="icon" color="green">
-                  <v-icon>mdi-bookmark</v-icon>
-                </v-btn>
-                <span style="color:white">33</span>
-              </span> -->
             </v-row>
           </v-card-text>
         </v-img>
       </div>
     </v-card>
 
-    <v-dialog v-model="detail" max-width="1000" max-height="800">
+    <v-dialog class="ma-3" v-model="detail" max-width="1000">
       <v-layout style="background-color:black">
         <v-row class="align-center justify-center">
           <v-col class="pr-0">
@@ -213,7 +208,7 @@
         </v-card-subtitle>
         <v-row justify="center">
           <v-btn text @click="cancel = false">
-            아니오
+            아니요
           </v-btn>
           <v-btn color="error" text @click="delParticipate">
             취소
@@ -373,13 +368,12 @@ export default {
       })
       .then((res)=>{
           if(res.data.message==="success"){
-            this.isParticipate=false;
             this.$store.commit("boardStore/setParticipate");
             this.$store.dispatch("boardStore/getParticipate", this.data.pid);
-          }else{
-            this.isParticipate=true;
+            this.cancel = false
           }
       })
+  
     },
     deleteBoard() {
       this.$store.dispatch("boardStore/deleteBoard", this.data.pid);
