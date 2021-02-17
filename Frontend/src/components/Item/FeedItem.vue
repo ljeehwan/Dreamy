@@ -64,7 +64,7 @@
           </v-row>
           <!-- <div class="typeName" v-if="item.boardType==1" style="color:green">B<span id="bucket"></span></div>
       <div class="typeName" v-if="item.boardType==2" style="color:red">C<span id="challenge"></span></div> -->
-          <v-card-text id="card_contents">
+          <v-card-text id="card_contents"  @click.stop="">
             <v-row class="align-center justify-center">
               <span class="mx-3">
                 <v-btn
@@ -93,7 +93,7 @@
                 <v-btn class="" small icon="icon" color="blue">
                   <v-icon>mdi-comment-outline</v-icon>
                 </v-btn>
-                <span style="color:white">댓글 보기</span>
+                <span style="color:white">{{replycnt}}</span>
               </span>
 
             </v-row>
@@ -116,7 +116,7 @@
             <v-flex>
               <v-card class="pa-5">
                 <v-row>
-                  <v-card-title>{{ item.title }}</v-card-title>
+                  <v-card-title id="fonttitle">{{ item.title }}</v-card-title>
                   <v-spacer></v-spacer>
                   <v-btn
                     v-if="data.uid == item.uid"
@@ -132,11 +132,11 @@
                   <v-card-subtitle style="color:black">
                     <span>
                       <v-btn text rounded
-                       color="purple" @click="moveToPage(item.uid)">{{item.name}}</v-btn>
+                       color="purple" id="fontname" @click="moveToPage(item.uid)">{{item.name}}</v-btn>
                     </span>
                   </v-card-subtitle>
                 </v-row>
-                <v-card-text>{{ item.content }}</v-card-text>
+                <v-card-text id="fontcontent">{{ item.content }}</v-card-text>
                 <v-row class="mr-3 my-2 align-center justify-center">
                   <v-spacer></v-spacer>
                   <div class="mx-1">
@@ -160,7 +160,7 @@
                   >
                     <v-icon>mdi-heart-outline</v-icon>
                   </v-btn>
-                  <span>{{ likes }}<small>명</small></span>
+                  <span id="fonttest">{{ likes }}<small>명</small></span>
                   </div>
                   <v-btn v-if="!this.isParticipate" id="add" class="ml-5" outlined @click="addParticipant">
                       참여하기
@@ -180,10 +180,10 @@
                     fixed-tabs
                     slider-color="block"
                   >
-                    <v-tab>
+                    <v-tab id="fonttest">
                       참가자
                     </v-tab>
-                    <v-tab>댓글</v-tab>
+                    <v-tab id="fonttest">댓글</v-tab>
                     <v-tab-item>
                       <Participate :type="item.boardType"
                        @exitModal="detail=false"
@@ -273,6 +273,7 @@ export default {
       },
       success:false,
       cancel:false,
+      replycnt:0,
     };
   },
   components: {
@@ -327,6 +328,18 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    countReply(){
+      axios({
+        method:"get",
+        url:`${SERVER_URL}/reply/countlist/${this.item.pid}`,
+      })
+      .then((res)=>{
+          this.replycnt = res.data.count;
+      })
+      .catch((err)=>{
+        console.log(err);
+      })
     },
     checkParticipate(){
       axios({
@@ -393,6 +406,7 @@ export default {
     this.checkLike();
     this.checkParticipate();
     this.countLike();
+    this.countReply();
   },
   filters: {
     dateFilter: function(date) {
@@ -411,4 +425,25 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap");
+@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
+
+#fonttest{
+ font-family: 'Hanna';
+ font-size: 15x;
+}
+
+#fonttitle{
+ font-family: 'Hanna';
+ font-size: 27px;
+}
+
+#fontcontent{
+ font-family: 'Hanna';
+ font-size: 18px;
+}
+
+#fontname{
+ font-family: 'Hanna';
+ font-size: 15px;
+}
 </style>
