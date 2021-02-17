@@ -46,7 +46,7 @@ public class BoardController {
 	
 	// 검색
 	@GetMapping("/list/{keyword}/{limit}")
-	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @PathVariable("limit") int limit, HttpServletRequest request) {
+	public ResponseEntity<Map<String, Object>> getList(@PathVariable("keyword") String keyword, @PathVariable("limit") int limit, @RequestParam("uid") int uid, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
