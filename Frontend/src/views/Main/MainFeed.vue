@@ -15,7 +15,10 @@
       @infinite="infiniteHandler"
       spinner="circles"
       ref="infiniteLoading"
-    ></infinite-loading>
+    >
+      <div slot="no-more" class="mb-12">목록의 끝입니다 :)</div>
+      <div slot="no-results" class="mb-12">목록의 끝입니다 :)</div>
+    </infinite-loading>
     <Upload v-if="getIsLogined" />
   </div>
 </template>
