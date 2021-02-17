@@ -81,7 +81,6 @@
 <script>
 import loginComponent from "./Login/Login.vue";
 import LoginUser from "./Login/LoginUser.vue";
-// const searchTXT=document.getElementsByClassName("search-txt");
 
 export default {
   data: () => ({

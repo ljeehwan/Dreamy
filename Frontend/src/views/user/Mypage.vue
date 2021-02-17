@@ -31,13 +31,12 @@
 </template>
 
 <script>
-import MyInfo from '@/components/MyInfo.vue'
-import MypageMenu from '@/components/mypage/MypageMenu.vue'
-// import MyFeed from '@/components/mypage/MyFeed.vue'
-import FeedItem from "@/components/Item/FeedItem.vue";
 import axios from "axios";
 import InfiniteLoading from "vue-infinite-loading";
-// import { mapGetters } from "vuex";
+
+import MyInfo from '@/components/MyInfo.vue'
+import MypageMenu from '@/components/mypage/MypageMenu.vue'
+import FeedItem from "@/components/Item/FeedItem.vue";
 import NavBar from '@/components/NavBar.vue'
 
 const SERVER_URL = "http://localhost:8080";
@@ -55,7 +54,6 @@ export default {
     return {
       menu: null,
       limit: 0,
-      // uid: 0,
       list: [],
     }
   },
