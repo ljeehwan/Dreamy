@@ -24,7 +24,7 @@
         ref="infiniteLoading"
       >
         <div slot="no-more">목록의 끝입니다 :)</div>
-        <div slot="no-results">목록의 끝입니다 :)</div>
+        <div slot="no-results"> 목록이 비어있습니다 :(</div>
       </infinite-loading>
 
   </v-content>
@@ -67,7 +67,6 @@ export default {
       axios.get(`${SERVER_URL}/mylist/${this.menu}/${this.uid}/${this.limit}`,
       {uid:`${this.uid}`})
         .then(res => {
-          console.log(res)
           setTimeout(()=> {
             if(res.data.totalSize > this.limit) {
               let data=res.data.boardlist

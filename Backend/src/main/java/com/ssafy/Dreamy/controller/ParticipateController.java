@@ -26,8 +26,8 @@ import com.ssafy.Dreamy.model.ParticipateDto;
 import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.ParticipateService;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/participate")
 public class ParticipateController {
@@ -47,21 +47,14 @@ public class ParticipateController {
 		int uid = participatedto.getUid();
 		int pid = participatedto.getPid();
 		
-		System.out.println("-- 게시물 참가");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- pid : " + pid);
 		try {
 			if(participateService.addParticipant(uid, pid) < 1) { // 게시물 참가 실패
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
-				
-				System.out.println("-- 게시물 참가 실패");
 			}
 			else { // 게시물 참가 성공
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				
-				System.out.println("-- 게시물 참가 성공");
 			}
 		} catch (Exception e) {
 			logger.error("게시물 참가 실패 : {}", e);
@@ -77,22 +70,14 @@ public class ParticipateController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		System.out.println("-- 참가 취소");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- pid : " + pid);
-		
 		try {
 			if(participateService.deleteParticipant(uid, pid) < 1) { // 참가 취소 실패
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
-				
-				System.out.println("-- 참가 취소 실패");
 			}
 			else { // 참가 취소 성공
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				
-				System.out.println("-- 참가 취소 성공");
 			}
 		} catch (Exception e) {
 			logger.error("게시물 참가 실패 : {}", e);
@@ -107,10 +92,6 @@ public class ParticipateController {
 	public ResponseEntity<Map<String, Object>> checkParticipant(@PathVariable("uid") int uid, @PathVariable("pid") int pid, HttpServletRequest request){
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
-		System.out.println("-- 참가 여부 조회");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- pid : " + pid);
 		
 		try {
 			if(participateService.checkParticipant(uid, pid) < 1) { // 참가 여부 X
@@ -136,17 +117,14 @@ public class ParticipateController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		System.out.println("-- 참가자 리스트 조회");
-		System.out.println("-- pid : " + pid);
-		
 		try {
 			int userTotal = participateService.getListSize(pid);
-			System.out.println("-- userTotal : " + userTotal);
+
 			if( userTotal < 1) {
 				resultMap.put("userTotal", 0);
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NO_CONTENT;
-				System.out.println("-- 참가자 없음");
+
 			}else {
 				List<UserDto> list = participateService.getUserList(pid);
 				

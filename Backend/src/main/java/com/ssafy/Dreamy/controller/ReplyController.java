@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.Dreamy.model.ReplyDto;
 import com.ssafy.Dreamy.model.service.ReplyService;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/reply")
 public class ReplyController {

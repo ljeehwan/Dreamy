@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.Dreamy.model.BoardDto;
 import com.ssafy.Dreamy.model.service.MylistService;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/mylist")
 public class MylistController {
@@ -39,10 +39,6 @@ public class MylistController {
 	public ResponseEntity<Map<String, Object>> getMyBoardList(@PathVariable("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-
-		System.out.println("-- 내가 작성한 게시물 조회");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- limit : " + limit);
 		
 		try {
 			List<BoardDto> list = mylistService.getMyBoardList(uid, limit);
@@ -54,17 +50,12 @@ public class MylistController {
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			
-			System.out.println("-- 내가 작성한 게시물 조회 완료");
-			
 		}catch(Exception e) {
 			logger.error("목록 불러오기 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			
-			System.out.println("-- 내가 작성한 게시물 조회 실패");
 		}
-		
-		
+				
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
@@ -73,10 +64,6 @@ public class MylistController {
 	public ResponseEntity<Map<String, Object>> getMyParticipateList(@PathVariable("uid") int uid, @PathVariable("limit") int limit, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-
-		System.out.println("-- 내 참여 게시물 조회");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- limit : " + limit);
 		
 		try {
 			List<BoardDto> list = mylistService.getMyParticipateList(uid, limit);
@@ -88,13 +75,10 @@ public class MylistController {
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 			
-			System.out.println("-- 내가 참여한 게시물 조회 완료");
 		}catch(Exception e) {
 			logger.error("목록 불러오기 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			
-			System.out.println("-- 내가 참여한 게시물 조회 실패");
+			status = HttpStatus.INTERNAL_SERVER_ERROR;	
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -106,10 +90,6 @@ public class MylistController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
-		System.out.println("-- 내 성공 게시물 조회");
-		System.out.println("-- uid : " + uid);
-		System.out.println("-- limit : " + limit);
-		
 		try {
 			List<BoardDto> list = mylistService.getMySuccessList(uid, limit);
 			
@@ -119,14 +99,11 @@ public class MylistController {
 			resultMap.put("totalSize", totalSize);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
-			
-			System.out.println("-- 내가 성공한 게시물 조회 완료");
+
 		}catch(Exception e) {
 			logger.error("목록 불러오기 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			
-			System.out.println("-- 내가 성공한 게시물 조회 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}

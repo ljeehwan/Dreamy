@@ -29,8 +29,8 @@ import com.ssafy.Dreamy.model.service.BoardService;
 import com.ssafy.Dreamy.model.service.ParticipateService;
 
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/board")	// 매핑주소 변경가능
 public class BoardController {
@@ -82,9 +82,8 @@ public class BoardController {
 		HttpStatus status = null;
 		int boardType = boardDto.getBoardType();
 		int ret = 0;
-		//if(boardDto.getImageUrl().equals(null)) {
 		if(boardDto.getImageUrl() == null) {
-			System.out.println("image is null");
+			
 			switch(boardDto.getCategory()) {
 			case 1:
 				boardDto.setImageUrl(DEFAULTIMAGEURL + "/exercise.jpg");
@@ -118,14 +117,10 @@ public class BoardController {
 				if(participateService.addParticipant(boardDto.getUid(), boardDto.getPid()) > 0) { // 참가 성공
 					resultMap.put("message", SUCCESS);
 					status = HttpStatus.CREATED;
-					
-					System.out.println("-- 참가 성공");
 				}
 				else {		// 참가 실패
 					resultMap.put("message", FAIL);
 					status = HttpStatus.EXPECTATION_FAILED;
-					
-					System.out.println("-- 참가 실패");
 				}
 			} else {		// 등록 실패
 				resultMap.put("message", FAIL);
@@ -173,17 +168,14 @@ public class BoardController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			System.out.println("-- 게시물 수정 시도");
 			int pid = boardDto.getPid();
 			String content = boardDto.getContent();
 			boardService.update(pid, content);
 			status = HttpStatus.ACCEPTED;
-			System.out.println("-- 게시물 수정 성공");
 		}catch(Exception e) {
 			logger.error("게시물 수정 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("-- 게시물 수정 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
