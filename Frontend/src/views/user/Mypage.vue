@@ -67,7 +67,6 @@ export default {
       axios.get(`${SERVER_URL}/mylist/${this.menu}/${this.uid}/${this.limit}`,
       {uid:`${this.uid}`})
         .then(res => {
-          console.log(res)
           setTimeout(()=> {
             if(res.data.totalSize > this.limit) {
               let data=res.data.boardlist

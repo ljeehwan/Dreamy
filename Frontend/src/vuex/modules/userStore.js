@@ -128,11 +128,9 @@ const userStore={
             state.targetUser.following = targetFollowing
         },
         NEW_REQUEST(state) {
-            // console.log(state.newRequest)
             state.newRequest = !state.newRequest
         },
         TRUE_FOLLOW(state) {
-            // console.log(state.followStatus)
             state.followStatus = true
         },
         FALSE_FOLLOW(state) {
@@ -241,7 +239,6 @@ const userStore={
                 url: `${SERVER_URL}/account/checkJwt`,
                 data : token,
             }).then((response)=>{
-                console.log(response.data);
                 context.commit("setUserinfo",response.data);
             }).catch(()=>{
             })
@@ -470,8 +467,7 @@ const userStore={
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.post(`${SERVER_URL}/follow/requestfollow`, credentials)
-              .then(res => {
-                  console.log(res)
+              .then( () => {
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
                   context.commit('TRUE_FOLLOW')

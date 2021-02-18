@@ -49,8 +49,8 @@ const boardStore={
                 url:`${SERVER_URL}/board/insert`,
                 data:card
             })
-            .then((res)=>{
-               console.log(res);
+            .then(()=>{
+
                alert("등록 성공");
             //    router.go(router.currentRoute);
                location.reload();
@@ -135,7 +135,6 @@ const boardStore={
                 url:`${SERVER_URL}/reply/list/${pid}`,
             })
             .then((res)=>{
-                // console.log(res.data);
                 context.commit('setReplyList',res.data)
             })
             .catch((error)=>{
@@ -149,7 +148,6 @@ const boardStore={
                 url:`${SERVER_URL}/participate/getUserList/${pid}`,
             })
             .then((res)=>{
-                // console.log(res.data);
                 context.commit('setParticipateList',res.data);
             })
             .catch((error)=>{
