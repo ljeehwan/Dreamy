@@ -47,7 +47,6 @@ public class BoardServiceImpl implements BoardService {
 				
 		int lastPid = sqlSession.getMapper(BoardMapper.class).selectLast();
 		
-		System.out.println("-- postid : " + lastPid);
 		boardDto.setPid(lastPid);
 		
 		return result;
@@ -76,8 +75,7 @@ public class BoardServiceImpl implements BoardService {
 		int result = sqlSession.getMapper(BoardMapper.class).insertChallenge(map);
 		
 		int lastPid = sqlSession.getMapper(BoardMapper.class).selectLast();
-		
-		System.out.println("-- postid : " + lastPid);
+
 		boardDto.setPid(lastPid);
 		
 		return result;

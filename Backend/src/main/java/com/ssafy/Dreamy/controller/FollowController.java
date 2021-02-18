@@ -28,8 +28,8 @@ import com.ssafy.Dreamy.model.service.FollowService;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/follow")
 public class FollowController {
@@ -51,14 +51,12 @@ public class FollowController {
 		int target_id = followDto.getFollowUid();
 
 		try {
-			System.out.println("팔로우 요청함수 시작");
 			followservice.followService(user_id, target_id);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("팔로우 요청 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
@@ -73,14 +71,12 @@ public class FollowController {
 		HttpStatus status = null;
 
 		try {
-			System.out.println("언팔로우 요청함수 시작");
 			followservice.unfollowService(userid, targetid);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("언팔로우 요청 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -93,20 +89,16 @@ public class FollowController {
 		HttpStatus status = null;
 
 		try {
-			System.out.println("친구관계 검증 함수 시작");
 			if (followservice.followcheck(userid, targetid)) {
-				System.out.println("--친구관계성립");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {
-				System.out.println("--친구관계아니다");
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("친구관계 체크 실패");
 		}
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);

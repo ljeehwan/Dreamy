@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 	public boolean login(String email, String password) throws Exception {
 		if (email == null || password == null)
 			return false;
-//		System.out.println("--로그인 정보 / 이메일 : " + email + " 비번 : " + password);
+
 		Map<String, String> map = new HashMap<>();
 		map.put("email", email);
 		map.put("password", password);
@@ -155,7 +155,6 @@ public class UserServiceImpl implements UserService {
 		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() { 
-		//Session session = Session.getInstance(props, new javax.mail.Authenticator() { 
 			protected PasswordAuthentication getPasswordAuthentication() { 
 				return new PasswordAuthentication(user, password); 
 			} 
@@ -165,12 +164,11 @@ public class UserServiceImpl implements UserService {
 			MimeMessage message = new MimeMessage(session); 
 			message.setFrom(new InternetAddress(user)); 
 			
-			//수신자 메일 주소
+			// 수신자 메일 주소
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); 
-			// 메일 내용 
+			// 메일 제목 
 			message.setSubject("[Dreamy] 임시비밀번호 발송."); 
 			// 메일 내용 
-			//message.setText("KTKO Success222!"); 
 
 			message.setContent("<div>\r\n"
 					+ "		<section style=\"padding:50px 0;background-image: url('https://dreamybucket.s3.ap-northeast-2.amazonaws.com/background.png'); background-repeat:no-repeat; background-size: 100% 100%;\">\r\n"
@@ -201,7 +199,6 @@ public class UserServiceImpl implements UserService {
 								,"text/html;charset=euckr");
 			// send the message 
 			Transport.send(message); 
-			System.out.println("Success Message Send"); 
 			
 		} catch (MessagingException e) { 
 			result = -1;
@@ -233,7 +230,7 @@ public class UserServiceImpl implements UserService {
 			
 			password = sb.substring(sb.length() - 8, sb.length());
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}	
 		

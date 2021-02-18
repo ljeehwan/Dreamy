@@ -30,11 +30,10 @@ import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.JwtServiceImpl;
 import com.ssafy.Dreamy.model.service.UserService;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/account")
-// @RequestMapping("/user")
 public class UserController {
 
 	public static final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -57,23 +56,19 @@ public class UserController {
 		String password = memberDto.getPassword();
 		try {
 			boolean isUser = userService.login(email, password);
-			System.out.println("1.로그인 시도"); //
 			if (isUser) {
 				String token = jwtService.create("userEmail", email, "access-token"); // key, data, subject
 				logger.debug("로그인 토큰정보 : {}", token);
 				resultMap.put("access-token", token);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("2-1토큰 생성");
 			} else {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NOT_FOUND;
-				System.out.println("2-2로그인 실패");
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("2-3 서버 오류 로그인 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -83,19 +78,15 @@ public class UserController {
 	public ResponseEntity<Map<String, Object>> jwtOauth(@RequestBody String token) throws IOException {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		System.out.println("3-1jwt 함수 진입");
 		try {
 			status = HttpStatus.ACCEPTED;
 			String email = jwtService.get(token);
 			UserDto loginUser = userService.setUser(email);
-			System.out.println("로그인 완료");
 
-			System.out.println(loginUser.getLoginType());
 			resultMap.put("user", loginUser);
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("3-2 jwt 인증 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -108,7 +99,6 @@ public class UserController {
 		String email = memberDto.getEmail();
 		String name = memberDto.getName();
 		String type = memberDto.getLoginType();
-		System.out.println("1. socail 로그인 db 유저 정보 확인");
 
 		try {
 			// 이메일 중복 검사
@@ -117,18 +107,15 @@ public class UserController {
 			if (userEmail == 0 && userName == 0) { // db에 유저 정보가 없음 => 자동가입 시키기
 				resultMap.put("message", "needSignup");
 				status = HttpStatus.ACCEPTED;
-				System.out.println("2-1 소셜 계정 자동 가입");
 			} else if (userName == 1) { // db에 유저정보가 있음 => 로그인
 				if (!(type.equals(userService.getLoginType(email)))) { // db에 존재하는 이메일이 현재 로그인하는 소셜타입과 맞지 않으면 거부
 					resultMap.put("message", "otherSocialLogin");
 					status = HttpStatus.CONFLICT;
-					System.out.println("2-2 소셜 계정존재시 거부");
 				} else { // 맞으면 자동 로그인
 					String token = jwtService.create("userEmail", email, "access-token");
 					resultMap.put("access-token", token);
 					resultMap.put("message", "success");
 					status = HttpStatus.ACCEPTED;
-					System.out.println("2-3 소셜 계정 자동 로그인");
 				}
 			}
 		} catch (Exception e) {
@@ -144,10 +131,8 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		String type = userDto.getLoginType();
-		System.out.println(type + "type: signup");
 		
 		try {
-			System.out.println("0 초기비밀번호 생성");
 			String password = null;
 			
 			if (userDto.getPassword() == null) {
@@ -155,43 +140,40 @@ public class UserController {
 				password = userService.createPassword();
 				userDto.setPassword(password);
 			}
-			
-			System.out.println("1 회원가입 시도");
+
 			int emailNum = userService.getEmail(userDto.getEmail());
 			int nameNum = userService.getName(userDto.getName());
 			if (emailNum != 0) {
 				resultMap.put("message", "동일한 이메일이 사용중입니다.");
 				status = HttpStatus.CONFLICT;
-				System.out.println("2-1 이메일 중복");
+
 			} else if (nameNum != 0) {
 				resultMap.put("message", "동일한 닉네임이 사용중입니다.");
 				status = HttpStatus.CONFLICT;
-				System.out.println("2-2 닉네임 중복");
+
 			} else {
 				// 초기 프로필 설정
 				String defaultImage = DEFAULTIMAGEURL + "/profile.png";
-				System.out.println(defaultImage);
+
 				userDto.setProfileUrl(defaultImage);
-				System.out.println(userDto.getProfileUrl());
+
 				// 회원가입 시도 시 return 값으로 회원가입 여부 확인
 				int ret = userService.signup(userDto);
-				System.out.println(userDto.getProfileUrl());
+
 				if (ret > 0) { // 회원가입 성공
 					resultMap.put("userInfo", userDto);
 					resultMap.put("message", SUCCESS);
 					status = HttpStatus.CREATED;
-					System.out.println("3-1 회원가입 성공");
+
 				} else { // 회원가입 실패
 					resultMap.put("message", FAIL);
 					status = HttpStatus.EXPECTATION_FAILED;
-					System.out.println("3-2 회원가입 실패");
 				}
 			}
 		} catch (Exception e) {
 			logger.error("회원가입 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("4-1 회원가입 실패");
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -207,11 +189,9 @@ public class UserController {
 			if (ret == 1) { // uid, password 일치
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--검증 성공");
 			} else {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.NOT_FOUND;
-				System.out.println("--검증 실패");
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
@@ -227,18 +207,15 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
-			System.out.println("--회원정보 수정 시도");
 			int ret = userService.update(userDto);
 			if (ret > 0) { // 회원정보 수정 성공
 				UserDto updated = userService.userInfo(uid);
 				resultMap.put("userInfo", updated);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--회원정보 수정 성공");
 			} else { // 회원정보 수정 실패
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
-				System.out.println("--회원정보 수정 실패");
 			}
 		} catch (Exception e) {
 			logger.error("회원정보 수정 실패 : {}", e);
@@ -259,11 +236,9 @@ public class UserController {
 			if (ret > 0) {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--회원탈퇴 성공");
 			} else {
 				resultMap.put("message", FAIL);
 				status = HttpStatus.EXPECTATION_FAILED;
-				System.out.println("--회원탈퇴 실패");
 			}
 		} catch (Exception e) {
 			logger.error("회원탈퇴 실패 : {}", e);
@@ -277,58 +252,44 @@ public class UserController {
 	// 확인 후 임시비밀번호 이메일 전송
 	@PostMapping("/updatePassword")	
 	public ResponseEntity<Map<String, Object>> updatePassword(@RequestBody UserDto memberDto){
-		System.out.println("비밀번호 변경");
 		String email = memberDto.getEmail();
 		String name = memberDto.getName();
-		System.out.println("email : " + email);
-		System.out.println("phone : " + name);
+
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			System.out.println("--회원정보 인증 시도");
 
 			if (userService.certification(email, name) == 0) {
 				resultMap.put("message", FAIL);
-				status = HttpStatus.EXPECTATION_FAILED;
-				System.out.println("--회원정보 인증 실패");			
+				status = HttpStatus.EXPECTATION_FAILED;		
 			} 
-			else {
-				System.out.println("--회원정보 인증 성공 ");					
+			else {					
 				// 임시비밀번호 생성.
 				String newPassword = userService.createPassword();	
-				System.out.println("--임시비밀번호 생성 ");	
 				// 임시비밀번호로 변경.
 				if(userService.updatePassword(email, newPassword) < 1) {
 					resultMap.put("message", FAIL);
 					status = HttpStatus.EXPECTATION_FAILED;
-					System.out.println("--임시 비밀번호 변경 실패");
 				}	
-				System.out.println("--임시비밀번호로 변경 ");
 				// 이메일 전송.
 				if(userService.sendEmail(email, newPassword) != 0) {
 					resultMap.put("message", FAIL);
 					status = HttpStatus.INTERNAL_SERVER_ERROR;
-					System.out.println("--이메일 전송 실패");
-				}
-				System.out.println("--이메일 전송 ");
-				
+				}				
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
-				System.out.println("--비밀번호 변경 성공");
 			}
 
 		} catch (Exception e) {
 			logger.error("회원정보 인증 실패 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("--회원정보 인증 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	// 유저 정보 받아오기
 	@GetMapping("/user/{uid}")
-//	@GetMapping("/{name}") // @RequestMapping("/user")으로 변경 시
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("uid") int uid, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
