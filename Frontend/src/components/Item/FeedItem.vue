@@ -384,6 +384,7 @@ export default {
             this.$store.commit("boardStore/setParticipate");
             this.$store.dispatch("boardStore/getParticipate", this.data.pid);
             this.cancel = false
+            this.isParticipate = false
           }
       })
   

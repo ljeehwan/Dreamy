@@ -24,7 +24,7 @@
         ref="infiniteLoading"
       >
         <div slot="no-more">목록의 끝입니다 :)</div>
-        <div slot="no-results">목록의 끝입니다 :)</div>
+        <div slot="no-results"> 목록이 비어있습니다 :(</div>
       </infinite-loading>
 
   </v-content>
