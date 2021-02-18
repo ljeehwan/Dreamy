@@ -392,7 +392,7 @@ const userStore={
             .then(res => {
                 context.commit('END_SPINNER')
                 context.commit('END_LOADING')
-                context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'light-green', 'bottom'))
+                // context.commit('SET_SNACKBAR', setSnackBarInfo('상세 정보 요청이 완료 되었습니다.', 'light-green', 'bottom'))
                 const targetInfo = {uid: res.data.userInfo.uid, email: res.data.userInfo.email,
                 name: res.data.userInfo.name, phone: res.data.userInfo.phone,
                 profileUrl: res.data.userInfo.profileUrl}
@@ -421,9 +421,7 @@ const userStore={
                 setTimeout(function () {
                     context.commit('END_LOADING')
                     context.commit('END_SPINNER')
-                    context.commit('SET_SNACKBAR', setSnackBarInfo('회원 탈퇴가 완료되었습니다.', 'light-green', 'top'))
-                    // 어디로 보낼지 다시 정해야함
-                    
+                    // context.commit('SET_SNACKBAR', setSnackBarInfo('회원 탈퇴가 완료되었습니다.', 'light-green', 'top'))
                     return response                    
                 }, 500)
             } catch (e) {
@@ -432,8 +430,7 @@ const userStore={
             }
             
         },
-        GET_FOLLOWER_NUM(context, requestUid) {
-            // const targetUid = this.state.userStore.requestUid      
+        GET_FOLLOWER_NUM(context, requestUid) {    
             context.commit('START_LOADING')
             context.commit('START_SPINNER')
             axios.get(`${SERVER_URL}/follow/countfollower/${requestUid}`)
@@ -491,7 +488,7 @@ const userStore={
             context.commit('START_SPINNER')
             axios.delete(`${SERVER_URL}/follow/unfollow/${userId}/${requestUid}`)
               .then( () => {
-                  context.commit('SET_SNACKBAR', setSnackBarInfo('팔로우 해제가 완료되었습니다.', 'orange', 'buttom'))
+                //   context.commit('SET_SNACKBAR', setSnackBarInfo('팔로우 해제가 완료되었습니다.', 'orange', 'buttom'))
                   context.commit('END_SPINNER')
                   context.commit('END_LOADING')
                   context.commit('FALSE_FOLLOW')

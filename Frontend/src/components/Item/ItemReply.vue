@@ -1,7 +1,7 @@
 <template>
   <v-sheet max-height="600" width="460">
+
     <!-- 댓글 리스트 시작 -->
-    <v-list class="my-2">
       <v-row class="ma-2">
       <v-text-field
         label="댓글 작성"
@@ -23,7 +23,8 @@
           등록된 댓글이 없습니다!
       </div>
       <!-- 댓글 내용 리스트 ~~~~~~ -->
-      <v-list-item-group>
+    <v-list class="my-2">
+
         <v-list-item
           dense
           v-for="reply in pagingList"
@@ -35,7 +36,7 @@
               <span>
                 <b>{{ reply.name }}</b> 
                 <v-icon right class="ml-1">mdi-thought-bubble-outline</v-icon>
-                <v-icon right color="red darken-1 ml-9" 
+                 <v-icon right color="red darken-1 ml-9" 
                 @click="deleteReply(reply.rid)"
                 v-if="uid == reply.uid"
                 >
@@ -56,7 +57,7 @@
           </v-item-content>
 
         </v-list-item>
-      </v-list-item-group>
+
     </v-list>
     
     <!-- 페이지네이션 시작 -->
@@ -134,12 +135,5 @@ export default {
 }
 #reply:hover {
   background-color: #eeeeee;
-}
-@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Nanum+Gothic:wght@700;800&display=swap");
-@import url(http://fonts.googleapis.com/earlyaccess/hanna.css);
-
-#fonttest{
- font-family: 'Hanna';
- font-size: 18px;
 }
 </style>

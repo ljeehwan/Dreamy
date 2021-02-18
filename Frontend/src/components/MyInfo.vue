@@ -75,7 +75,7 @@
             <div class="d-flex justify-start font-weight-bold">
               <p v-show="isMyself">
                 <v-icon left>mdi-email</v-icon>
-                <span >E-mail : {{targetInfo.email}}</span>
+                <span >{{targetInfo.email}}</span>
                   <v-dialog v-model="dialog" width="400" height="800">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn class="pa-0 ma-0" rounded fab d-inline-block
@@ -91,21 +91,21 @@
               </p>
             </div>
             <!-- 닉네임 -->
-            <div class="d-flex justify-start font-weight-bold">
+            <div class="d-flex justify-start font-weight-bold mt-5">
               <p>
                 <v-icon left>mdi-account</v-icon>
-                닉네임 : {{targetInfo.name}}
+                {{targetInfo.name}}
               </p>
             </div>
           </div>
           <!-- 핸드폰 번호 -->
-          <div class="d-flex justify-start font-weight-bold">
+          <!-- <div class="d-flex justify-start font-weight-bold">
             <p v-show="isMyself">
               <v-icon left>mdi-phone</v-icon>
               <span >핸드폰 번호 : {{phone}}</span>
             </p>
-          </div>
-          <div class="d-flex justify-start font-weight-bold">
+          </div> -->
+          <div class="d-flex justify-start font-weight-bold mt-5">
             <p>
                <span class="follow-m">
                   <v-icon left>mdi-account-supervisor-circle</v-icon>
@@ -113,7 +113,7 @@
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn class="ml-0 pl-1" 
                       text v-bind="attrs" v-on="on">
-                        <span>팔로잉 : <b> {{followings}}</b> </span>
+                        <span>팔로잉 <b> {{followings}}</b> </span>
                       </v-btn>
                     </template>
 
@@ -129,7 +129,7 @@
                 <v-dialog v-model="followerClose" scrollable max-width="300">
                   <template v-slot:activator="{ on, attrs }">
                     <v-btn text v-bind="attrs" v-on="on">
-                      <span>팔로워 : <b> {{followers}}</b></span>
+                      <span>팔로워 <b> {{followers}}</b></span>
                     </v-btn>
                   </template>
 
