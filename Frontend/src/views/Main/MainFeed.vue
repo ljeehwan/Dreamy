@@ -64,8 +64,6 @@ export default {
           },
         })
           .then((res) => {
-            // console.log(res)
-            console.log(this.list);
             setTimeout(() => {
               if (res.data.totalSize>this.limit) {
               let data=res.data.list
