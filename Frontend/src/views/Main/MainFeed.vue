@@ -17,7 +17,7 @@
       ref="infiniteLoading"
     >
       <div slot="no-more" class="mb-12">목록의 끝입니다 :)</div>
-      <div slot="no-results" class="mb-12">목록의 끝입니다 :)</div>
+      <div slot="no-results" class="mb-12">목록이 비어있습니다 :(</div>
     </infinite-loading>
     <Upload v-if="getIsLogined" />
   </div>

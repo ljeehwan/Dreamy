@@ -159,7 +159,7 @@ const boardStore={
         addSuccess(context,data){
             axios({
                 method:"put",
-                url:`${SERVER_URL}/participate/addSuccess/${data.uid}/${data.pid}`,
+                url:`${SERVER_URL}/participate/success/${data.uid}/${data.pid}`,
             })
             .then((res)=>{
                 if(res.data.message==="fail"){
