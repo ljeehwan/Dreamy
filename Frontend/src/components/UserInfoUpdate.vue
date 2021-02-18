@@ -111,7 +111,6 @@
           if (this.$refs.form.validate()) {
               if (this.validatePassword === this.credentials.password) {
                 this.$store.dispatch('userStore/UPDATE_MEMBER', this.credentials)
-                // console.log(this.credentials)
                 // 내정보를 바꿨을 때, 다시 emit해서 이벤트 주고 폰 바뀐거 다시 얻어야함
                 this.$emit('complete')
                 this.credentials.password = ''
