@@ -52,17 +52,6 @@ public class ImageServiceImpl implements ImageService {
 		String subFileExtension = fileName.substring(index, nameLen);
 		String newFileName = typeString + "/" + subFileName + subFileExtension;
 
-		System.out.println("newFileName : " + newFileName);
-	    // + date.format(new Date());
-
-	    // key가 존재하면 기존 파일은 삭제
-	   /* if ("".equals(currentFilePath) == false && currentFilePath != null) {
-	      boolean isExistObject = s3Client.doesObjectExist(bucket, currentFilePath);
-
-	      if (isExistObject == true) {
-	        s3Client.deleteObject(bucket, currentFilePath);
-	      }
-	    }*/
 
 	    // 파일 업로드
 	    s3Client.putObject(new PutObjectRequest(bucket, newFileName, file.getInputStream(), null)
@@ -70,16 +59,4 @@ public class ImageServiceImpl implements ImageService {
 
 	    return newFileName;
 	}
-
-
-	/*@Override
-	public String upload(MultipartFile file) throws Exception {
-		String fileName = file.getOriginalFilename();
-
-	    s3Client.putObject(new PutObjectRequest(bucket, fileName, file.getInputStream(), null)
-	        .withCannedAcl(CannedAccessControlList.PublicRead));
-
-	    return fileName;
-	}*/
-
 }

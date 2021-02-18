@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.Dreamy.model.LikesDto;
 import com.ssafy.Dreamy.model.service.LikesService;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
-//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+//@CrossOrigin(origins = { "http://localhost:3000" })
+@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/likes")
 public class LikesController {
@@ -43,18 +43,14 @@ public class LikesController {
 
 		int user_id = likesdto.getUserid();
 		int post_id = likesdto.getPostid();
-		System.out.println(user_id);
-		System.out.println(post_id);
 
 		try {
-			System.out.println("좋아요 추가함수 시작");
 			likesservice.addLike(user_id, post_id);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("좋아요 추가 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
@@ -66,19 +62,14 @@ public class LikesController {
 			@PathVariable("pid") int postid, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		
-		System.out.println(userid);
-		System.out.println(postid);
 
 		try {
-			System.out.println("좋아요 취소함수 시작");
 			likesservice.unLike(userid, postid);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("좋아요 취소 실패"); //
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
@@ -89,7 +80,6 @@ public class LikesController {
 			throws Exception {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
-		System.out.println(pid);
 		logger.info("좋아요 수 카운트 시작");
 		try {
 			int count = likesservice.countLikes(pid);
@@ -112,20 +102,16 @@ public class LikesController {
 		HttpStatus status = null;
 
 		try {
-			System.out.println("좋아요 상태 체크 함수 시작");
 			if (likesservice.checkLikes(userid, postid)) {
-				System.out.println("좋아요 누른적이 있다");
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {
-				System.out.println("좋아요 누른적이 없다");
 				resultMap.put("message", FAIL);
 				status = HttpStatus.ACCEPTED;
 			}
 		} catch (Exception e) {
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
-			System.out.println("좋아요 상태 체크 실패");
 		}
 
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
