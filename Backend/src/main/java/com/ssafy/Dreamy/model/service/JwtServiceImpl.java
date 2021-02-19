@@ -53,14 +53,8 @@ public class JwtServiceImpl implements JwtService {
 			Jws<Claims> claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
 			return true;
 		} catch (Exception e) {
-//			if (logger.isInfoEnabled()) {
-//				e.printStackTrace();
-//			} else {
-				logger.error(e.getMessage());
-//			}
-//			throw new UnauthorizedException();
-//			개발환경
-			System.out.println("--토큰 생성 실패");	//
+			logger.error(e.getMessage());
+			
 			return false;
 		}
 	}
@@ -72,18 +66,12 @@ public class JwtServiceImpl implements JwtService {
 		try {
 			claims = Jwts.parser().setSigningKey(TK.getBytes("UTF-8")).parseClaimsJws(key).getBody();
 			email=(String) claims.get("userEmail");
-			System.out.println("토큰으로부터 이메일 받기");
 		} catch (Exception e) {
 			if (logger.isInfoEnabled()) {
 				e.printStackTrace();
 			} else {
 				logger.error(e.getMessage());
 			}
-			
-//			개발환경
-//			Map<String,Object> testMap = new HashMap<>();
-//			testMap.put("userid", userid);
-//			return testMap;
 		}
 		return email;
 	}

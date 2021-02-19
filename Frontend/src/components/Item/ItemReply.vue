@@ -13,7 +13,7 @@
         @click:clear="this.content=''"
         clearable
         text
-        :rules="[v => (v && v.length <= 50) || '50자 이내로 작성해주세요']"
+        :rules="[v => (v.length <= 50) || '50자 이내로 작성해주세요']"
         required
         @keyup.enter="addReply"
       >

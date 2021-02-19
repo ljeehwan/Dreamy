@@ -22,7 +22,6 @@ import com.ssafy.Dreamy.model.service.UserService;
 @CrossOrigin(origins = { "http://localhost:3000" })
 //@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
-//@RequestMapping("/board")
 public class ImageController {
 
 	public static final Logger logger = LoggerFactory.getLogger(ImageController.class);
@@ -38,7 +37,6 @@ public class ImageController {
 	
 	@PostMapping("/board/imageupload")
 	public ResponseEntity<Map<String, Object>> boardImageUpload(@RequestBody MultipartFile files) throws IOException {
-		System.out.println(files);
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		try {
@@ -46,7 +44,6 @@ public class ImageController {
 			String imgPath = "https://" + CloudFrontDomain + "/"
 					+ imageService.upload(files, typeString);
 			
-			System.out.println(imgPath);
 			resultMap.put("imgPath", imgPath);
 			resultMap.put("message", SUCCESS);
 			status = HttpStatus.ACCEPTED;
@@ -61,15 +58,12 @@ public class ImageController {
 
 	@PostMapping("/user/imageupload/{uid}")
 	public ResponseEntity<Map<String, Object>> profileImageUpload(@PathVariable("uid") int uid, @RequestBody MultipartFile files) throws IOException { 
-		System.out.println(files); 
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = null;
 		
 		try {
 			String typeString = "profile";
 			String imgPath = "https://" + CloudFrontDomain + "/" + imageService.upload(files, typeString);
-
-			System.out.println(imgPath);
 			
 			if(userService.updateProfile(uid, imgPath) < 1) {
 				resultMap.put("message", FAIL);
