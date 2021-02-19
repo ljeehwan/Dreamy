@@ -18,7 +18,7 @@
 		<![CDATA[select b.pid as pid, b.uid as uid, u.name as name, b.board_type as boardType, b.title, b.content, b.written_date as writtenDate, b.start_date as startDate, b.end_date as endDate, b.category, b.image_url as imageUrl, b.total_date as totalDate
 		from Board as b join User as u
 		ON b.uid = u.uid
-		where b.pid IN (select pid from Participate where uid=#{uid}) and date(now()) <= b.end_date
+		where b.pid IN (select pid from Participate where uid=#{uid} and success=0) and date(now()) <= b.end_date
 		order by b.written_date DESC
 		limit #{limit}, 3
 		]]>

@@ -29,8 +29,8 @@ import com.ssafy.Dreamy.model.service.BoardService;
 import com.ssafy.Dreamy.model.service.ParticipateService;
 
 
-//@CrossOrigin(origins = { "http://localhost:3000" })
-@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/board")	// 매핑주소 변경가능
 public class BoardController {

@@ -19,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.Dreamy.model.service.ImageService;
 import com.ssafy.Dreamy.model.service.UserService;
 
-//@CrossOrigin(origins = { "http://localhost:3000" })
-@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 public class ImageController {
 

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.Dreamy.model.BoardDto;
 import com.ssafy.Dreamy.model.service.MylistService;
 
-//@CrossOrigin(origins = { "http://localhost:3000" })
-@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/mylist")
 public class MylistController {

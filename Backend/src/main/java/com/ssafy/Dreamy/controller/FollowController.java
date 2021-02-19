@@ -28,8 +28,8 @@ import com.ssafy.Dreamy.model.service.FollowService;
 
 import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 
-//@CrossOrigin(origins = { "http://localhost:3000" })
-@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/follow")
 public class FollowController {
