@@ -26,8 +26,8 @@ import com.ssafy.Dreamy.model.ParticipateDto;
 import com.ssafy.Dreamy.model.UserDto;
 import com.ssafy.Dreamy.model.service.ParticipateService;
 
-//@CrossOrigin(origins = { "http://localhost:3000" })
-@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
+@CrossOrigin(origins = { "http://localhost:3000" })
+//@CrossOrigin(origins = { "http://i4a306.p.ssafy.io" })
 @RestController
 @RequestMapping("/participate")
 public class ParticipateController {
