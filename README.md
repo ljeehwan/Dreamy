@@ -3,6 +3,9 @@
 ## 발표자료
 https://www.miricanvas.com/v/19464j
 
+## 배포링크
+http://i4a306.p.ssafy.io/
+
 ## DREAMY  🌙
 
 > Dream it + '드림' = 드리미; Dreamy 의 합성어
