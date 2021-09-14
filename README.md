@@ -6,6 +6,9 @@ https://www.miricanvas.com/v/19464j
 ## 배포링크
 http://i4a306.p.ssafy.io/
 
+## Dreamy 프로젝트 소개 및 시연 영상
+https://youtu.be/a4dlNtpSD28
+
 ## DREAMY  🌙
 
 > Dream it + '드림' = 드리미; Dreamy 의 합성어
