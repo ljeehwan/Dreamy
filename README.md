@@ -1,4 +1,4 @@
-# Sub Project 3 🤞
+# Dreamy 🤞
 
 ## 발표자료
 https://www.miricanvas.com/v/19464j
